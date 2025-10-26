@@ -1,0 +1,23 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  background: #0e0e0e;
+  color: #f5f5f5;
+  text-align: center;
+}
+nav a {
+  margin: 0 15px;
+  color: #fff;
+  text-decoration: none;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+main {
+  padding: 40px;
+}
+footer {
+  margin-top: 60px;
+  opacity: 0.6;
+}
