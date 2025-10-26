@@ -1,6 +1,8 @@
 # === Node.js / Next.js ===
 node_modules/
+# ^this !
 .next/
+# ^this !
 out/
 dist/
 
@@ -10,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.log
+# ^this ?
 
 # === Build / Cache ===
 .cache/
@@ -20,16 +23,20 @@ coverage/
 
 # === OS spécifiques ===
 .DS_Store
+# ^this ?
 Thumbs.db
 
 # === Éditeurs ===
 .vscode/
+# ^this ?
 .idea/
+# ^this ?
 *.swp
 *.swo
 
 # === Environnements ===
 .env
+# ^this ?
 .env.local
 .env.development
 .env.production
