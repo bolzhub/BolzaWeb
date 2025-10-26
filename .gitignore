@@ -1,14 +1,46 @@
-# Node modules
+# === Node.js / Next.js ===
 node_modules/
+.next/
+out/
+dist/
 
-# Logs
+# === Fichiers de logs et debug ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 *.log
 
-# Environnement local
-.env
+# === Build / Cache ===
+.cache/
+.turbo/
+.vercel/
+coverage/
+*.tsbuildinfo
 
-# MacOS
+# === OS spécifiques ===
 .DS_Store
+Thumbs.db
 
-# VSCode
+# === Éditeurs ===
 .vscode/
+.idea/
+*.swp
+*.swo
+
+# === Environnements ===
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# === Autres ===
+# fichiers temporaires créés par Next.js ou les scripts
+*.pid
+*.seed
+*.tgz
+
+# === Si tu fais du déploiement sur Raspberry ===
+# (les fichiers système, services, etc.)
+*.service
