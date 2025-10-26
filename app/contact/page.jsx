@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Contact",
+  description: "Send me a message"
+}
+
 export default function ContactPage() {
   return (
     <main>

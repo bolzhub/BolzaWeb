@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "About",
+  description: "Who am I? What is this company?"
+}
+
 export default function AboutPage() {
   return (
     <main>
