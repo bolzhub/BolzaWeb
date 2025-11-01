@@ -2,7 +2,7 @@ import fr from "@/locales/fr.json";
 import en from "@/locales/en.json";
 
 export async function generateMetadata({ params }) {
-  const { lang } = params;
+  const { lang } = await params;
   const t = lang === "fr" ? fr : en;
   
   return {
