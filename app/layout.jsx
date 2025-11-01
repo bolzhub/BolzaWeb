@@ -1,11 +1,9 @@
 import "./global.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export const metadata = {
   title: {
     default: "Bolzano Crafts",
-    template: "%s | Bolzano Crafts", // format des titres de page
+    template: "%s | Bolzano Crafts",
   },
   description: "Crafts by Bolzano",
   icons: {
@@ -23,11 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

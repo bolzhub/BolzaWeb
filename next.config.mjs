@@ -1,5 +1,11 @@
-import { fileURLToPath } from "url";
-import path from "path";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  allowedDevOrigins: [
+    "https://bolzanocrafts.com",
+    "https://bolzanocrafts.com/fr",
+    "https://bolzanocrafts.com/en"
+  ],
+};
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+export default nextConfig;
