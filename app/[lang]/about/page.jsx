@@ -11,8 +11,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function AboutPage({ params }) {
-  const { lang } = params;
+export default async function AboutPage({ params }) {
+  const { lang } = await params;
   const t = lang === "fr" ? fr : en;
 
   return (
