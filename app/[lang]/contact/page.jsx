@@ -1,6 +1,16 @@
 import fr from "@/locales/fr.json";
 import en from "@/locales/en.json";
 
+export async function generateMetadata({ params }) {
+  const { lang } = params;
+  const t = lang === "fr" ? fr : en;
+  
+  return {
+    title: `${t.nav.contact}`,
+    // description: t.meta.aboutDesc, // si tu définis une description spécifique
+  };
+}
+
 export default async function ContactPage({ params }) {
   const { lang } = await params;
   const t = lang === "fr" ? fr : en;
