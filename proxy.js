@@ -1,22 +1,42 @@
-import { NextResponse } from "next/server";
+// proxy.js
+import { NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+
+const locales = ['fr', 'en'];
+const defaultLocale = 'en';
+
+const intlMiddleware = createMiddleware({
+  locales,
+  defaultLocale,
+});
 
 export function proxy(request) {
-  const { pathname } = request.nextUrl;
+  const { nextUrl, headers } = request;
+  const pathname = nextUrl.pathname;
 
-  // Ignore les fichiers statiques et les API
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.match(/\.(ico|png|jpg|jpeg|svg|css|js)$/)
-  ) {
-    return;
+  // Si l’URL commence déjà par une locale supportée, on laisse passer
+  const pathnameLocale = pathname.split('/')[1];
+  if (locales.includes(pathnameLocale)) {
+    return intlMiddleware(request);
   }
 
-  // Redirection automatique si pas de /fr ou /en
-  if (!/^\/(fr|en)/.test(pathname)) {
-    const locale = request.headers.get("accept-language")?.startsWith("fr")
-      ? "fr"
-      : "en";
-    return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
+  // Sinon, détecter la langue du navigateur via header Accept-Language
+  const acceptLang = headers.get('accept-language');
+  let preferred = defaultLocale;
+  if (acceptLang) {
+    // prendre le premier segment avant la virgule
+    const firstLang = acceptLang.split(',')[0].split('-')[0];
+    if (locales.includes(firstLang)) {
+      preferred = firstLang;
+    }
   }
+
+  // rediriger vers /{preferred}{pathname}
+  const url = new URL(request.url);
+  url.pathname = `/${preferred}${pathname}`;
+  return NextResponse.redirect(url);
 }
+
+export const config = {
+  matcher: '/((?!api|_next|_static|favicon\\.ico|.*\\..*).*)',
+};
