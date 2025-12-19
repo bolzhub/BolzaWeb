@@ -1,2 +1,2 @@
-# Old BolzaWeb
+# BolzaWeb
 Site internet de Bolzano Crafts
