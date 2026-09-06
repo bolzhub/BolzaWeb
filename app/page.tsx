@@ -2,13 +2,24 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main>
-      <h1>Hello world</h1>
+    <main
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        margin: 0,
+      }}
+    >
       <img
-        src="/Illustration_sans_titre 1.png"  // Chemin relatif depuis public/
-        alt="Description de mon image"
-        width={500}  // Largeur en pixels
-        height={300} // Hauteur en pixels
+        src="/data/Projets/ADR/Ane%C3%A9.png"
+        alt="Description : premier dessin"
+        style={{
+          maxWidth: "100%",
+          maxHeight: "100%",
+          objectFit: "contain",
+        }}
       />
     </main>
   );
