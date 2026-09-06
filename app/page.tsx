@@ -1,50 +1,30 @@
 export default function Home() {
   const images = [
     "/data/Projets/ADR/Ane%C3%A9.png",
-    "/data/Projets/ADR/AutreImage.png",
-    "/data/Projets/ADR/EncoreUne.png",
+    "/data/Projets/ADR/Jsp/Illustration_sans_titre%201.png",
+    "/data/Projets/ADR/Jsp/Illustration_sans_titre%202.png",
   ];
 
   return (
-    <main style={{ margin: 0, backgroundColor: "#1a1a1a" }}>
-      <h1
-        style={{
-          // position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          textAlign: "center",
-          color: "white",
-          margin: 0,
-          padding: "1rem 0",
-          // zIndex: 10,
-        }}
-      >
+    <main className="m-0 bg-[#1a1a1a]">
+      <h1 className="text-center text-white m-0 py-4">
         Atelier Double Raisin
       </h1>
 
-      {images.map((src, i) => (
-        <section
-          key={i}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            width: "100vw",
-          }}
-        >
-          <img
-            src={src}
-            alt={`Illustration ${i + 1}`}
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100%",
-              objectFit: "contain",
-            }}
-          />
-        </section>
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-3">
+        {images.map((src, i) => (
+          <div
+            key={i}
+            className="flex justify-center items-center h-screen w-full"
+          >
+            <img
+              src={src}
+              alt={`Illustration ${i + 1}`}
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+        ))}
+      </div>
     </main>
   );
 }
