@@ -13,7 +13,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-      <h1 className="text-center text-white m-0 py-4">
+      <h1
+        className="text-center text-white m-0 py-8 text-5xl md:text-5xl tracking-wide"
+        style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
+      >
         Atelier Double Raisin
       </h1>
 
