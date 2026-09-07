@@ -23,7 +23,7 @@ export default function Home() {
             <img
               src={src}
               alt={`Illustration ${i + 1}`}
-              className="max-w-full h-auto object-contain"
+              className="max-w-full h-auto object-contain rounded-lg"
             />
           </div>
         ))}
