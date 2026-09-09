@@ -1,9 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-// ⚠️ À adapter : chemin RÉEL sur le disque de la Pi (pas l'URL nginx)
 const ADR_PATH = "/mnt/Bolzananas/Projets/ADR";
 const ADR_URL_BASE = "/data/Projets/ADR";
+
+export type HomeItem =
+  | { type: "gallery"; slug: string; name: string; cover: string }
+  | { type: "image"; url: string; name: string };
 
 export type Gallery = {
   slug: string;
@@ -12,9 +15,17 @@ export type Gallery = {
   images: string[];
 };
 
-// "03 Victor - 2 juillet 2026" -> "Victor - 2 juillet 2026"
-function stripOrderPrefix(folderName: string): string {
-  return folderName.replace(/^\d+\s*[-_ ]*/, "");
+function stripOrderPrefix(name: string): string {
+  return name.replace(/^\d+\s*[-_ ]*/, "");
+}
+
+function stripExtension(name: string): string {
+  return name.replace(/\.(png|jpe?g)$/i, "");
+}
+
+function getOrderPrefix(name: string): number {
+  const m = name.match(/^\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : 0;
 }
 
 function sortImages(files: string[]): string[] {
@@ -23,43 +34,67 @@ function sortImages(files: string[]): string[] {
     .sort((a, b) => {
       const numA = a.match(/(\d+)/);
       const numB = b.match(/(\d+)/);
-      // Le fichier sans numéro (l'image "couverture") passe toujours en premier
       const nA = numA ? parseInt(numA[1], 10) : -1;
       const nB = numB ? parseInt(numB[1], 10) : -1;
       return nA - nB;
     });
 }
 
-export function getGalleries(): Gallery[] {
+export function getHomeItems(): HomeItem[] {
   const entries = fs.readdirSync(ADR_PATH, { withFileTypes: true });
 
   const folders = entries
     .filter((e) => e.isDirectory())
-    .map((e) => e.name)
-    .sort((a, b) => {
-      const numA = parseInt(a.match(/^\d+/)?.[0] ?? "0", 10);
-      const numB = parseInt(b.match(/^\d+/)?.[0] ?? "0", 10);
-      return numB - numA; // décroissant : plus grand numéro en premier
-    });
+    .map((e) => ({ raw: e.name, order: getOrderPrefix(e.name), kind: "folder" as const }));
 
-  return folders.map((folderName) => {
-    const fullPath = path.join(ADR_PATH, folderName);
-    const files = fs.readdirSync(fullPath);
-    const sortedImages = sortImages(files); // inchangé : ordre des images dans chaque pile
-    const images = sortedImages.map(
-      (f) =>
-        `${ADR_URL_BASE}/${encodeURIComponent(folderName)}/${encodeURIComponent(f)}`
-    );
+  const standaloneImages = entries
+    .filter(
+      (e) =>
+        e.isFile() &&
+        /\.(png|jpe?g)$/i.test(e.name) &&
+        /^\d+/.test(e.name) // doit commencer par un numéro, comme les dossiers
+    )
+    .map((e) => ({ raw: e.name, order: getOrderPrefix(e.name), kind: "image" as const }));
 
+  const combined = [...folders, ...standaloneImages].sort((a, b) => b.order - a.order);
+
+  return combined.map((item) => {
+    if (item.kind === "folder") {
+      const fullPath = path.join(ADR_PATH, item.raw);
+      const files = fs.readdirSync(fullPath);
+      const images = sortImages(files).map(
+        (f) => `${ADR_URL_BASE}/${encodeURIComponent(item.raw)}/${encodeURIComponent(f)}`
+      );
+      return {
+        type: "gallery",
+        slug: encodeURIComponent(item.raw),
+        name: stripOrderPrefix(item.raw),
+        cover: images[0],
+      };
+    }
     return {
-      slug: encodeURIComponent(folderName),
-      name: stripOrderPrefix(folderName),
-      cover: images[0],
-      images,
+      type: "image",
+      url: `${ADR_URL_BASE}/${encodeURIComponent(item.raw)}`,
+      name: stripExtension(stripOrderPrefix(item.raw)),
     };
   });
 }
 
 export function getGalleryBySlug(slug: string): Gallery | undefined {
-  return getGalleries().find((g) => g.slug === slug);
+  const entries = fs.readdirSync(ADR_PATH, { withFileTypes: true });
+  const folder = entries.find((e) => e.isDirectory() && encodeURIComponent(e.name) === slug);
+  if (!folder) return undefined;
+
+  const fullPath = path.join(ADR_PATH, folder.name);
+  const files = fs.readdirSync(fullPath);
+  const images = sortImages(files).map(
+    (f) => `${ADR_URL_BASE}/${encodeURIComponent(folder.name)}/${encodeURIComponent(f)}`
+  );
+
+  return {
+    slug,
+    name: stripOrderPrefix(folder.name),
+    cover: images[0],
+    images,
+  };
 }
