@@ -25,7 +25,7 @@ export default function Home() {
                 />
               </div>
             </div>
-            <p className="text-center text-white/80 mt-5 text-sm md:text-base">
+            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic">
               {gallery.name}
             </p>
           </Link>
