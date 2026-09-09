@@ -216,7 +216,7 @@ export default function Home() {
         Atelier Double Raisin
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-8 md:p-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 p-8 md:p-16">
         {images.map((src, i) => (
           <div
             key={i}
@@ -228,7 +228,7 @@ export default function Home() {
               <img
                 src={src}
                 alt={`Illustration ${i + 1}`}
-                className="max-w-full max-h-full object-contain rounded-xl"
+                className="max-w-full max-h-full object-contain rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white"
               />
             </div>
           </div>
