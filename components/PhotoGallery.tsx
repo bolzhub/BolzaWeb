@@ -53,7 +53,7 @@ export default function PhotoGallery({
               <img
                 src={src}
                 alt={`Illustration ${i + 1}`}
-                className="max-w-full max-h-full object-contain rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white"
+                className="max-w-full max-h-full object-contain rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white active:scale-105 active:ring-2 active:ring-white"
               />
             </div>
           </div>

@@ -16,7 +16,7 @@ export type Gallery = {
 };
 
 function stripOrderPrefix(name: string): string {
-  return name.replace(/^\d+\s*[-_ ]*/, "");
+  return name.replace(/^\d+(\.\d+)?\s*[-_ ]*/, "");
 }
 
 function stripExtension(name: string): string {
