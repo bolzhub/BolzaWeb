@@ -98,3 +98,9 @@ export function getGalleryBySlug(slug: string): Gallery | undefined {
     images,
   };
 }
+
+export function getLatestADRCover(): string | undefined {
+  const items = getHomeItems(); // déjà triés décroissant, le plus récent en premier
+  const latestGallery = items.find((i) => i.type === "gallery");
+  return latestGallery?.type === "gallery" ? latestGallery.cover : undefined;
+}

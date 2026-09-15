@@ -20,7 +20,7 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-10 gap-y-14 md:gap-y-16 p-8 md:p-16">
                 {items.map((item, i) =>
                     item.type === "gallery" ? (
-                        <Link key={i} href={`/gallery/${item.slug}`} className="block">
+                        <Link key={i} href={`/ADR/gallery/${item.slug}`} className="block">
                             <div className="relative w-full cursor-pointer" style={{ paddingTop: "100%" }}>
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <img

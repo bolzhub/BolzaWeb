@@ -17,7 +17,7 @@ export default function PhotoGallery({
     <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
       <div className="relative grid grid-cols-[auto_1fr_auto] items-center gap-4 pt-8 pb-2 px-4 md:px-8">
         <Link
-          href="/"
+          href="/ADR"
           className="text-white/70 hover:text-white transition-colors shrink-0"
           aria-label="Retour à Atelier Double Raisin"
         >
