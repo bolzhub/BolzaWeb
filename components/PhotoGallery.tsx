@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Lightbox from "./Lightbox";
+import Logo from "./Logo";
 
 export default function PhotoGallery({
   title,
@@ -15,6 +16,9 @@ export default function PhotoGallery({
 
   return (
     <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
+      <div className="absolute top-4 left-4 z-10">
+        <Logo size="small" height={32} />
+      </div>
       <div className="relative grid grid-cols-[auto_1fr_auto] items-center gap-4 pt-8 pb-2 px-4 md:px-8">
         <Link
           href="/ADR"

@@ -4,12 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import Lightbox from "./Lightbox";
 import type { HomeItem } from "@/lib/galleries";
+import Logo from "./Logo";
 
 export default function HomeGallery({ items }: { items: HomeItem[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
+            <div className="absolute top-4 left-4 z-10">
+                <Logo size="small" height={32} />
+            </div>
             <h1
                 className="text-center text-white m-0 pt-8 pb-2 text-5xl tracking-wide"
                 style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
