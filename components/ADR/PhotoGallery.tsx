@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Lightbox from "./Lightbox";
-import Logo from "./Logo";
+import Logo from "@/components/site/Logo";
 
 export default function PhotoGallery({
   title,

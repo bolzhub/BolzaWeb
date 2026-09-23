@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { Project } from "@/lib/projects";
+import type { Project } from "@/lib/site/projects";
+
+const ACTIVE_GROW = 8; // 🎛️ plus ce nombre est grand, plus le panneau actif domine
+const INACTIVE_GROW = 1; // 🎛️ plus ce nombre est petit, plus les autres rétrécissent
 
 export default function ProjectShowcase({ projects }: { projects: Project[] }) {
     const [activeId, setActiveId] = useState<string | null>(null);
@@ -19,12 +22,22 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                     <Link
                         key={project.id}
                         href={project.href}
-                        onMouseEnter={() => setActiveId(project.id)}
-                        className="relative overflow-hidden rounded-2xl transition-[flex-grow] duration-500 ease-out"
+                        onPointerEnter={(e) => {
+                            if (e.pointerType === "mouse") setActiveId(project.id);
+                        }}
+                        onClick={(e) => {
+                            if (activeId !== project.id) {
+                                e.preventDefault();
+                                setActiveId(project.id);
+                            }
+                        }}
+                        className="relative overflow-hidden rounded-2xl transition-[flex-grow] duration-500 ease-out hover:ring-2 hover:ring-white"
                         style={{
-                            flexGrow: isActive ? 4 : 1,
+                            flexGrow: isActive ? ACTIVE_GROW : INACTIVE_GROW,
                             flexBasis: 0,
+                            minWidth: "2.5rem",
                             backgroundColor: project.color,
+                            containerType: "inline-size",
                         }}
                     >
                         {project.previewImage && (
@@ -39,11 +52,8 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
 
                         <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                             <p
-                                className="text-white tracking-wide"
-                                style={{
-                                    fontSize: isActive ? "1.5rem" : "1rem",
-                                    transition: "font-size 0.5s ease-out",
-                                }}
+                                className="text-white tracking-wide break-words"
+                                style={{ fontSize: "clamp(0.7rem, 9cqw, 1.75rem)" }}
                             >
                                 {project.title}
                             </p>

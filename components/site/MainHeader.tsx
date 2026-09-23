@@ -6,7 +6,6 @@ import Logo from "./Logo";
 
 const LOGO_HEIGHT = 40;
 const NAV_FONT_SIZE = "0.875rem";
-const NAV_VERTICAL_OFFSET = "10px";
 const SIDE_GAP = 24;
 const BURGER_WIDTH = 44;
 
@@ -115,29 +114,29 @@ export default function MainHeader() {
     }, [recompute]);
 
     return (
-        <header ref={containerRef} className="relative flex items-baseline justify-between px-6 md:px-10 py-5">
+        <header ref={containerRef} className="flex items-baseline gap-6 px-6 md:px-10 py-5">
             <Logo size={logoSize} height={LOGO_HEIGHT} />
 
             {!burgerMode && (
                 <>
-                    <nav
-                        className="absolute left-1/2 flex items-baseline gap-6 text-[#3a352c]/80"
-                        style={{
-                            fontSize: NAV_FONT_SIZE,
-                            transform: `translateX(-50%) translateY(${NAV_VERTICAL_OFFSET})`,
-                        }}
-                    >
+                    <div className="flex-1" aria-hidden="true" />
+                    <div style={{ display: "contents" }}>
                         {NAV_ITEMS.map((item) => (
-                            <Link key={item.label} href={item.href} className="hover:text-[#3a352c] transition-colors">
+                            <Link
+                                key={item.label}
+                                href={item.href}
+                                className="whitespace-nowrap text-[#3a352c]/80 hover:text-[#3a352c] transition-colors"
+                                style={{ fontSize: NAV_FONT_SIZE }}
+                            >
                                 {item.label}
                             </Link>
                         ))}
-                    </nav>
-
+                    </div>
+                    <div className="flex-1" aria-hidden="true" />
                     <Link
                         href={HELP_ITEM.href}
-                        className="rounded-full px-4 py-1.5 text-white bg-[#7a2e2e] hover:bg-[#8f3636] transition-colors"
-                        style={{ fontSize: NAV_FONT_SIZE, transform: `translateY(${NAV_VERTICAL_OFFSET})` }}
+                        className="shrink-0 rounded-full px-4 py-1.5 text-white bg-[#7a2e2e] hover:bg-[#8f3636] transition-colors"
+                        style={{ fontSize: NAV_FONT_SIZE }}
                     >
                         {HELP_ITEM.label}
                     </Link>
@@ -145,33 +144,57 @@ export default function MainHeader() {
             )}
 
             {burgerMode && (
-                <div className="relative">
-                    <button onClick={() => setMenuOpen((o) => !o)} aria-label="Menu" className="flex flex-col justify-center gap-1.5 w-11 h-11">
-                        <span className="block h-0.5 w-6 bg-[#3a352c]" />
-                        <span className="block h-0.5 w-6 bg-[#3a352c]" />
-                        <span className="block h-0.5 w-6 bg-[#3a352c]" />
-                    </button>
+                <>
+                    <div className="flex-1" aria-hidden="true" />
+                    <div className="relative self-center">
+                        <button
+                            type="button"
+                            onClick={() => setMenuOpen((o) => !o)}
+                            aria-label="Menu"
+                            className="flex flex-col justify-center gap-1.5 w-11 h-11 appearance-none bg-transparent border-0 p-0"
+                        >
+                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
+                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
+                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
+                        </button>
 
-                    {menuOpen && (
-                        <div className="absolute right-0 mt-2 flex flex-col gap-1 bg-[#ECE5D8] border border-[#3a352c]/10 rounded-xl shadow-lg py-2 min-w-[160px] z-50">
-                            {[...NAV_ITEMS, HELP_ITEM].map((item) => (
-                                <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="px-4 py-2 text-[#3a352c]/80 hover:text-[#3a352c] hover:bg-[#3a352c]/5 transition-colors">
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                        {menuOpen && (
+                            <div className="absolute right-0 mt-2 flex flex-col gap-1 bg-[#ECE5D8] border border-[#3a352c]/10 rounded-xl shadow-lg py-2 min-w-[160px] z-50">
+                                {[...NAV_ITEMS, HELP_ITEM].map((item) => (
+                                    <Link
+                                        key={item.label}
+                                        href={item.href}
+                                        onClick={() => setMenuOpen(false)}
+                                        className="px-4 py-2 text-[#3a352c]/80 hover:text-[#3a352c] hover:bg-[#3a352c]/5 transition-colors"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </>
             )}
 
-            <div ref={navProbeRef} aria-hidden="true" className="absolute -z-10 opacity-0 pointer-events-none flex items-baseline gap-6 whitespace-nowrap" style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}>
+            <div
+                ref={navProbeRef}
+                aria-hidden="true"
+                className="absolute -z-10 opacity-0 pointer-events-none flex items-baseline gap-6 whitespace-nowrap"
+                style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}
+            >
                 {NAV_ITEMS.map((item) => (
                     <span key={item.label}>{item.label}</span>
                 ))}
             </div>
-            <a ref={helpProbeRef} aria-hidden="true" className="absolute -z-10 opacity-0 pointer-events-none rounded-full px-4 py-1.5 whitespace-nowrap" style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}>
+
+            <a
+                ref={helpProbeRef}
+                aria-hidden="true"
+                className="absolute -z-10 opacity-0 pointer-events-none rounded-full px-4 py-1.5 whitespace-nowrap"
+                style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}
+            >
                 {HELP_ITEM.label}
             </a>
-        </header>
+        </header >
     );
 }

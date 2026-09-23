@@ -24,7 +24,7 @@ export default function Logo({
     className?: string;
 }) {
     return (
-        <Link href="/" className={`flex items-center shrink-0 ${className}`}>
+        <Link href="/" className={`inline-block shrink-0 ${className}`}>
             <img src={SOURCES[size]} alt={ALTS[size]} style={{ height }} />
         </Link>
     );

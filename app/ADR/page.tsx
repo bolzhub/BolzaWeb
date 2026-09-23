@@ -1,5 +1,5 @@
-import { getHomeItems } from "@/lib/galleries";
-import HomeGallery from "@/components/HomeGallery";
+import { getHomeItems } from "@/lib/ADR/galleries";
+import HomeGallery from "@/components/ADR/HomeGallery";
 
 export default function Home() {
   const items = getHomeItems();

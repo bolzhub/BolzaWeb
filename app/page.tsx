@@ -1,7 +1,7 @@
-import MainHeader from "@/components/MainHeader";
-import SocialLinks from "@/components/SocialLinks";
-import ProjectShowcase from "@/components/ProjectShowcase";
-import { getProjects } from "@/lib/projects";
+import MainHeader from "@/components/site/MainHeader";
+import ProjectShowcase from "@/components/site/ProjectShowcase";
+import SocialLinks from "@/components/site/SocialLinks";
+import { getProjects } from "@/lib/site/projects";
 
 const CONNECTOR_FONT_SIZE = "clamp(1.1rem, 8vw, 3.5rem)"; // taille de "I am" / "and here are my"
 const CONNECTOR_VERTICAL_OFFSET = "-2px"; // ajustement fin de leur position verticale

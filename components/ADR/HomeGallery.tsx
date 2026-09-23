@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Lightbox from "./Lightbox";
-import type { HomeItem } from "@/lib/galleries";
-import Logo from "./Logo";
+import type { HomeItem } from "@/lib/ADR/galleries";
+import Logo from "@/components/site/Logo";
 
 export default function HomeGallery({ items }: { items: HomeItem[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getGalleryBySlug } from "@/lib/galleries";
-import PhotoGallery from "@/components/PhotoGallery";
+import { getGalleryBySlug } from "@/lib/ADR/galleries";
+import PhotoGallery from "@/components/ADR/PhotoGallery";
 
 export default async function GalleryPage({
   params,
