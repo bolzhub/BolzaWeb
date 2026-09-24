@@ -16,9 +16,6 @@ export default function PhotoGallery({
 
   return (
     <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-      <div className="absolute top-4 left-4 z-10">
-        <Logo size="small" height={32} />
-      </div>
       <div className="relative grid grid-cols-[auto_1fr_auto] items-center gap-4 pt-8 pb-2 px-4 md:px-8">
         <Link
           href="/ADR"
@@ -36,13 +33,19 @@ export default function PhotoGallery({
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
+
         <h1
           className="text-center text-white m-0 text-5xl tracking-wide"
           style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
         >
           {title}
         </h1>
-        <div aria-hidden="true" />
+
+        <div className="invisible shrink-0" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24">
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-8 md:p-16">

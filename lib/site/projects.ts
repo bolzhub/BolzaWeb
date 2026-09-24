@@ -6,6 +6,7 @@ export type Project = {
     href: string;
     color: string;
     previewImage?: string;
+    imagePosition?: string;
 };
 
 export function getProjects(): Project[] {
@@ -16,6 +17,7 @@ export function getProjects(): Project[] {
             href: "#",
             color: "#6b7a6b",
             previewImage: "/projects/BolzaBoxes/cover.jpg",
+            imagePosition: "top",
         },
         {
             id: "herodotus",
@@ -23,6 +25,7 @@ export function getProjects(): Project[] {
             href: "/herodotus",
             color: "#4a4a3d",
             previewImage: "/projects/herodotus/cover.png",
+            imagePosition: "top",
         },
         {
             id: "adr",

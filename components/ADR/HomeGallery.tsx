@@ -11,15 +11,20 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-            <div className="absolute top-4 left-4 z-10">
+            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 pt-8 pb-2 px-4 md:px-8">
                 <Logo size="small" height={32} />
+
+                <h1
+                    className="text-center text-white m-0 text-5xl tracking-wide"
+                    style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
+                >
+                    Life Drawing
+                </h1>
+
+                <div className="invisible" aria-hidden="true">
+                    <Logo size="small" height={32} />
+                </div>
             </div>
-            <h1
-                className="text-center text-white m-0 pt-8 pb-2 text-5xl tracking-wide"
-                style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
-            >
-                Atelier Double Raisin
-            </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-10 gap-y-14 md:gap-y-16 p-8 md:p-16">
                 {items.map((item, i) =>
