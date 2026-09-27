@@ -6,7 +6,10 @@ export default function VersionSwitch() {
     const { version, setVersion } = useVersion();
 
     return (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 bg-[#ECE5D8]/90 backdrop-blur-md rounded-full px-5 py-2.5 shadow-lg">
+        <div
+            className="absolute left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 bg-[#ECE5D8] rounded-full px-5 py-2.5 shadow-lg"
+            style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))" }}
+        >
             <span
                 className="text-sm text-[#3a352c]"
                 style={{ fontFamily: "var(--font-playfair)" }}
@@ -23,7 +26,6 @@ export default function VersionSwitch() {
                         : "bg-transparent opacity-40 hover:opacity-70"
                 }`}
             >
-                {/* Icône globe */}
                 <svg
                     width="20"
                     height="20"
@@ -48,7 +50,6 @@ export default function VersionSwitch() {
                         : "bg-transparent opacity-40 hover:opacity-70"
                 }`}
             >
-                {/* Drapeau français */}
                 <span className="text-lg leading-none">🇫🇷</span>
             </button>
         </div>

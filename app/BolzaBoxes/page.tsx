@@ -16,7 +16,7 @@ function BolzaBoxesContent() {
 
     return (
         <main className="relative overflow-hidden">
-            <div className="relative min-h-screen min-h-dvh">
+            <div className="relative min-h-[100svh]">
                 <img
                     src={heroImage}
                     alt=""
