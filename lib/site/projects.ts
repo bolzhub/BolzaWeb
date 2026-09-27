@@ -14,7 +14,7 @@ export function getProjects(): Project[] {
         {
             id: "bolzaboxes",
             title: "Root BolzaBoxes",
-            href: "#",
+            href: "/BolzaBoxes",
             color: "#6b7a6b",
             previewImage: "/projects/BolzaBoxes/cover.jpg",
             imagePosition: "top",
