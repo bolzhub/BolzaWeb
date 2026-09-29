@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 const ADR_PATH = "/mnt/Bolzananas/Projets/ADR";
-const ADR_URL_BASE = "/data/Projets/ADR";
+const ADR_URL_BASE = "/api/media/Projets/ADR";
 
 export type HomeItem =
   | { type: "gallery"; slug: string; name: string; cover: string }

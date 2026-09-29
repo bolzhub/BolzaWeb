@@ -20,11 +20,10 @@ export default function VersionSwitch() {
             <button
                 onClick={() => setVersion("international")}
                 aria-label="Version internationale"
-                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
-                    version === "international"
+                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "international"
                         ? "bg-[#3a352c] scale-105"
                         : "bg-transparent opacity-40 hover:opacity-70"
-                }`}
+                    }`}
             >
                 <svg
                     width="20"
@@ -44,13 +43,21 @@ export default function VersionSwitch() {
             <button
                 onClick={() => setVersion("french")}
                 aria-label="Version française"
-                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
-                    version === "french"
+                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "french"
                         ? "bg-[#3a352c] scale-105"
                         : "bg-transparent opacity-40 hover:opacity-70"
-                }`}
+                    }`}
             >
-                <span className="text-lg leading-none">🇫🇷</span>
+                <span
+                    className="text-base leading-none"
+                    style={{
+                        fontFamily: "var(--font-playfair)",
+                        fontWeight: 700,
+                        color: version === "french" ? "#ECE5D8" : "#3a352c",
+                    }}
+                >
+                    Fr
+                </span>
             </button>
         </div>
     );

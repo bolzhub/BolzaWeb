@@ -1,8 +1,8 @@
 import BolzaBoxesShell from "@/components/BolzaBoxes/BolzaBoxesShell";
 
 const HERO_IMAGES = {
-    international: "/data/Projets/Root_Organiser/.../making-of-international.jpg", // TODO: chemin réel
-    french: "/data/Projets/Root_Organiser/.../making-of-french.jpg", // TODO: chemin réel
+    international: "/api/media/Projets/Root_Organiser/.../making-of-international.jpg", // TODO: chemin réel
+    french: "/api/media/Projets/Root_Organiser/.../making-of-french.jpg", // TODO: chemin réel
 };
 
 export default function MakingOfPage() {

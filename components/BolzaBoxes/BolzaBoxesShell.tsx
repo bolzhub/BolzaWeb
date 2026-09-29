@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
 import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import ScrollHint from "@/components/BolzaBoxes/ScrollHint";
 
 export type HeroImages = {
     international: string;
@@ -29,6 +30,7 @@ export default function BolzaBoxesShell({
                     className="fixed inset-0 w-full h-full object-cover -z-10"
                 />
                 <BolzaBoxesNav backgroundImageSrc={heroImage} />
+                <ScrollHint />
                 <VersionSwitch />
             </div>
 
