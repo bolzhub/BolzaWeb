@@ -32,9 +32,8 @@ function NavLink({
         <Link
             href={href}
             onClick={onClick}
-            className={`text-sm md:text-base tracking-wide text-[#3a352c] hover:opacity-60 transition-opacity ${
-                active ? "underline underline-offset-4" : ""
-            }`}
+            className={`text-sm md:text-base tracking-wide text-[#3a352c] hover:opacity-60 transition-opacity ${active ? "underline underline-offset-4" : ""
+                }`}
             style={{ fontFamily: "var(--font-playfair)" }}
         >
             {label}
@@ -58,8 +57,10 @@ function BackgroundLayer({ src }: { src: string }) {
 
 export default function BolzaBoxesNav({
     backgroundImageSrc,
+    transparent = false,
 }: {
     backgroundImageSrc: string;
+    transparent?: boolean;
 }) {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
@@ -69,7 +70,7 @@ export default function BolzaBoxesNav({
     return (
         <header className="fixed top-0 left-0 right-0 z-50">
             <div className="relative" style={{ clipPath: "inset(0)" }}>
-                <BackgroundLayer src={backgroundImageSrc} />
+                {!transparent && <BackgroundLayer src={backgroundImageSrc} />}
 
                 <div className="relative flex items-center justify-between h-20 px-6 md:px-10 gap-4">
                     <Link href="/" className="shrink-0">
@@ -150,17 +151,18 @@ export default function BolzaBoxesNav({
                 )}
             </div>
 
-            {/* Bande de fondu sous la barre / le menu déroulé */}
-            <div
-                className="absolute left-0 right-0 top-full h-24 pointer-events-none"
-                style={{
-                    clipPath: "inset(0)",
-                    WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
-                    maskImage: "linear-gradient(to bottom, black, transparent)",
-                }}
-            >
-                <BackgroundLayer src={backgroundImageSrc} />
-            </div>
+            {!transparent && (
+                <div
+                    className="absolute left-0 right-0 top-full h-24 pointer-events-none"
+                    style={{
+                        clipPath: "inset(0)",
+                        WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
+                        maskImage: "linear-gradient(to bottom, black, transparent)",
+                    }}
+                >
+                    <BackgroundLayer src={backgroundImageSrc} />
+                </div>
+            )}
         </header>
     );
 }
