@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const NAV_LINKS = [
     { label: "Home", href: "/BolzaBoxes" },
@@ -22,18 +22,20 @@ function NavLink({
     label,
     active,
     onClick,
+    small,
 }: {
     href: string;
     label: string;
     active: boolean;
     onClick?: () => void;
+    small?: boolean;
 }) {
     return (
         <Link
             href={href}
             onClick={onClick}
-            className={`text-sm md:text-base tracking-wide text-[#3a352c] hover:opacity-60 transition-opacity ${active ? "underline underline-offset-4" : ""
-                }`}
+            className={`whitespace-nowrap tracking-wide text-[#3a352c] hover:opacity-60 transition-opacity ${small ? "text-xs sm:text-sm" : "text-sm md:text-base"
+                } ${active ? "underline underline-offset-4" : ""}`}
             style={{ fontFamily: "var(--font-playfair)" }}
         >
             {label}
@@ -41,8 +43,6 @@ function NavLink({
     );
 }
 
-// Copie de la photo de fond, fixe par rapport à l'écran (donc alignée
-// avec la photo principale), découpée par le parent via clip-path.
 function BackgroundLayer({ src }: { src: string }) {
     return (
         <img
@@ -58,44 +58,67 @@ function BackgroundLayer({ src }: { src: string }) {
 export default function BolzaBoxesNav({
     backgroundImageSrc,
     transparent = false,
+    onBurgerOpenChange,
 }: {
     backgroundImageSrc: string;
     transparent?: boolean;
+    onBurgerOpenChange?: (open: boolean) => void;
 }) {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
+    const headerRef = useRef<HTMLElement>(null);
 
     const isActive = (href: string) => pathname === href;
 
+    useEffect(() => {
+        onBurgerOpenChange?.(open);
+    }, [open, onBurgerOpenChange]);
+
+    // Mesure la hauteur réelle de la barre (elle peut varier si les liens
+    // repassent à la ligne sur un écran étroit) et la partage via une
+    // variable CSS, pour que d'autres pages puissent s'y ancrer sans deviner.
+    useEffect(() => {
+        const el = headerRef.current;
+        if (!el) return;
+        const update = () => {
+            document.documentElement.style.setProperty(
+                "--bolzaboxes-nav-height",
+                `${el.offsetHeight}px`
+            );
+        };
+        update();
+        const observer = new ResizeObserver(update);
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [open]);
+
     return (
-        <header className="fixed top-0 left-0 right-0 z-50">
+        <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50">
             <div className="relative" style={{ clipPath: "inset(0)" }}>
                 {!transparent && <BackgroundLayer src={backgroundImageSrc} />}
 
-                <div className="relative flex items-center justify-between h-20 px-6 md:px-10 gap-4">
-                    <Link href="/" className="shrink-0">
-                        <img src="/logo/bolzano-word.svg" alt="Bolzano" className="h-8 md:h-10" />
+                <div className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 md:px-8 py-3">
+                    <Link href="/" className="shrink-0 flex items-center gap-2">
+                        <img
+                            src="/logo/logo-icon.svg"
+                            alt="Bolzano Crafts"
+                            className="h-10 md:h-12"
+                        />
                     </Link>
 
-                    <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+                    <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center flex-1 min-w-0">
                         {NAV_LINKS.map((link) => (
                             <NavLink
                                 key={link.href}
                                 href={link.href}
                                 label={link.label}
                                 active={isActive(link.href)}
+                                small
                             />
                         ))}
                     </nav>
 
-                    <span
-                        className="lg:hidden absolute left-1/2 -translate-x-1/2 text-lg md:text-xl text-[#3a352c] tracking-wide whitespace-nowrap"
-                        style={{ fontFamily: "var(--font-playfair)", fontWeight: 700 }}
-                    >
-                        Root BolzaBoxes
-                    </span>
-
-                    <div className="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0">
+                    <div className="hidden lg:flex items-center gap-6 shrink-0">
                         {SIDE_LINKS.map((link) => (
                             <NavLink
                                 key={link.href}
@@ -112,8 +135,8 @@ export default function BolzaBoxesNav({
                         onClick={() => setOpen((v) => !v)}
                     >
                         <svg
-                            width="28"
-                            height="28"
+                            width="26"
+                            height="26"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -137,8 +160,8 @@ export default function BolzaBoxesNav({
                 </div>
 
                 {open && (
-                    <nav className="relative lg:hidden flex flex-col items-center gap-5 pb-6">
-                        {[...NAV_LINKS, ...SIDE_LINKS].map((link) => (
+                    <nav className="relative lg:hidden flex flex-col items-center gap-4 pb-5">
+                        {SIDE_LINKS.map((link) => (
                             <NavLink
                                 key={link.href}
                                 href={link.href}

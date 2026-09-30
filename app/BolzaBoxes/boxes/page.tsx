@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
 import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
 import BoxesImageMap from "@/components/BolzaBoxes/BoxesImageMap";
@@ -13,28 +14,34 @@ const BOXES_IMAGES = {
     french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French-Marauder_box.png"),
 };
 
-const NAV_HEIGHT = "5rem"; // doit correspondre à h-20 dans BolzaBoxesNav
-const SWITCH_ZONE = "6rem"; // espace réservé pour le switch en bas
+const SWITCH_ZONE = "6rem";
 
 export default function BoxesPage() {
     const { version } = useVersion();
+    const [navMenuOpen, setNavMenuOpen] = useState(false);
     const src = version === "french" ? BOXES_IMAGES.french : BOXES_IMAGES.international;
 
     return (
         <main className="relative h-[100svh] overflow-hidden">
             <BoxesScrollingBackground src={src} />
 
-            <BolzaBoxesNav backgroundImageSrc={src} transparent />
+            <BolzaBoxesNav
+                backgroundImageSrc={src}
+                transparent
+                onBurgerOpenChange={setNavMenuOpen}
+            />
             <VersionSwitch />
 
             <div
-                className="absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4"
-                style={{ top: NAV_HEIGHT, bottom: SWITCH_ZONE }}
+                className={`absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4 transition-opacity duration-200 ${navMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+                    }`}
+                style={{
+                    top: "var(--bolzaboxes-nav-height, 5rem)",
+                    bottom: SWITCH_ZONE,
+                }}
             >
                 <BoxesTapHint />
-                <div className="flex-1 w-full min-h-0 flex items-center justify-center">
-                    <BoxesImageMap src={src} />
-                </div>
+                <BoxesImageMap src={src} />
             </div>
         </main>
     );
