@@ -24,7 +24,7 @@ export default async function FactionPage({
             <BolzaBoxesNav backgroundImageSrc="/projects/BolzaBoxes/nav-bg.jpg" />
 
             <div style={{ paddingTop: "var(--bolzaboxes-nav-height, 80px)" }}>
-                <MobileTopBar title={faction.name} textColor={textColor} />
+                <MobileTopBar title={faction.name} icon={faction.icon} textColor={textColor} />
 
                 <div className="flex">
                     <FactionSidebar active={faction} />
@@ -35,7 +35,7 @@ export default async function FactionPage({
                         </div>
 
                         <div className="lg:flex-1 lg:pt-4">
-                            <FactionInfo name={faction.name} description={faction.description} textColor={textColor} />
+                            <FactionInfo faction={faction} textColor={textColor} />
                         </div>
                     </div>
                 </div>

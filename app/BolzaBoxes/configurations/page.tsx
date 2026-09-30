@@ -1,21 +1,48 @@
-import BolzaBoxesShell from "@/components/BolzaBoxes/BolzaBoxesShell";
+"use client";
 
-const HERO_IMAGES = {
-    international: "/api/media/Projets/Root_Organiser/.../configurations-international.jpg", // TODO: chemin réel
-    french: "/api/media/Projets/Root_Organiser/.../configurations-french.jpg", // TODO: chemin réel
+import { useState } from "react";
+import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
+import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
+import BoxesImageMap from "@/components/BolzaBoxes/BoxesImageMap";
+import BoxesScrollingBackground from "@/components/BolzaBoxes/BoxesScrollingBackground";
+import BoxesTapHint from "@/components/BolzaBoxes/BoxesTapHint";
+import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import { mediaUrl } from "@/lib/media/url";
+
+const BOXES_IMAGES = {
+    international: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-English.png"),
+    french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French-Marauder_box.png"),
 };
 
-export default function ConfigurationsPage() {
+const SWITCH_ZONE = "6rem";
+
+export default function BoxesPage() {
+    const { version } = useVersion();
+    const [navMenuOpen, setNavMenuOpen] = useState(false);
+    const src = version === "french" ? BOXES_IMAGES.french : BOXES_IMAGES.international;
+
     return (
-        <BolzaBoxesShell heroImages={HERO_IMAGES}>
-            <div className="min-h-screen flex items-center justify-center bg-[#ECE5D8]">
-                <h1
-                    className="text-5xl md:text-7xl text-[#3a352c]"
-                    style={{ fontFamily: "var(--font-playfair)", fontWeight: 700 }}
-                >
-                    Configurations
-                </h1>
+        <main className="relative h-[100svh] overflow-hidden">
+            <BoxesScrollingBackground src={src} />
+
+            <BolzaBoxesNav
+                backgroundImageSrc={src}
+                transparent
+                onBurgerOpenChange={setNavMenuOpen}
+            />
+            <VersionSwitch />
+
+            <div
+                className={`absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4 transition-opacity duration-200 ${navMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+                    }`}
+                style={{
+                    top: "var(--bolzaboxes-nav-height, 5rem)",
+                    bottom: SWITCH_ZONE,
+                }}
+            >
+                <BoxesTapHint />
+                <BoxesImageMap src={src} />
             </div>
-        </BolzaBoxesShell>
+        </main>
     );
 }
