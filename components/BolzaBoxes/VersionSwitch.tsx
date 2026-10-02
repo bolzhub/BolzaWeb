@@ -7,7 +7,7 @@ export default function VersionSwitch() {
 
     return (
         <div
-            className="absolute left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 bg-[#ECE5D8] rounded-full px-5 py-2.5 shadow-lg"
+            className="fixed left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 bg-[#ECE5D8] rounded-full px-5 py-2.5 shadow-lg"
             style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))" }}
         >
             <span
@@ -21,8 +21,8 @@ export default function VersionSwitch() {
                 onClick={() => setVersion("international")}
                 aria-label="Version internationale"
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "international"
-                        ? "bg-[#3a352c] scale-105"
-                        : "bg-transparent opacity-40 hover:opacity-70"
+                    ? "bg-[#3a352c] scale-105"
+                    : "bg-transparent opacity-40 hover:opacity-70"
                     }`}
             >
                 <svg
@@ -44,8 +44,8 @@ export default function VersionSwitch() {
                 onClick={() => setVersion("french")}
                 aria-label="Version française"
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "french"
-                        ? "bg-[#3a352c] scale-105"
-                        : "bg-transparent opacity-40 hover:opacity-70"
+                    ? "bg-[#3a352c] scale-105"
+                    : "bg-transparent opacity-40 hover:opacity-70"
                     }`}
             >
                 <span

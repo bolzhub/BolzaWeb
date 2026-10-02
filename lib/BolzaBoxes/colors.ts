@@ -38,3 +38,11 @@ export function colorFromLabel(label: string): string {
     }
     return "#7a7a70"; // repli neutre si aucun mot-clé ne correspond
 }
+
+export function frameColor(baseHex: string): string {
+    const c = baseHex.replace("#", "");
+    const r = Math.round(parseInt(c.substring(0, 2), 16) * 0.86);
+    const g = Math.round(parseInt(c.substring(2, 4), 16) * 0.86);
+    const b = Math.round(parseInt(c.substring(4, 6), 16) * 0.86);
+    return `rgb(${r}, ${g}, ${b})`;
+}
