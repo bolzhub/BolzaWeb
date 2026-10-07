@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { YOUTUBE_SECTIONS, type YoutubeItem } from "@/lib/Recommendations/youtube";
 import { getVideoThumbnail } from "@/lib/Recommendations/youtubeThumbnail";
+import SuggestionForm from "@/components/Recommendations/SuggestionForm";
 
 const FG = "#ECE5D8";
 
@@ -125,6 +126,8 @@ export default function RecommendationsYoutube() {
         <div className="max-w-3xl mx-auto px-6 py-14 space-y-14">
             {featured && <FeaturedEntry item={featured.item} sectionTitle={featured.sectionTitle} />}
 
+            <SuggestionForm />
+
             {YOUTUBE_SECTIONS.map((section) => (
                 <section key={section.title}>
                     <h2
@@ -140,6 +143,9 @@ export default function RecommendationsYoutube() {
                     </ul>
                 </section>
             ))}
+
+            <SuggestionForm />
+
         </div>
     );
 }

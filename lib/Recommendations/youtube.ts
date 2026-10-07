@@ -27,7 +27,7 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Keenan Crane",
                 url: "https://www.youtube.com/@keenancrane",
-                description: "Youtube channel of a US teacher.",
+                description: "Youtube channel of a US teacher. Crazy work on repulsive shapes.",
             },
             {
                 title: "Freya Holmér",
