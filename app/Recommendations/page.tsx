@@ -1,6 +1,5 @@
 import Link from "next/link";
 import RecommendationsYoutube from "@/components/Recommendations/RecommendationsYoutube";
-export const dynamic = "force-dynamic";
 
 const BG = "#1E2420";
 const FG = "#ECE5D8";
