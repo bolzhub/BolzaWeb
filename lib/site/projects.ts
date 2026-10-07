@@ -37,7 +37,7 @@ export function getProjects(): Project[] {
         {
             id: "recommendations",
             title: "Recommendations",
-            href: "#",
+            href: "/Recommendations",
             color: "#6b7480",
         },
         {

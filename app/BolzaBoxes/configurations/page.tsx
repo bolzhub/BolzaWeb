@@ -11,7 +11,7 @@ import { mediaUrl } from "@/lib/media/url";
 
 const BOXES_IMAGES = {
     international: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-English.png"),
-    french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French-Marauder_box.png"),
+    french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French.png"),
 };
 
 const SWITCH_ZONE = "6rem";
