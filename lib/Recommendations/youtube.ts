@@ -2,6 +2,7 @@ export type YoutubeItem = {
     title: string; // titre de la vidéo ou de la chaîne
     url: string;
     description: string;
+    thumbnail?: string;
 };
 
 export type YoutubeSection = {

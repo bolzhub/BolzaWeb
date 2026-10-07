@@ -39,6 +39,7 @@ export function getProjects(): Project[] {
             title: "Recommendations",
             href: "/Recommendations",
             color: "#6b7480",
+            previewImage: "/projects/recommendations/cover.svg",
         },
         {
             id: "projet-5",
