@@ -12,101 +12,6 @@ export type YoutubeSection = {
 
 export const YOUTUBE_SECTIONS: YoutubeSection[] = [
     {
-        title: "How to Computer Graphics",
-        items: [
-            {
-                title: "ACMSIGGRAPH",
-                url: "https://www.youtube.com/@ACMSIGGRAPH",
-                description: "The official Siggraph channel. Siggraph is an international conference for Computer Graphics papers.",
-            },
-            {
-                title: "Two Minute Papers",
-                url: "https://www.youtube.com/@TwoMinutePapers",
-                description: "Overview of latest significant Computer Graphics papers. Nowadays mostly AI unfortunately. Funny guy.",
-            },
-            {
-                title: "Keenan Crane",
-                url: "https://www.youtube.com/@keenancrane",
-                description: "Youtube channel of a US teacher. Crazy work on repulsive shapes.",
-            },
-            {
-                title: "Freya Holmér",
-                url: "https://www.youtube.com/@acegikmo",
-                description: "Very simple stuff but I like her.",
-            },
-        ],
-    },
-    {
-        title: "How to Build a PC",
-        items: [
-            {
-                title: "I built the PC I could not buy - Christian Selig",
-                url: "https://www.youtube.com/watch?v=7HgAN5cEmkk",
-                description: "He does everything himself",
-            },
-            {
-                title: "Gamers Nexus",
-                url: "https://www.youtube.com/@GamersNexus",
-                description: "Good tests on trending components. I like his politics as well. English barely understandable.",
-            },
-            {
-                title: "MrMattLee",
-                url: "https://www.youtube.com/@Mr_Matt_Lee",
-                description: "Just cool and cinematic.",
-            },
-        ],
-    },
-    {
-        title: "How to Tech",
-        items: [
-            {
-                title: "Pro Tech Show",
-                url: "https://www.youtube.com/@ProTechShow",
-                description: "I just remember he's good. Not much more. I think I watched stuff on selfhosting and password managers.",
-            },
-        ],
-    },
-    {
-        title: "How to Code",
-        items: [
-            {
-                title: "C++ Series - The Cherno",
-                url: "https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&pp=0gcJCQ4DOCosWNin",
-                description: "There is no better class online.",
-            },
-            {
-                title: "Fireship",
-                url: "https://www.youtube.com/@Fireship",
-                description: "Great for tech news as well. Funniest guy on the planet. Front end specialist.",
-            },
-        ],
-    },
-    {
-        title: "How to Linux",
-        items: [
-            {
-                title: "diinki",
-                url: "https://www.youtube.com/@diinkikot",
-                description: "Setup and theming. Elegant",
-            },
-            {
-                title: "I installed Linux (so should you) - Pewdiepie",
-                url: "https://www.youtube.com/watch?v=pVI_smLgTY0",
-                description: "This guy actually is a great tech youtuber",
-            },
-        ],
-    },
-    {
-        title: "How to Degoogle",
-        items: [
-            {
-                title: "I'm DONE with Google - Pewdiepie",
-                url: "https://www.youtube.com/watch?v=u_Lxkt50xOg",
-                description: "Something everyone should do. It is hard. It takes time. But it is for the better.",
-            },
-        ],
-    },
-    {
         title: "How to Draw",
         items: [
             {
@@ -158,21 +63,6 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 title: "Sinx Design",
                 url: "https://www.youtube.com/@sinixdesign",
                 description: "Just wanted to put Sinix again.",
-            },
-        ],
-    },
-    {
-        title: "How to Web develop",
-        items: [
-            {
-                title: "how i made my website - shar",
-                url: "https://www.youtube.com/watch?v=_tWh4cYCTv0&pp=ygUObWFrZSBhIHdlYnNpdGU%3D",
-                description: "Mostly conception ideas.",
-            },
-            {
-                title: "Steve Builds Websites",
-                url: "https://www.youtube.com/@stevebuildswebsites",
-                description: "First result on YouTube page I know, but well deserved. Very good for simple solutions without any coding. Good informative rankings of website frameworks and generators.",
             },
         ],
     },
@@ -237,6 +127,116 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
         ],
     },
     {
+        title: "How to Build a PC",
+        items: [
+            {
+                title: "I built the PC I could not buy - Christian Selig",
+                url: "https://www.youtube.com/watch?v=7HgAN5cEmkk",
+                description: "He does everything himself",
+            },
+            {
+                title: "Gamers Nexus",
+                url: "https://www.youtube.com/@GamersNexus",
+                description: "Good tests on trending components. I like his politics as well. English barely understandable.",
+            },
+            {
+                title: "MrMattLee",
+                url: "https://www.youtube.com/@Mr_Matt_Lee",
+                description: "Just cool and cinematic.",
+            },
+        ],
+    },
+    {
+        title: "How to Selfhost",
+        items: [
+            {
+                title: "Pro Tech Show",
+                url: "https://www.youtube.com/@ProTechShow",
+                description: "I just remember he's good. Not much more. I think I watched stuff on selfhosting and password managers.",
+            },
+        ],
+    },
+    {
+        title: "How to Linux",
+        items: [
+            {
+                title: "diinki",
+                url: "https://www.youtube.com/@diinkikot",
+                description: "Setup and theming. Elegant",
+            },
+            {
+                title: "I installed Linux (so should you) - Pewdiepie",
+                url: "https://www.youtube.com/watch?v=pVI_smLgTY0",
+                description: "This guy actually is a great tech youtuber",
+            },
+        ],
+    },
+    {
+        title: "How to Code",
+        items: [
+            {
+                title: "C++ Series - The Cherno",
+                url: "https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&pp=0gcJCQ4DOCosWNin",
+                description: "There is no better class online.",
+            },
+            {
+                title: "Fireship",
+                url: "https://www.youtube.com/@Fireship",
+                description: "Great for tech news as well. Funniest guy on the planet. Front end specialist.",
+            },
+        ],
+    },
+    {
+        title: "How to Computer Graphics",
+        items: [
+            {
+                title: "ACMSIGGRAPH",
+                url: "https://www.youtube.com/@ACMSIGGRAPH",
+                description: "The official Siggraph channel. Siggraph is an international conference for Computer Graphics papers.",
+            },
+            {
+                title: "Two Minute Papers",
+                url: "https://www.youtube.com/@TwoMinutePapers",
+                description: "Overview of latest significant Computer Graphics papers. Nowadays mostly AI unfortunately. Funny guy.",
+            },
+            {
+                title: "Keenan Crane",
+                url: "https://www.youtube.com/@keenancrane",
+                description: "Youtube channel of a US teacher. Crazy work on repulsive shapes.",
+            },
+            {
+                title: "Freya Holmér",
+                url: "https://www.youtube.com/@acegikmo",
+                description: "Very simple stuff but I like her.",
+            },
+        ],
+    },
+    {
+        title: "How to Web develop",
+        items: [
+            {
+                title: "how i made my website - shar",
+                url: "https://www.youtube.com/watch?v=_tWh4cYCTv0&pp=ygUObWFrZSBhIHdlYnNpdGU%3D",
+                description: "Mostly conception ideas.",
+            },
+            {
+                title: "Steve Builds Websites",
+                url: "https://www.youtube.com/@stevebuildswebsites",
+                description: "First result on YouTube page I know, but well deserved. Very good for simple solutions without any coding. Good informative rankings of website frameworks and generators.",
+            },
+        ],
+    },
+    {
+        title: "How to Degoogle",
+        items: [
+            {
+                title: "I'm DONE with Google - Pewdiepie",
+                url: "https://www.youtube.com/watch?v=u_Lxkt50xOg",
+                description: "Something everyone should do. It is hard. It takes time. But it is for the better.",
+            },
+        ],
+    },
+    {
         title: "How to Math",
         items: [
             {
@@ -248,6 +248,16 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 title: "3blue1brown",
                 url: "https://www.youtube.com/@3blue1brown",
                 description: "I would have never truly understood deep learning without his series on the subject. I come back to it regurlarly. Very intelligent visuals. Terrifying subjects are deconstructed to make you understand anything.",
+            },
+        ],
+    },
+    {
+        title: "How to Zoology",
+        items: [
+            {
+                title: "TierZoo",
+                url: "https://www.youtube.com/@TierZoo",
+                description: "I love him. Compares biology and evolution to builds in video games. Don't have to know anything about video games to watch though.",
             },
         ],
     },
@@ -267,22 +277,12 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
         ],
     },
     {
-        title: "How to Learn a new language",
+        title: "How to History",
         items: [
             {
-                title: "Livakivi",
-                url: "https://www.youtube.com/@Livakivi",
-                description: "Look for the videos in which he shares his Japnese learning journey.",
-            },
-        ],
-    },
-    {
-        title: "How to Note Taking",
-        items: [
-            {
-                title: "How to Become an Expert with Obsidian (FULL GUIDE) - Odysseas",
-                url: "https://www.youtube.com/watch?v=IMfz9E7g-Hk",
-                description: "Mostly inspirational. Don't watch everything.",
+                title: "History of the entire world, I guess - billwurtz",
+                url: "https://www.youtube.com/watch?v=xuCn8ux2gbs",
+                description: "Best video on youtube. Period.",
             },
         ],
     },
@@ -302,22 +302,32 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
         ],
     },
     {
-        title: "How to History",
+        title: "How to Note Taking",
         items: [
             {
-                title: "History of the entire world, I guess - billwurtz",
-                url: "https://www.youtube.com/watch?v=xuCn8ux2gbs",
-                description: "Best video on youtube. Period.",
+                title: "How to Become an Expert with Obsidian (FULL GUIDE) - Odysseas",
+                url: "https://www.youtube.com/watch?v=IMfz9E7g-Hk",
+                description: "Mostly inspirational. Don't watch everything.",
             },
         ],
     },
     {
-        title: "How to Zoology",
+        title: "How to Learn a new language",
         items: [
             {
-                title: "TierZoo",
-                url: "https://www.youtube.com/@TierZoo",
-                description: "I love him. Compares biology and evolution to builds in video games. Don't have to know anything about video games to watch though.",
+                title: "Livakivi",
+                url: "https://www.youtube.com/@Livakivi",
+                description: "Look for the videos in which he shares his Japanese learning journey.",
+            },
+        ],
+    },
+    {
+        title: "How to Sing",
+        items: [
+            {
+                title: "Sing Powerfully Without Straining - Placement, Resonance, and The Mask of Singing",
+                url: "https://www.youtube.com/watch?v=MDYdsJyPkEs&t=5s",
+                description: "I am new to singing so I don't have much knowledge in tutorials yet, but this one was interesting.",
             },
         ],
     },

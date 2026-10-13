@@ -7,6 +7,7 @@ export type Project = {
     color: string;
     previewImage?: string;
     imagePosition?: string;
+    imagePositionX?: "left" | "center" | "right"; // horizontale
 };
 
 export function getProjects(): Project[] {
@@ -40,7 +41,8 @@ export function getProjects(): Project[] {
             href: "/Recommendations",
             color: "#6b7480",
             previewImage: "/projects/recommendations/cover.png",
-            imagePosition: "center",
+            imagePosition: "bottom",
+            imagePositionX: "left",
         },
         {
             id: "projet-5",

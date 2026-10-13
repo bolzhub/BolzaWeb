@@ -8,6 +8,7 @@ const ACTIVE_WEIGHT = 8;
 const INACTIVE_WEIGHT = 1;
 const MAX_ASPECT_RATIO = 4 / 3;
 const GAP = 8; // doit correspondre à gap-2 (0.5rem = 8px)
+const NARROW_THRESHOLD = 90; // 🎛️ en dessous de cette largeur (px), le titre passe à la verticale
 
 export default function ProjectShowcase({ projects }: { projects: Project[] }) {
     const [activeId, setActiveId] = useState<string | null>(null);
@@ -62,8 +63,8 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
             onMouseLeave={() => setActiveId(null)}
         >
             {projects.map((project, i) => {
-                const isActive = activeId === project.id;
                 const width = widths ? widths[i] : undefined;
+                const isNarrow = width !== undefined && width < NARROW_THRESHOLD;
 
                 return (
                     <Link
@@ -90,20 +91,36 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                 src={project.previewImage}
                                 alt={project.title}
                                 className="absolute inset-0 w-full h-full object-cover"
-                                style={{ objectPosition: project.imagePosition ?? "center" }}
+                                style={{
+                                    objectPosition: `${project.imagePositionX ?? "center"} ${project.imagePosition ?? "center"}`,
+                                }}
                             />
                         )}
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/0" />
 
-                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                            <p
-                                className="text-white tracking-wide break-words"
-                                style={{ fontSize: "clamp(0.7rem, 9cqw, 1.75rem)" }}
-                            >
-                                {project.title}
-                            </p>
-                        </div>
+                        {isNarrow ? (
+                            <div className="absolute inset-0 flex items-end justify-center pb-4">
+                                <p
+                                    className="text-white tracking-wide whitespace-nowrap"
+                                    style={{
+                                        writingMode: "sideways-lr",
+                                        fontSize: "clamp(0.7rem, 9cqw, 1.75rem)",
+                                    }}
+                                >
+                                    {project.title}
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                                <p
+                                    className="text-white text-center tracking-wide break-words"
+                                    style={{ fontSize: "clamp(0.7rem, 9cqw, 1.75rem)" }}
+                                >
+                                    {project.title}
+                                </p>
+                            </div>
+                        )}
                     </Link>
                 );
             })}
