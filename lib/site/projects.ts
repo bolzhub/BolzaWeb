@@ -26,6 +26,7 @@ export function getProjects(): Project[] {
             color: "#6b7a6b",
             previewImage: "/projects/BolzaBoxes/cover.jpg",
             imagePosition: "top",
+            imagePositionX: "left",
             badge: { title: "Root Brain Teasers", href: "/RootBrainTeasers", corner: "top-right" },
         },
         {

@@ -60,7 +60,7 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 description: "Good charcoal mm yummy.",
             },
             {
-                title: "Sinx Design",
+                title: "Sinix Design",
                 url: "https://www.youtube.com/@sinixdesign",
                 description: "Just wanted to put Sinix again.",
             },
