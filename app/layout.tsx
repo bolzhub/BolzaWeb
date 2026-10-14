@@ -36,8 +36,20 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "Bolzano Crafts",
-  description: "Bolzano's personal website",
+  metadataBase: new URL("https://bolzanocrafts.com"),
+  title: {
+    default: "Bolzano Crafts",
+    template: "%s | Bolzano Crafts", // appliqué aux sous-pages
+  },
+  description: "Bolzano's personal website.",
+  openGraph: {
+    title: "Bolzano Crafts",
+    description: "Bolzano's personal website.",
+    url: "https://bolzanocrafts.com",
+    siteName: "Bolzano Crafts",
+    images: ["/og-image.png"], // aperçu affiché quand on partage le lien (idéalement 1200×630)
+    type: "website",
+  },
   icons: {
     icon: [
       { url: "/favicon/favicon.svg", type: "image/svg+xml" },

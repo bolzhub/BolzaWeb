@@ -114,6 +114,16 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 url: "https://www.youtube.com/watch?v=z-Xl9tGqH14",
                 description: "I mean.. Duh. This is the Hello World for 3D Modelling. Everyone with remote interest for the discipline reveres the Guru.",
             },
+            {
+                title: "Connect 3D Printed Parts | Design for Mass Production 3D Printing - Slant 3D",
+                url: "https://www.youtube.com/watch?v=djm5tCFn9S0",
+                description: "Seems niche but actually incredibly useful.",
+            },
+            {
+                title: "How to Design a Print with Perfect Tolerance EVERY Time - Slant 3D",
+                url: "https://www.youtube.com/watch?v=XKrDUnZCmQQ",
+                description: "Seems niche but actually incredibly useful as well.",
+            },
         ],
     },
     {

@@ -1,5 +1,11 @@
 import { getLatestADRCover } from "@/lib/ADR/galleries";
 
+export type ProjectBadge = {
+    title: string;
+    href: string;
+    corner?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+};
+
 export type Project = {
     id: string;
     title: string;
@@ -8,6 +14,7 @@ export type Project = {
     previewImage?: string;
     imagePosition?: string;
     imagePositionX?: "left" | "center" | "right"; // horizontale
+    badge?: ProjectBadge; // petit disque superposé en coin, menant à un sous-site lié
 };
 
 export function getProjects(): Project[] {
@@ -19,6 +26,7 @@ export function getProjects(): Project[] {
             color: "#6b7a6b",
             previewImage: "/projects/BolzaBoxes/cover.jpg",
             imagePosition: "top",
+            badge: { title: "Root Brain Teasers", href: "/RootBrainTeasers", corner: "top-right" },
         },
         {
             id: "herodotus",
