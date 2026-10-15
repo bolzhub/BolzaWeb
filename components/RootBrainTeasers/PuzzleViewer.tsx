@@ -100,8 +100,8 @@ export default function PuzzleViewer({
                         aria-pressed={section === id}
                         onClick={() => select(id)}
                         className={`${TAB} ${section === id
-                                ? "bg-[#3a352c] text-[#ECE5D8]"
-                                : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                            ? "bg-[#3a352c] text-[#ECE5D8]"
+                            : "text-[#3a352c] hover:bg-[#3a352c]/10"
                             }`}
                     >
                         {label}
@@ -115,11 +115,11 @@ export default function PuzzleViewer({
                     aria-expanded={mistakeOpen}
                     onClick={() => setMistakeOpen((o) => !o)}
                     className={`${TAB} ${mistakeOpen
-                            ? "bg-[#7a2e2e] text-white"
-                            : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                        ? "bg-[#7a2e2e] text-white"
+                        : "text-[#3a352c] hover:bg-[#3a352c]/10"
                         }`}
                 >
-                    Notice a mistake
+                    Notice a mistake?
                 </button>
             </nav>
         </div>

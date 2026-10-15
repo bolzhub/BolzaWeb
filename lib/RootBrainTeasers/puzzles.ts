@@ -42,14 +42,14 @@ export const PUZZLES: Puzzle[] = [
         description: "Puzzle proposed during 2025 French National competition. Win with Corvids.",
         images: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.jpg",
+            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
             solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.png",
         },
     },
     {
         number: 2,
         color: "darkbrown",
-        description: "Puzzle A proposed during 2025 French National competition. Trivia question.",
+        description: "Puzzle A proposed during 2026 French National competition. Trivia question.",
         images: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.jpg",
@@ -59,7 +59,7 @@ export const PUZZLES: Puzzle[] = [
     {
         number: 3,
         color: "greywhite",
-        description: "Puzzle B proposed during 2025 French National competition. Win with Vagabond at very first turn of the game.",
+        description: "Puzzle B proposed during 2026 French National competition. Win with Vagabond on very first turn of the game.",
         images: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.jpg",

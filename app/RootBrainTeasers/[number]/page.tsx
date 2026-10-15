@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PuzzleViewer from "@/components/RootBrainTeasers/PuzzleViewer";
 import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
-import { mediaUrl } from "@/lib/media/url";
+import { resolveImageSrc } from "@/lib/media/url";
 
 type Props = { params: Promise<{ number: string }> };
 
@@ -27,9 +27,9 @@ export default async function PuzzlePage({ params }: Props) {
 
     const paths = puzzle.images ?? {};
     const images = {
-        rules: paths.rules ? mediaUrl(paths.rules) : undefined,
-        teaser: paths.teaser ? mediaUrl(paths.teaser) : undefined,
-        solution: paths.solution ? mediaUrl(paths.solution) : undefined,
+        rules: paths.rules ? resolveImageSrc(paths.rules) : undefined,
+        teaser: paths.teaser ? resolveImageSrc(paths.teaser) : undefined,
+        solution: paths.solution ? resolveImageSrc(paths.solution) : undefined,
     };
 
     return <PuzzleViewer puzzleNumber={puzzle.number} images={images} />;
