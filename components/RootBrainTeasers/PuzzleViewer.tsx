@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import PanImage from "@/components/RootBrainTeasers/PanImage";
+import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
+import ZoomImage from "@/components/RootBrainTeasers/ZoomImage";
 import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
 
 export type SectionId = "rules" | "teaser" | "solution";
-export type PuzzleImageUrls = Partial<Record<SectionId, string>>;
+export type SectionContent = { url: string; kind: "pdf" | "image" };
+export type PuzzleContents = Partial<Record<SectionId, SectionContent>>;
 
 const SECTIONS: { id: SectionId; label: string }[] = [
     { id: "rules", label: "Rules" },
@@ -14,15 +16,19 @@ const SECTIONS: { id: SectionId; label: string }[] = [
     { id: "solution", label: "Solution" },
 ];
 
+// Le contenu occupe la zone entre ces deux barres, pour que rien ne le recouvre
+const TOP_BAR = "4rem";
+const BOTTOM_BAR = "calc(4.75rem + env(safe-area-inset-bottom, 0px))";
+
 const PILL = "rounded-full bg-[#ECE5D8]/95 shadow-md text-[#3a352c]";
 const TAB = "whitespace-nowrap rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors";
 
 export default function PuzzleViewer({
     puzzleNumber,
-    images,
+    contents,
 }: {
     puzzleNumber: number;
-    images: PuzzleImageUrls;
+    contents: PuzzleContents;
 }) {
     const [section, setSection] = useState<SectionId>("rules");
     const [visited, setVisited] = useState<SectionId[]>(["rules"]);
@@ -34,40 +40,45 @@ export default function PuzzleViewer({
         setVisited((v) => (v.includes(id) ? v : [...v, id]));
     };
 
-    const hintVisible = Boolean(images[section]) && !hintGone;
+    const hintVisible = contents[section]?.kind === "image" && !hintGone;
 
     return (
         <div className="fixed inset-0 overflow-hidden" style={{ background: "#2b1d12" }}>
             {/* Les sections déjà visitées restent montées : changement instantané, position conservée */}
-            {SECTIONS.map(({ id, label }) => {
-                if (!visited.includes(id)) return null;
-                const src = images[id];
-                const active = section === id;
+            <div className="absolute left-0 right-0" style={{ top: TOP_BAR, bottom: BOTTOM_BAR }}>
+                {SECTIONS.map(({ id, label }) => {
+                    if (!visited.includes(id)) return null;
+                    const content = contents[id];
+                    const active = section === id;
 
-                if (src) {
-                    return (
-                        <PanImage
+                    if (!content) {
+                        return active ? (
+                            <p
+                                key={id}
+                                className="absolute inset-0 flex items-center justify-center text-xl text-[#F3ECDC]/80"
+                                style={{ fontFamily: "var(--font-playfair)" }}
+                            >
+                                Coming soon…
+                            </p>
+                        ) : null;
+                    }
+
+                    return content.kind === "pdf" ? (
+                        <PdfViewer key={id} src={content.url} active={active} />
+                    ) : (
+                        <ZoomImage
                             key={id}
-                            src={src}
+                            src={content.url}
                             alt={`Puzzle ${puzzleNumber} — ${label}`}
                             active={active}
                             onInteract={() => setHintGone(true)}
                         />
                     );
-                }
-                return active ? (
-                    <p
-                        key={id}
-                        className="absolute inset-0 flex items-center justify-center text-xl text-[#F3ECDC]/80"
-                        style={{ fontFamily: "var(--font-playfair)" }}
-                    >
-                        Coming soon…
-                    </p>
-                ) : null;
-            })}
+                })}
+            </div>
 
-            {/* Haut gauche : retour à la page principale, retour à la liste, numéro */}
-            <div className="absolute top-3 left-3 z-50 flex items-center gap-2">
+            {/* Barre du haut : retour à la page principale, retour à la liste, numéro */}
+            <div className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3" style={{ height: TOP_BAR }}>
                 <Link href="/" aria-label="Home" className={`${PILL} p-2`}>
                     <img src="/logo/logo-icon.svg" alt="Bolzano" className="h-7 w-auto" />
                 </Link>
@@ -77,13 +88,13 @@ export default function PuzzleViewer({
                 <span className={`${PILL} px-3 py-2 text-sm font-bold`}>Puzzle {puzzleNumber}</span>
             </div>
 
-            {/* Indice, qui disparaît dès le premier glissement */}
+            {/* Indice, qui disparaît dès la première interaction avec l'image */}
             <p
                 className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none rounded-full bg-black/55 px-4 py-1.5 text-sm text-[#F3ECDC] transition-opacity duration-500 ${hintVisible ? "opacity-100" : "opacity-0"
                     }`}
-                style={{ bottom: "calc(5rem + env(safe-area-inset-bottom, 0px))" }}
+                style={{ bottom: `calc(${BOTTOM_BAR} + 0.75rem)` }}
             >
-                Drag to explore
+                Scroll or pinch to zoom, drag to move
             </p>
 
             <MistakeBox open={mistakeOpen} puzzleNumber={puzzleNumber} section={section} />
@@ -100,8 +111,8 @@ export default function PuzzleViewer({
                         aria-pressed={section === id}
                         onClick={() => select(id)}
                         className={`${TAB} ${section === id
-                            ? "bg-[#3a352c] text-[#ECE5D8]"
-                            : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                                ? "bg-[#3a352c] text-[#ECE5D8]"
+                                : "text-[#3a352c] hover:bg-[#3a352c]/10"
                             }`}
                     >
                         {label}
@@ -115,11 +126,11 @@ export default function PuzzleViewer({
                     aria-expanded={mistakeOpen}
                     onClick={() => setMistakeOpen((o) => !o)}
                     className={`${TAB} ${mistakeOpen
-                        ? "bg-[#7a2e2e] text-white"
-                        : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                            ? "bg-[#7a2e2e] text-white"
+                            : "text-[#3a352c] hover:bg-[#3a352c]/10"
                         }`}
                 >
-                    Notice a mistake?
+                    Notice a mistake
                 </button>
             </nav>
         </div>

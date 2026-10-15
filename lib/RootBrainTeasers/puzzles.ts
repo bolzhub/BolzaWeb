@@ -19,13 +19,18 @@ export type PuzzleImagePaths = {
     teaser?: string;
     solution?: string;
 };
+export type PuzzleFiles = {
+    rules?: string;    // PDF
+    teaser?: string;   // image (jpg, png…)
+    solution?: string; // PDF
+};
 
 export type Puzzle = {
     number: number;
     description: string;
     color?: PuzzleColor;
     href?: string;
-    images?: PuzzleImagePaths; // chemins relatifs à la racine du disque, SANS "/api/media/"
+    files?: PuzzleFiles; // même formats de chemins que pour les autres images
 };
 
 // Lien de l'icône placée au début de la liste (assets pour créer ses propres puzzles)
@@ -40,30 +45,30 @@ export const PUZZLES: Puzzle[] = [
         number: 1,
         color: "purple",
         description: "Puzzle proposed during 2025 French National competition. Win with Corvids.",
-        images: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
+        files: {
+            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.png",
+            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
     {
         number: 2,
         color: "darkbrown",
         description: "Puzzle A proposed during 2026 French National competition. Trivia question.",
-        images: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.jpg",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.png",
+        files: {
+            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
+            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
+            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
     {
         number: 3,
         color: "greywhite",
         description: "Puzzle B proposed during 2026 French National competition. Win with Vagabond on very first turn of the game.",
-        images: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.png",       // TODO : chemins réels
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.jpg",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.png",
+        files: {
+            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
+            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
+            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
 ];
