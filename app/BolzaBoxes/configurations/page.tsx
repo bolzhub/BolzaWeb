@@ -8,6 +8,7 @@ import BoxesScrollingBackground from "@/components/BolzaBoxes/BoxesScrollingBack
 import BoxesTapHint from "@/components/BolzaBoxes/BoxesTapHint";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
 import { mediaUrl } from "@/lib/media/url";
+import { BOXES_LAYOUTS } from "@/lib/BolzaBoxes/boxesZones";
 
 const BOXES_IMAGES = {
     international: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-English.png"),
@@ -41,7 +42,7 @@ export default function BoxesPage() {
                 }}
             >
                 <BoxesTapHint />
-                <BoxesImageMap src={src} />
+                <BoxesImageMap src={src} layout={BOXES_LAYOUTS[version]} />
             </div>
         </main>
     );
