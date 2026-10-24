@@ -18,7 +18,7 @@ export default function AlternatingSections() {
                         key={i}
                         className={`flex flex-col md:flex-row ${
                             reversed ? "md:flex-row-reverse" : ""
-                        } items-center bg-[#ECE5D8] rounded-3xl overflow-hidden`}
+                        } items-center bg-cream rounded-3xl overflow-hidden`}
                     >
                         <div className="w-full md:w-1/4 aspect-square relative shrink-0">
                             <img
@@ -30,7 +30,7 @@ export default function AlternatingSections() {
 
                         <div className="w-full md:w-3/4 flex flex-col justify-center px-8 md:px-16 py-10">
                             <h2
-                                className="text-[#3a352c] mb-4"
+                                className="text-ink mb-4"
                                 style={{
                                     fontFamily: "var(--font-playfair)",
                                     fontWeight: 700,
@@ -40,7 +40,7 @@ export default function AlternatingSections() {
                                 {section.title}
                             </h2>
                             <p
-                                className="text-[#3a352c] leading-relaxed"
+                                className="text-ink leading-relaxed"
                                 style={{ fontSize: "clamp(0.95rem, 1.5vw, 1.3rem)" }}
                             >
                                 {section.text}

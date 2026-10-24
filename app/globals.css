@@ -42,3 +42,38 @@ body {
 .animate-boxes-bg-scroll {
   animation: boxes-bg-scroll 60s linear infinite;
 }
+
+/* Taille des pièces : 2 par ligne sur mobile, 4 sur grand écran avec 4 éléments */
+.rbt-grid { --rbt-size: clamp(8rem, 38vw, 13rem); }
+@media (min-width: 768px) {
+    .rbt-grid { --rbt-size: clamp(11rem, 20vw, 17rem); }
+}
+
+@keyframes rbt-joy {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); }
+    30%  { transform: translateY(-14px) rotate(140deg) scale(1.12); }
+    65%  { transform: translateY(-6px) rotate(290deg) scale(1.08); }
+    100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
+@keyframes rbt-wiggle {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    25%      { transform: rotate(-8deg) translateY(-8px); }
+    50%      { transform: rotate(8deg) translateY(-4px); }
+    75%      { transform: rotate(-4deg) translateY(-6px); }
+}
+.rbt-item:hover .rbt-icon,
+.rbt-item:focus-visible .rbt-icon {
+    animation: rbt-joy 0.85s ease-in-out;
+}
+.rbt-item:hover .rbt-icon-wiggle,
+.rbt-item:focus-visible .rbt-icon-wiggle {
+    animation: rbt-wiggle 0.7s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+    .rbt-item:hover .rbt-icon,
+    .rbt-item:focus-visible .rbt-icon,
+    .rbt-item:hover .rbt-icon-wiggle,
+    .rbt-item:focus-visible .rbt-icon-wiggle {
+        animation: none;
+    }
+}

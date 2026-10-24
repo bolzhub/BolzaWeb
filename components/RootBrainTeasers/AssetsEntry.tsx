@@ -6,7 +6,7 @@ export default function AssetsEntry() {
 
     const content = (
         <>
-            <span className="rbt-icon-wiggle flex items-center justify-center w-[var(--rbt-size)] h-[var(--rbt-size)] rounded-[22%] border-2 border-dashed border-[#F3ECDC]/70 bg-[#F3ECDC]/10 text-[#F3ECDC]">
+            <span className="rbt-icon-wiggle flex items-center justify-center w-[var(--rbt-size)] h-[var(--rbt-size)] rounded-[22%] border-2 border-dashed border-parchment/70 bg-parchment/10 text-parchment">
                 <svg
                     className="w-[42%] h-[42%]"
                     viewBox="0 0 24 24"
@@ -28,12 +28,12 @@ export default function AssetsEntry() {
                 style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}
             >
                 <span
-                    className="block text-lg md:text-xl text-[#F3ECDC] mb-1"
+                    className="block text-lg md:text-xl text-parchment mb-1"
                     style={{ fontFamily: "var(--font-playfair)", fontWeight: 700 }}
                 >
                     {ASSETS_LINK.label}
                 </span>
-                <span className="block text-base md:text-lg leading-relaxed text-[#F3ECDC]/90">
+                <span className="block text-base md:text-lg leading-relaxed text-parchment/90">
                     {ASSETS_LINK.description}
                 </span>
             </span>

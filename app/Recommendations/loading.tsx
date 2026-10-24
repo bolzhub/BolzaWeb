@@ -1,5 +1,4 @@
-const BG = "#1E2420";
-const FG = "#ECE5D8";
+import { BG, FG } from "@/lib/Recommendations/theme";
 
 export default function Loading() {
     return (

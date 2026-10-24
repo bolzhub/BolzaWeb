@@ -3,18 +3,8 @@ export default function BoxesScrollingBackground({ src }: { src: string }) {
     const ASPECT = 2800 / 2150;
 
     return (
-        <div className="fixed inset-0 -z-20 overflow-hidden bg-[#3a352c]">
-            <style>{`
-                @keyframes boxes-bg-scroll {
-                    from { transform: translateY(0); }
-                    to { transform: translateY(-50%); }
-                }
-                .boxes-bg-scroll-track {
-                    animation: boxes-bg-scroll 60s linear infinite;
-                }
-            `}</style>
-
-            <div className="flex flex-col items-center boxes-bg-scroll-track">
+        <div className="fixed inset-0 -z-20 overflow-hidden bg-ink">
+            <div className="flex flex-col items-center animate-boxes-bg-scroll">
                 <img
                     src={src}
                     alt=""

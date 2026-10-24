@@ -14,11 +14,6 @@ export const PUZZLE_COLORS = {
 
 export type PuzzleColor = keyof typeof PUZZLE_COLORS;
 
-export type PuzzleImagePaths = {
-    rules?: string;
-    teaser?: string;
-    solution?: string;
-};
 export type PuzzleFiles = {
     rules?: string;    // PDF
     teaser?: string;   // image (jpg, png…)

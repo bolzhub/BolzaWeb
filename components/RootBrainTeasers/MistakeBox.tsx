@@ -82,7 +82,7 @@ export default function MistakeBox({
             ref={boxRef}
             role="dialog"
             aria-label={`Report a mistake in puzzle ${puzzleNumber}`}
-            className={`absolute left-0 top-0 z-40 rounded-2xl bg-[#ECE5D8] text-[#3a352c] shadow-2xl ring-1 ring-black/15 ${open ? "block" : "hidden"
+            className={`absolute left-0 top-0 z-40 rounded-2xl bg-cream text-ink shadow-2xl ring-1 ring-black/15 ${open ? "block" : "hidden"
                 }`}
             style={{
                 width: "min(22rem, calc(100% - 1rem))",
@@ -92,7 +92,7 @@ export default function MistakeBox({
         >
             {/* Barre de titre : c'est elle qu'on attrape pour déplacer le cadre */}
             <div
-                className="flex items-center gap-2 rounded-t-2xl bg-[#3a352c] px-4 py-2.5 text-[#ECE5D8] cursor-grab active:cursor-grabbing select-none"
+                className="flex items-center gap-2 rounded-t-2xl bg-ink px-4 py-2.5 text-cream cursor-grab active:cursor-grabbing select-none"
                 style={{ touchAction: "none" }}
                 onPointerDown={(e) => {
                     if (!pos || drag.current) return;
@@ -147,11 +147,11 @@ export default function MistakeBox({
                     }}
                     placeholder="Describe the mistake you noticed…"
                     rows={5}
-                    className="w-full resize-none rounded-lg bg-[#3a352c]/8 px-3 py-2 text-base outline-none placeholder:text-[#3a352c]/40 focus:ring-2 focus:ring-[#3a352c]/30"
+                    className="w-full resize-none rounded-lg bg-ink/8 px-3 py-2 text-base outline-none placeholder:text-ink/40 focus:ring-2 focus:ring-ink/30"
                 />
 
                 <div className="mt-3 flex items-center justify-between gap-3">
-                    <p className="text-xs text-[#3a352c]/70">
+                    <p className="text-xs text-ink/70">
                         {status === "sent" && "Thanks, sent!"}
                         {status === "error" && "Couldn't send, please try again."}
                     </p>

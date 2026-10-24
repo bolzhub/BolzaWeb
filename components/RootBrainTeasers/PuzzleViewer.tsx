@@ -20,7 +20,7 @@ const SECTIONS: { id: SectionId; label: string }[] = [
 const TOP_BAR = "4rem";
 const BOTTOM_BAR = "calc(4.75rem + env(safe-area-inset-bottom, 0px))";
 
-const PILL = "rounded-full bg-[#ECE5D8]/95 shadow-md text-[#3a352c]";
+const PILL = "rounded-full bg-cream/95 shadow-md text-ink";
 const TAB = "whitespace-nowrap rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors";
 
 export default function PuzzleViewer({
@@ -55,7 +55,7 @@ export default function PuzzleViewer({
                         return active ? (
                             <p
                                 key={id}
-                                className="absolute inset-0 flex items-center justify-center text-xl text-[#F3ECDC]/80"
+                                className="absolute inset-0 flex items-center justify-center text-xl text-parchment/80"
                                 style={{ fontFamily: "var(--font-playfair)" }}
                             >
                                 Coming soon…
@@ -90,7 +90,7 @@ export default function PuzzleViewer({
 
             {/* Indice, qui disparaît dès la première interaction avec l'image */}
             <p
-                className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none rounded-full bg-black/55 px-4 py-1.5 text-sm text-[#F3ECDC] transition-opacity duration-500 ${hintVisible ? "opacity-100" : "opacity-0"
+                className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none rounded-full bg-black/55 px-4 py-1.5 text-sm text-parchment transition-opacity duration-500 ${hintVisible ? "opacity-100" : "opacity-0"
                     }`}
                 style={{ bottom: `calc(${BOTTOM_BAR} + 0.75rem)` }}
             >
@@ -101,7 +101,7 @@ export default function PuzzleViewer({
 
             {/* Barre des sections : au-dessus du cadre, pour qu'on puisse toujours le refermer */}
             <nav
-                className="absolute left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-1 overflow-x-auto rounded-full bg-[#ECE5D8]/95 p-1 shadow-lg"
+                className="absolute left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-1 overflow-x-auto rounded-full bg-cream/95 p-1 shadow-lg"
                 style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
             >
                 {SECTIONS.map(({ id, label }) => (
@@ -111,15 +111,15 @@ export default function PuzzleViewer({
                         aria-pressed={section === id}
                         onClick={() => select(id)}
                         className={`${TAB} ${section === id
-                                ? "bg-[#3a352c] text-[#ECE5D8]"
-                                : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                                ? "bg-ink text-cream"
+                                : "text-ink hover:bg-ink/10"
                             }`}
                     >
                         {label}
                     </button>
                 ))}
 
-                <span className="mx-1 h-5 w-px shrink-0 bg-[#3a352c]/20" aria-hidden="true" />
+                <span className="mx-1 h-5 w-px shrink-0 bg-ink/20" aria-hidden="true" />
 
                 <button
                     type="button"
@@ -127,7 +127,7 @@ export default function PuzzleViewer({
                     onClick={() => setMistakeOpen((o) => !o)}
                     className={`${TAB} ${mistakeOpen
                             ? "bg-[#7a2e2e] text-white"
-                            : "text-[#3a352c] hover:bg-[#3a352c]/10"
+                            : "text-ink hover:bg-ink/10"
                         }`}
                 >
                     Notice a mistake

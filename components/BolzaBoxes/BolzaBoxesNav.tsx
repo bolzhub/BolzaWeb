@@ -34,7 +34,7 @@ function NavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`whitespace-nowrap tracking-wide text-[#3a352c] hover:opacity-60 transition-opacity ${
+      className={`whitespace-nowrap tracking-wide text-ink hover:opacity-60 transition-opacity ${
         small ? "text-xs sm:text-sm" : "text-sm md:text-base"
       } ${active ? "underline underline-offset-4" : ""}`}
       style={{ fontFamily: "var(--font-playfair)" }}
@@ -149,7 +149,7 @@ export default function BolzaBoxesNav({
           </div>
 
           <button
-            className="lg:hidden shrink-0 text-[#3a352c]"
+            className="lg:hidden shrink-0 text-ink"
             aria-label="Menu"
             onClick={() => setOpen((v) => !v)}
           >

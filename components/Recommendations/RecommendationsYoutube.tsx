@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { YOUTUBE_SECTIONS, type YoutubeItem } from "@/lib/Recommendations/youtube";
 import { getVideoThumbnail } from "@/lib/Recommendations/youtubeThumbnail";
 import SuggestionForm from "@/components/Recommendations/SuggestionForm";
-
-const FG = "#ECE5D8";
+import { FG } from "@/lib/Recommendations/theme";
 
 function YoutubeIcon({ size = 22 }: { size?: number }) {
     return (

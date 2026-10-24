@@ -258,7 +258,7 @@ export default function ZoomImage({
     const zoomPercent = view ? Math.round(view.zoom * 100) : 100;
     const atMax = view && geo ? view.zoom >= geo.maxZoom - 0.001 : false;
     const button =
-        "flex h-8 w-8 items-center justify-center rounded-full text-lg leading-none text-[#3a352c] transition-colors hover:bg-[#3a352c]/10 disabled:opacity-30";
+        "flex h-8 w-8 items-center justify-center rounded-full text-lg leading-none text-ink transition-colors hover:bg-ink/10 disabled:opacity-30";
 
     return (
         <div className={`absolute inset-0 ${active ? "" : "invisible pointer-events-none"}`} aria-hidden={!active}>
@@ -292,7 +292,7 @@ export default function ZoomImage({
 
             {!natural && !failed && (
                 <p
-                    className="absolute inset-0 flex items-center justify-center text-[#F3ECDC]/70 animate-pulse pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-center text-parchment/70 animate-pulse pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
                     Loading…
@@ -300,7 +300,7 @@ export default function ZoomImage({
             )}
             {failed && (
                 <p
-                    className="absolute inset-0 flex items-center justify-center text-[#F3ECDC]/70 pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-center text-parchment/70 pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
                     Image unavailable
@@ -309,7 +309,7 @@ export default function ZoomImage({
 
             {/* Hors de la zone de gestes, pour que les clics sur les boutons ne soient pas captés par le glisser */}
             {geo && (
-                <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-[#ECE5D8]/95 p-1 shadow-md">
+                <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-cream/95 p-1 shadow-md">
                     <button
                         type="button"
                         aria-label="Zoom out"
@@ -319,7 +319,7 @@ export default function ZoomImage({
                     >
                         −
                     </button>
-                    <span className="w-12 text-center text-xs tabular-nums text-[#3a352c]">{zoomPercent}%</span>
+                    <span className="w-12 text-center text-xs tabular-nums text-ink">{zoomPercent}%</span>
                     <button
                         type="button"
                         aria-label="Zoom in"

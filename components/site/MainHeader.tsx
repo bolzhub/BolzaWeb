@@ -125,7 +125,7 @@ export default function MainHeader() {
                             <Link
                                 key={item.label}
                                 href={item.href}
-                                className="whitespace-nowrap text-[#3a352c]/80 hover:text-[#3a352c] transition-colors"
+                                className="whitespace-nowrap text-ink/80 hover:text-ink transition-colors"
                                 style={{ fontSize: NAV_FONT_SIZE }}
                             >
                                 {item.label}
@@ -153,19 +153,19 @@ export default function MainHeader() {
                             aria-label="Menu"
                             className="flex flex-col justify-center gap-1.5 w-11 h-11 appearance-none bg-transparent border-0 p-0"
                         >
-                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
-                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
-                            <span className="block h-0.5 w-6 bg-[#3a352c]" />
+                            <span className="block h-0.5 w-6 bg-ink" />
+                            <span className="block h-0.5 w-6 bg-ink" />
+                            <span className="block h-0.5 w-6 bg-ink" />
                         </button>
 
                         {menuOpen && (
-                            <div className="absolute right-0 mt-2 flex flex-col gap-1 bg-[#ECE5D8] border border-[#3a352c]/10 rounded-xl shadow-lg py-2 min-w-[160px] z-50">
+                            <div className="absolute right-0 mt-2 flex flex-col gap-1 bg-cream border border-ink/10 rounded-xl shadow-lg py-2 min-w-[160px] z-50">
                                 {[...NAV_ITEMS, HELP_ITEM].map((item) => (
                                     <Link
                                         key={item.label}
                                         href={item.href}
                                         onClick={() => setMenuOpen(false)}
-                                        className="px-4 py-2 text-[#3a352c]/80 hover:text-[#3a352c] hover:bg-[#3a352c]/5 transition-colors"
+                                        className="px-4 py-2 text-ink/80 hover:text-ink hover:bg-ink/5 transition-colors"
                                     >
                                         {item.label}
                                     </Link>

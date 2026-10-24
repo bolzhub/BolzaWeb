@@ -1,6 +1,6 @@
 export default function BoxesTapHint() {
     return (
-        <div className="flex items-center gap-2 text-[#3a352c] bg-[#ECE5D8]/90 rounded-full px-4 py-2 text-sm md:text-base shadow-md shrink-0">
+        <div className="flex items-center gap-2 text-ink bg-cream/90 rounded-full px-4 py-2 text-sm md:text-base shadow-md shrink-0">
             <svg
                 width="18"
                 height="18"

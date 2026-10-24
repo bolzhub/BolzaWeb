@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import type { ProjectBadge } from "@/lib/site/projects";
-import { BROWN_GRADIENT } from "@/lib/RootBrainTeasers/theme";
+import { BROWN_GRADIENT } from "@/lib/site/theme";
 
 const INSET = 8; // marge entre le disque et le bord du rectangle
 const MIN_DIAMETER = 28;
@@ -46,7 +46,7 @@ export default function ProjectBadgeDisc({
             href={badge.href}
             aria-label={badge.title}
             onClick={onClick}
-            className="absolute z-10 block rounded-full text-[#F3ECDC] shadow-lg ring-1 ring-white/25 transition-[width,height,transform] duration-500 ease-out hover:scale-105"
+            className="absolute z-10 block rounded-full text-parchment shadow-lg ring-1 ring-white/25 transition-[width,height,transform] duration-500 ease-out hover:scale-105"
             style={{
                 width: d,
                 height: d,

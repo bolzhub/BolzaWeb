@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PUZZLE_COLORS, type Puzzle } from "@/lib/RootBrainTeasers/puzzles";
+import { readableTextOn } from "@/lib/colors";
 
 const FALLBACK_COLORS = Object.values(PUZZLE_COLORS);
 const DARK = "#2A2018";
@@ -11,24 +12,6 @@ const CENTER = { x: 12, y: 12 };
 // Hauteur des chiffres alignés de Playfair ≈ 0,708 em : la ligne de base
 // se place à la moitié de cette hauteur sous le point central.
 const DIGIT_HALF_HEIGHT = 0.354;
-
-function luminance(hex: string): number {
-    const n = parseInt(hex.slice(1), 16);
-    const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => {
-        const c = v / 255;
-        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-    });
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function contrast(a: string, b: string): number {
-    const [l1, l2] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-    return (l1 + 0.05) / (l2 + 0.05);
-}
-
-function readableOn(bg: string): string {
-    return contrast(bg, DARK) >= contrast(bg, LIGHT) ? DARK : LIGHT;
-}
 
 export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: number }) {
     const color = puzzle.color
@@ -62,7 +45,7 @@ export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: 
                     textAnchor="middle"
                     fontSize={fontSize}
                     fontWeight="800"
-                    fill={readableOn(color)}
+                    fill={readableTextOn(color, DARK, LIGHT)}
                     style={{
                         fontFamily: "var(--font-playfair)",
                         fontVariantNumeric: "lining-nums",
@@ -74,7 +57,7 @@ export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: 
             </svg>
 
             <span
-                className="text-base md:text-lg leading-relaxed text-[#F3ECDC]/90 max-w-[calc(var(--rbt-size)*1.2)]"
+                className="text-base md:text-lg leading-relaxed text-parchment/90 max-w-[calc(var(--rbt-size)*1.2)]"
                 style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}
             >
                 {puzzle.description}

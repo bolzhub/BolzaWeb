@@ -228,7 +228,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
     const innerWidth = Math.max(boxWidth, pageWidth + PAGE_PAD * 2);
 
     const button =
-        "flex h-8 w-8 items-center justify-center rounded-full text-lg leading-none text-[#3a352c] transition-colors hover:bg-[#3a352c]/10 disabled:opacity-30";
+        "flex h-8 w-8 items-center justify-center rounded-full text-lg leading-none text-ink transition-colors hover:bg-ink/10 disabled:opacity-30";
 
     return (
         <div className={`absolute inset-0 ${active ? "" : "invisible pointer-events-none"}`} aria-hidden={!active}>
@@ -256,7 +256,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
 
             {!doc && !failed && (
                 <p
-                    className="absolute inset-0 flex items-center justify-center text-[#F3ECDC]/70 animate-pulse pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-center text-parchment/70 animate-pulse pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
                     Loading…
@@ -265,7 +265,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
 
             {failed && (
                 <div
-                    className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#F3ECDC]/80"
+                    className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-parchment/80"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
                     <p>The document could not be displayed.</p>
@@ -273,7 +273,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                         href={src}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-full bg-[#ECE5D8] px-4 py-2 text-sm text-[#3a352c]"
+                        className="rounded-full bg-cream px-4 py-2 text-sm text-ink"
                     >
                         Open the PDF
                     </a>
@@ -282,11 +282,11 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
 
             {doc && (
                 <>
-                    <div className="absolute left-3 bottom-3 z-20 rounded-full bg-[#ECE5D8]/95 px-3 py-1.5 text-xs tabular-nums text-[#3a352c] shadow-md">
+                    <div className="absolute left-3 bottom-3 z-20 rounded-full bg-cream/95 px-3 py-1.5 text-xs tabular-nums text-ink shadow-md">
                         {current} / {doc.numPages}
                     </div>
 
-                    <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-[#ECE5D8]/95 p-1 shadow-md">
+                    <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-cream/95 p-1 shadow-md">
                         <button
                             type="button"
                             aria-label="Zoom out"
@@ -296,7 +296,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                         >
                             −
                         </button>
-                        <span className="w-12 text-center text-xs tabular-nums text-[#3a352c]">
+                        <span className="w-12 text-center text-xs tabular-nums text-ink">
                             {Math.round(zoom * 100)}%
                         </span>
                         <button

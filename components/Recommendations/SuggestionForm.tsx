@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-const FG = "#ECE5D8";
+import { FG } from "@/lib/Recommendations/theme";
 
 export default function SuggestionForm() {
     const [text, setText] = useState("");

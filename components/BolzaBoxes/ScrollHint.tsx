@@ -16,7 +16,7 @@ export default function ScrollHint() {
         <button
             aria-label="Scroll down"
             onClick={() => window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" })}
-            className={`absolute left-1/2 -translate-x-1/2 z-10 text-[#ECE5D8] transition-opacity duration-300 ${
+            className={`absolute left-1/2 -translate-x-1/2 z-10 text-cream transition-opacity duration-300 ${
                 visible ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
             style={{ bottom: "calc(6.5rem + env(safe-area-inset-bottom, 0px))" }}

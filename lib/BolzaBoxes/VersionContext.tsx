@@ -49,7 +49,7 @@ export function VersionProvider({ children }: { children: ReactNode }) {
 
     return (
         <VersionContext.Provider value={{ version, setVersion }}>
-            {ready ? children : <div className="min-h-[100svh] bg-[#ECE5D8]" />}
+            {ready ? children : <div className="min-h-[100svh] bg-cream" />}
         </VersionContext.Provider>
     );
 }

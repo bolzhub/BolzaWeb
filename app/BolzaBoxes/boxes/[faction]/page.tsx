@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getFactionBySlug } from "@/lib/BolzaBoxes/factions";
-import { getContrastTextColor } from "@/lib/BolzaBoxes/colors";
+import { readableTextOn } from "@/lib/colors";
 import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
 import FactionSidebar from "@/components/BolzaBoxes/FactionSidebar";
 import FactionInfo from "@/components/BolzaBoxes/FactionInfo";
@@ -18,7 +18,7 @@ export default async function FactionPage({
 
   if (!faction) notFound();
 
-  const textColor = getContrastTextColor(faction.color);
+  const textColor = readableTextOn(faction.color);
 
   return (
     <main

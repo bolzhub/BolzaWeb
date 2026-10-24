@@ -1,4 +1,4 @@
-import { getLatestADRCover } from "@/lib/ADR/galleries";
+// import { getLatestADRCover } from "@/lib/ADR/galleries";
 
 export type ProjectBadge = {
     title: string;

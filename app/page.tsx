@@ -12,10 +12,10 @@ export default function Home() {
   const projects = getProjects();
 
   return (
-    <main className="min-h-screen min-h-dvh bg-[#ECE5D8]">
+    <main className="min-h-screen min-h-dvh bg-cream">
       <MainHeader />
 
-      <h1 className="flex flex-wrap items-baseline justify-center gap-3 text-[#3a352c] py-10">
+      <h1 className="flex flex-wrap items-baseline justify-center gap-3 text-ink py-10">
         <span
           style={{
             fontFamily: "var(--font-playfair)",
