@@ -79,7 +79,7 @@ function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle
     return (
         <section>
             <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: `${FG}66` }}>
-                Suggestion du moment
+                Random suggestion
             </p>
 
             <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex flex-col sm:flex-row gap-5 group">

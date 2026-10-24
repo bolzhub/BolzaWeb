@@ -13,8 +13,8 @@ const NAV_LINKS = [
 ];
 
 const SIDE_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  // { label: "About", href: "/about" },
+  { label: "Contact", href: "mailto:contact@bolzanocrafts.com" },
 ];
 
 function NavLink({

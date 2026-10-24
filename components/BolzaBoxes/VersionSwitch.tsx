@@ -19,7 +19,7 @@ export default function VersionSwitch() {
 
             <button
                 onClick={() => setVersion("international")}
-                aria-label="Version internationale"
+                aria-label="International version"
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "international"
                     ? "bg-[#3a352c] scale-105"
                     : "bg-transparent opacity-40 hover:opacity-70"
@@ -42,7 +42,7 @@ export default function VersionSwitch() {
 
             <button
                 onClick={() => setVersion("french")}
-                aria-label="Version française"
+                aria-label="French version"
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "french"
                     ? "bg-[#3a352c] scale-105"
                     : "bg-transparent opacity-40 hover:opacity-70"

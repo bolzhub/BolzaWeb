@@ -20,7 +20,7 @@ export default function PhotoGallery({
         <Link
           href="/ADR"
           className="text-white/70 hover:text-white transition-colors shrink-0"
-          aria-label="Retour à Atelier Double Raisin"
+          aria-label="Back to Atelier Double Raisin"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

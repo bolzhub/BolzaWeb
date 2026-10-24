@@ -4,7 +4,7 @@ import { VersionProvider } from "@/lib/BolzaBoxes/VersionContext";
 
 export const metadata: Metadata = {
     title: "Root BolzaBoxes",
-    description: "Boîtes de rangement imprimées en 3D pour le jeu Root.",
+    description: "3D-printed storage boxes for the board game Root.",
 };
 
 export default function BolzaBoxesLayout({ children }: { children: ReactNode }) {

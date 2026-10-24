@@ -1,14 +1,10 @@
 import BolzaBoxesShell from "@/components/BolzaBoxes/BolzaBoxesShell";
 import AlternatingSections from "@/components/BolzaBoxes/AlternatingSections";
-
-const HERO_IMAGES = {
-    international: "/api/media/Projets/Root_Organiser/Extra/Presentation/Newsletter/signal-2026-05-10-161743_005.jpeg",
-    french: "/api/media/Projets/Root_Organiser/Extra/Presentation/Website/Home/main.png",
-};
+import { HERO_IMAGES } from "@/lib/BolzaBoxes/heroImages";
 
 export default function BolzaBoxesPage() {
     return (
-        <BolzaBoxesShell heroImages={HERO_IMAGES}>
+        <BolzaBoxesShell heroImages={HERO_IMAGES.home}>
             <AlternatingSections />
         </BolzaBoxesShell>
     );

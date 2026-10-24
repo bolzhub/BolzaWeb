@@ -1,16 +1,22 @@
 import type { MetadataRoute } from "next";
+import { FACTIONS } from "@/lib/BolzaBoxes/factions";
+import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
+
+const BASE = "https://bolzanocrafts.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const base = "https://bolzanocrafts.com";
-    return [
+    const paths = [
         "",
         "/BolzaBoxes",
-        "/BolzaBoxes/boxes",
         "/BolzaBoxes/configurations",
+        ...FACTIONS.map((f) => `/BolzaBoxes/boxes/${f.slug}`),
         "/BolzaBoxes/making-of",
         "/BolzaBoxes/gallery",
         "/Recommendations",
+        "/RootBrainTeasers",
+        ...PUZZLES.map((p) => `/RootBrainTeasers/${p.number}`),
         "/herodotus",
         "/ADR",
-    ].map((path) => ({ url: `${base}${path}`, lastModified: new Date() }));
+    ];
+    return paths.map((path) => ({ url: `${BASE}${path}` }));
 }

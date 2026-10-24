@@ -30,7 +30,7 @@ export default function RecommendationsPage() {
                 <span className="underline underline-offset-4" style={{ color: FG }}>
                     YouTube
                 </span>
-                <span style={{ color: `${FG}4D`, cursor: "not-allowed" }}>Films (bientôt)</span>
+                <span style={{ color: `${FG}4D`, cursor: "not-allowed" }}>Movies (coming soon)</span>
             </nav>
 
             <RecommendationsYoutube />

@@ -8,7 +8,7 @@ export default function Loading() {
                 className="text-sm tracking-widest uppercase animate-pulse"
                 style={{ color: `${FG}99`, fontFamily: "var(--font-playfair)" }}
             >
-                Chargement…
+                Loading...
             </p>
         </main>
     );

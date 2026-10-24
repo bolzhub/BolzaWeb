@@ -41,7 +41,7 @@ export const FACTIONS: Faction[] = BOX_ZONES.filter((zone) => {
         name: details?.name ?? toTitleCase(slug),
         color: colorFromLabel(zone.label),
         icon: `/projects/BolzaBoxes/factions/${slug}/icon.svg`,
-        description: details?.description ?? "Description à venir.",
+        description: details?.description ?? "Description coming soon.",
         buyUrl: details?.buyUrl,
     };
 });

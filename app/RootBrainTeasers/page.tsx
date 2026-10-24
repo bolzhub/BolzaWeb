@@ -7,7 +7,7 @@ import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
 
 export const metadata: Metadata = {
     title: "Root Brain Teasers",
-    description: "Petits puzzles à résoudre en ligne autour du jeu Root.",
+    description: "Small puzzles to solve online, based on the board game Root.",
 };
 
 const CSS = `

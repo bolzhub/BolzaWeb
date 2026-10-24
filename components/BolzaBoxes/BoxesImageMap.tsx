@@ -23,7 +23,7 @@ export default function BoxesImageMap({ src, layout }: { src: string; layout: Bo
                 maxHeight: "100%",
             }}
             role="img"
-            aria-label="Sélection des boîtes"
+            aria-label="Boxes selection"
         >
             <image href={src} x={0} y={0} width={layout.width} height={layout.height} />
 

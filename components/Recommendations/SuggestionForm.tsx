@@ -40,7 +40,7 @@ export default function SuggestionForm() {
                     setText(e.target.value);
                     if (status !== "idle") setStatus("idle");
                 }}
-                placeholder="Écris ta recommandation ici…"
+                placeholder="Write your recommendation here…"
                 rows={3}
                 className="w-full resize-none rounded-lg px-4 py-3 text-sm outline-none"
                 style={{
@@ -51,8 +51,8 @@ export default function SuggestionForm() {
 
             <div className="flex items-center justify-between mt-3">
                 <p className="text-xs" style={{ color: `${FG}66` }}>
-                    {status === "sent" && "Merci, c'est envoyé !"}
-                    {status === "error" && "Échec de l'envoi, réessaie."}
+                    {status === "sent" && "Thanks, sent!"}
+                    {status === "error" && "Couldn't send, please try again."}
                 </p>
 
                 <button
@@ -61,7 +61,7 @@ export default function SuggestionForm() {
                     className="rounded-full px-5 py-2 text-sm transition-opacity disabled:opacity-30"
                     style={{ backgroundColor: FG, color: "#1E2420" }}
                 >
-                    {status === "sending" ? "Envoi…" : "Envoyer"}
+                    {status === "sending" ? "Sending..." : "Send"}
                 </button>
             </div>
         </div>
