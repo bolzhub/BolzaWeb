@@ -10,8 +10,7 @@ export default function AlternatingSections() {
         <div className="flex flex-col gap-6 md:gap-8 px-6 md:px-10 py-6 md:py-8">
             {SECTIONS.map((section, i) => {
                 const reversed = i % 2 === 1;
-                const image =
-                    version === "french" ? section.imageFrench : section.imageInternational;
+                const image = version === "french" ? section.imageFrench : section.imageInternational;
 
                 return (
                     <div

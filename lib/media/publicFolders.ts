@@ -3,7 +3,7 @@
 export const PUBLIC_FOLDERS: string[] = [
     "Projets/ADR",
     "Projets/Root_Organiser",
-    "Projets/Root_Puzzles"
+    "Projets/Root_Puzzles",
     // "Projets/herodotus",
     // Ajoute ici chaque nouveau dossier que tu veux rendre public
 ];

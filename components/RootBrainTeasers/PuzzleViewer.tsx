@@ -24,13 +24,7 @@ const BOTTOM_BAR = "calc(4.75rem + env(safe-area-inset-bottom, 0px))";
 const PILL = "rounded-full bg-cream/95 shadow-md text-ink";
 const TAB = "whitespace-nowrap rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors";
 
-export default function PuzzleViewer({
-    puzzleNumber,
-    contents,
-}: {
-    puzzleNumber: number;
-    contents: PuzzleContents;
-}) {
+export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber: number; contents: PuzzleContents }) {
     const [section, setSection] = useState<SectionId>("rules");
     const [visited, setVisited] = useState<SectionId[]>(["rules"]);
     const [mistakeOpen, setMistakeOpen] = useState(false);
@@ -79,7 +73,10 @@ export default function PuzzleViewer({
             </div>
 
             {/* Barre du haut : retour à la page principale, retour à la liste, numéro */}
-            <div className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3" style={{ height: TOP_BAR }}>
+            <div
+                className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3"
+                style={{ height: TOP_BAR }}
+            >
                 <Link href="/" aria-label="Home" className={`${PILL} p-2`}>
                     <img src={LOGO_SOURCES.small} alt="Bolzano" className="h-7 w-auto" />
                 </Link>
@@ -91,8 +88,9 @@ export default function PuzzleViewer({
 
             {/* Indice, qui disparaît dès la première interaction avec l'image */}
             <p
-                className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none rounded-full bg-black/55 px-4 py-1.5 text-sm text-parchment transition-opacity duration-500 ${hintVisible ? "opacity-100" : "opacity-0"
-                    }`}
+                className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none rounded-full bg-black/55 px-4 py-1.5 text-sm text-parchment transition-opacity duration-500 ${
+                    hintVisible ? "opacity-100" : "opacity-0"
+                }`}
                 style={{ bottom: `calc(${BOTTOM_BAR} + 0.75rem)` }}
             >
                 Scroll or pinch to zoom, drag to move
@@ -111,10 +109,7 @@ export default function PuzzleViewer({
                         type="button"
                         aria-pressed={section === id}
                         onClick={() => select(id)}
-                        className={`${TAB} ${section === id
-                                ? "bg-ink text-cream"
-                                : "text-ink hover:bg-ink/10"
-                            }`}
+                        className={`${TAB} ${section === id ? "bg-ink text-cream" : "text-ink hover:bg-ink/10"}`}
                     >
                         {label}
                     </button>
@@ -126,10 +121,7 @@ export default function PuzzleViewer({
                     type="button"
                     aria-expanded={mistakeOpen}
                     onClick={() => setMistakeOpen((o) => !o)}
-                    className={`${TAB} ${mistakeOpen
-                            ? "bg-[#7a2e2e] text-white"
-                            : "text-ink hover:bg-ink/10"
-                        }`}
+                    className={`${TAB} ${mistakeOpen ? "bg-[#7a2e2e] text-white" : "text-ink hover:bg-ink/10"}`}
                 >
                     Notice a mistake
                 </button>

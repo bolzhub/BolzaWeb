@@ -16,9 +16,7 @@ export default function BoxesTapHint() {
                 <path d="M12 11V4.5a1.5 1.5 0 0 1 3 0V11" />
                 <path d="M15 11.5V7a1.5 1.5 0 0 1 3 0v7c0 3.5-2 6.5-6 6.5s-6-2-7-4l-1.5-3c-.5-1 .3-2 1.3-1.7.7.2 1.2.8 1.7 1.7" />
             </svg>
-            <span style={{ fontFamily: "var(--font-playfair)" }}>
-                Tap a color to discover each box
-            </span>
+            <span style={{ fontFamily: "var(--font-playfair)" }}>Tap a color to discover each box</span>
         </div>
     );
 }

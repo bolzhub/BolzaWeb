@@ -2,15 +2,11 @@ import { notFound } from "next/navigation";
 import { getGalleryBySlug } from "@/lib/ADR/galleries";
 import PhotoGallery from "@/components/ADR/PhotoGallery";
 
-export default async function GalleryPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const gallery = getGalleryBySlug(slug);
+export default async function GalleryPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const gallery = getGalleryBySlug(slug);
 
-  if (!gallery) notFound();
+    if (!gallery) notFound();
 
-  return <PhotoGallery title={gallery.name} images={gallery.images} />;
+    return <PhotoGallery title={gallery.name} images={gallery.images} />;
 }

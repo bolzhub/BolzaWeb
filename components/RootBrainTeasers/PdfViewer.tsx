@@ -106,9 +106,7 @@ function PdfPage({
             canvas.width = Math.floor(viewport.width);
             canvas.height = Math.floor(viewport.height);
 
-            const task = page.render({ canvasContext: ctx, canvas, viewport } as Parameters<
-                PDFPageProxy["render"]
-            >[0]);
+            const task = page.render({ canvasContext: ctx, canvas, viewport } as Parameters<PDFPageProxy["render"]>[0]);
             taskRef.current = task;
             try {
                 await task.promise;

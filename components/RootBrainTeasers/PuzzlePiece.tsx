@@ -14,9 +14,7 @@ const CENTER = { x: 12, y: 12 };
 const DIGIT_HALF_HEIGHT = 0.354;
 
 export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: number }) {
-    const color = puzzle.color
-        ? PUZZLE_COLORS[puzzle.color]
-        : FALLBACK_COLORS[index % FALLBACK_COLORS.length];
+    const color = puzzle.color ? PUZZLE_COLORS[puzzle.color] : FALLBACK_COLORS[index % FALLBACK_COLORS.length];
     const href = puzzle.href ?? `/RootBrainTeasers/${puzzle.number}`;
     const digits = String(puzzle.number).length;
     const fontSize = digits === 1 ? 9 : digits === 2 ? 8 : 6.5;

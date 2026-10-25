@@ -15,8 +15,8 @@ export const PUZZLE_COLORS = {
 export type PuzzleColor = keyof typeof PUZZLE_COLORS;
 
 export type PuzzleFiles = {
-    rules?: string;    // PDF
-    teaser?: string;   // image (jpg, png…)
+    rules?: string; // PDF
+    teaser?: string; // image (jpg, png…)
     solution?: string; // PDF
 };
 
@@ -59,7 +59,8 @@ export const PUZZLES: Puzzle[] = [
     {
         number: 3,
         color: "greywhite",
-        description: "Puzzle B proposed during 2026 French National competition. Win with Vagabond on very first turn of the game.",
+        description:
+            "Puzzle B proposed during 2026 French National competition. Win with Vagabond on very first turn of the game.",
         files: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",

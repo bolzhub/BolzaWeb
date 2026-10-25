@@ -23,10 +23,7 @@ export default function AssetsEntry() {
                 </svg>
             </span>
 
-            <span
-                className="max-w-[calc(var(--rbt-size)*1.2)]"
-                style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}
-            >
+            <span className="max-w-[calc(var(--rbt-size)*1.2)]" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}>
                 <span
                     className="block text-lg md:text-xl text-parchment mb-1"
                     style={{ fontFamily: "var(--font-playfair)", fontWeight: 700 }}

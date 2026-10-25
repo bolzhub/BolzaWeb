@@ -93,7 +93,9 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                     src={project.previewImage}
                                     alt={project.title}
                                     className="absolute inset-0 w-full h-full object-cover"
-                                    style={{ objectPosition: `${project.imagePositionX ?? "center"} ${project.imagePosition ?? "center"}` }}
+                                    style={{
+                                        objectPosition: `${project.imagePositionX ?? "center"} ${project.imagePosition ?? "center"}`,
+                                    }}
                                 />
                             )}
 

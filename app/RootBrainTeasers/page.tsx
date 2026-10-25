@@ -17,10 +17,7 @@ export default function RootBrainTeasersPage() {
             <ForestBackground />
 
             <header className="px-6 md:px-10 py-6">
-                <Link
-                    href="/"
-                    className="inline-block rounded-full bg-cream/95 px-4 py-2 shadow-md"
-                >
+                <Link href="/" className="inline-block rounded-full bg-cream/95 px-4 py-2 shadow-md">
                     <ResponsiveLogo />
                 </Link>
             </header>

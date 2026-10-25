@@ -9,51 +9,51 @@ const BOLZANO_HEIGHT = "clamp(1.5rem, 11vw, 5rem)"; // hauteur du logo "Bolzano"
 const CRAFTS_HEIGHT = "clamp(1.0rem, 7.3vw, 3.33rem)"; // hauteur du logo "Crafts"
 
 export default function Home() {
-  const projects = getProjects();
+    const projects = getProjects();
 
-  return (
-    <main className="min-h-screen min-h-dvh bg-cream">
-      <MainHeader />
+    return (
+        <main className="min-h-screen min-h-dvh bg-cream">
+            <MainHeader />
 
-      <h1 className="flex flex-wrap items-baseline justify-center gap-3 text-ink py-10">
-        <span
-          style={{
-            fontFamily: "var(--font-playfair)",
-            fontWeight: 700,
-            fontSize: CONNECTOR_FONT_SIZE,
-            transform: `translateY(${CONNECTOR_VERTICAL_OFFSET})`,
-            display: "inline-block",
-          }}
-        >
-          I am
-        </span>
-        <img
-          src="/logo/bolzano-word.svg"
-          alt="Bolzano"
-          className="inline-block"
-          style={{ height: BOLZANO_HEIGHT }}
-        />
-        <span
-          style={{
-            fontFamily: "var(--font-playfair)",
-            fontWeight: 700,
-            fontSize: CONNECTOR_FONT_SIZE,
-            transform: `translateY(${CONNECTOR_VERTICAL_OFFSET})`,
-            display: "inline-block",
-          }}
-        >
-          and here are my
-        </span>
-        <img
-          src="/logo/crafts-word.svg"
-          alt="Crafts"
-          className="inline-block"
-          style={{ height: CRAFTS_HEIGHT }}
-        />
-      </h1>
+            <h1 className="flex flex-wrap items-baseline justify-center gap-3 text-ink py-10">
+                <span
+                    style={{
+                        fontFamily: "var(--font-playfair)",
+                        fontWeight: 700,
+                        fontSize: CONNECTOR_FONT_SIZE,
+                        transform: `translateY(${CONNECTOR_VERTICAL_OFFSET})`,
+                        display: "inline-block",
+                    }}
+                >
+                    I am
+                </span>
+                <img
+                    src="/logo/bolzano-word.svg"
+                    alt="Bolzano"
+                    className="inline-block"
+                    style={{ height: BOLZANO_HEIGHT }}
+                />
+                <span
+                    style={{
+                        fontFamily: "var(--font-playfair)",
+                        fontWeight: 700,
+                        fontSize: CONNECTOR_FONT_SIZE,
+                        transform: `translateY(${CONNECTOR_VERTICAL_OFFSET})`,
+                        display: "inline-block",
+                    }}
+                >
+                    and here are my
+                </span>
+                <img
+                    src="/logo/crafts-word.svg"
+                    alt="Crafts"
+                    className="inline-block"
+                    style={{ height: CRAFTS_HEIGHT }}
+                />
+            </h1>
 
-      <ProjectShowcase projects={projects} />
-      <SocialLinks />
-    </main>
-  );
+            <ProjectShowcase projects={projects} />
+            <SocialLinks />
+        </main>
+    );
 }

@@ -21,11 +21,7 @@ export function resolveImageSrc(path: string): string {
     if (/^https?:\/\//.test(path)) return path;
 
     if (path.startsWith("/api/media/")) {
-        const relative = path
-            .slice("/api/media/".length)
-            .split("/")
-            .map(safeDecode)
-            .join("/");
+        const relative = path.slice("/api/media/".length).split("/").map(safeDecode).join("/");
         return mediaUrl(relative);
     }
 

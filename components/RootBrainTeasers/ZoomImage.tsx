@@ -88,10 +88,7 @@ export default function ZoomImage({
     // Géométrie : taille de l'image en vue d'ensemble (entière, avec marge) et zoom maximal
     const geo = useMemo<Geo | null>(() => {
         if (!box || !natural || box.w === 0 || box.h === 0) return null;
-        const fit = Math.min(
-            Math.max(box.w - PAD * 2, 50) / natural.w,
-            Math.max(box.h - PAD * 2, 50) / natural.h
-        );
+        const fit = Math.min(Math.max(box.w - PAD * 2, 50) / natural.w, Math.max(box.h - PAD * 2, 50) / natural.h);
         return {
             fw: natural.w * fit,
             fh: natural.h * fit,
@@ -209,8 +206,8 @@ export default function ZoomImage({
             commit(
                 clampView(
                     { ...v, x: current.originX + p.x - current.startX, y: current.originY + p.y - current.startY },
-                    g
-                )
+                    g,
+                ),
             );
         } else if (current.kind === "pinch" && pointers.current.size >= 2) {
             const [a, b] = [...pointers.current.values()];
@@ -231,10 +228,7 @@ export default function ZoomImage({
 
             const now = performance.now();
             const isTap =
-                e.type === "pointerup" &&
-                ended?.kind === "pan" &&
-                !tap.current.moved &&
-                now - tap.current.downAt < 400;
+                e.type === "pointerup" && ended?.kind === "pan" && !tap.current.moved && now - tap.current.downAt < 400;
             if (isTap) {
                 const p = local(e);
                 const t = tap.current;
@@ -264,8 +258,9 @@ export default function ZoomImage({
         <div className={`absolute inset-0 ${active ? "" : "invisible pointer-events-none"}`} aria-hidden={!active}>
             <div
                 ref={boxRef}
-                className={`absolute inset-0 overflow-hidden select-none ${dragging ? "cursor-grabbing" : "cursor-grab"
-                    }`}
+                className={`absolute inset-0 overflow-hidden select-none ${
+                    dragging ? "cursor-grabbing" : "cursor-grab"
+                }`}
                 style={{ touchAction: "none" }}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}

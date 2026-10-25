@@ -42,12 +42,7 @@ const EXT_BY_TYPE: Record<ViewModeType, string> = {
     link: "",
 };
 
-export function getAssetPath(
-    factionSlug: string,
-    objectType: ObjectType,
-    viewMode: ViewMode,
-    glass: Glass
-): string {
+export function getAssetPath(factionSlug: string, objectType: ObjectType, viewMode: ViewMode, glass: Glass): string {
     const ext = EXT_BY_TYPE[viewMode.type];
     return `/projects/BolzaBoxes/factions/${factionSlug}/${objectType}-${viewMode.id}-${glass}.${ext}`;
 }

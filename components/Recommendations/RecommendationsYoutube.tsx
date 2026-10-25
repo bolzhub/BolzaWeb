@@ -26,7 +26,7 @@ function usePreview(item: YoutubeItem) {
             .then((data) => {
                 if (!cancelled) setChannelAvatar(data.avatar ?? null);
             })
-            .catch(() => { });
+            .catch(() => {});
         return () => {
             cancelled = true;
         };
@@ -42,15 +42,11 @@ function Entry({ item }: { item: YoutubeItem }) {
 
     return (
         <li>
-            <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 py-4 group"
-            >
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 py-4 group">
                 <span
-                    className={`shrink-0 bg-white/5 flex items-center justify-center overflow-hidden ${preview?.type === "channel" ? "w-16 h-16 rounded-full" : "w-28 md:w-32 aspect-video rounded-md"
-                        }`}
+                    className={`shrink-0 bg-white/5 flex items-center justify-center overflow-hidden ${
+                        preview?.type === "channel" ? "w-16 h-16 rounded-full" : "w-28 md:w-32 aspect-video rounded-md"
+                    }`}
                 >
                     {preview ? (
                         <img src={preview.src} alt="" loading="lazy" className="w-full h-full object-cover" />
@@ -81,7 +77,12 @@ function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle
                 Random suggestion
             </p>
 
-            <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex flex-col sm:flex-row gap-5 group">
+            <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col sm:flex-row gap-5 group"
+            >
                 <span className="shrink-0 w-full sm:w-64 aspect-video rounded-lg overflow-hidden bg-white/5 flex items-center justify-center">
                     {preview ? (
                         <img src={preview.src} alt="" className="w-full h-full object-cover" />
@@ -144,7 +145,6 @@ export default function RecommendationsYoutube() {
             ))}
 
             <SuggestionForm />
-
         </div>
     );
 }

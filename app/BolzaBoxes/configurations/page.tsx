@@ -28,11 +28,12 @@ export default function BoxesPage() {
             <VersionSwitch />
 
             <div
-                className={`absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4 transition-opacity duration-200 ${navMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-                    }`}
+                className={`absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4 transition-opacity duration-200 ${
+                    navMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+                }`}
                 style={{
                     top: "var(--bolzaboxes-nav-height)",
-                    bottom: "var(--bolzaboxes-switch-zone)"
+                    bottom: "var(--bolzaboxes-switch-zone)",
                 }}
             >
                 <BoxesTapHint />

@@ -42,7 +42,7 @@ export function getProjects(): Project[] {
             title: "Life Drawing",
             href: "/ADR",
             color: "#8a7862",
-            previewImage: "/projects/ADR/cover.png",//getLatestADRCover(),
+            previewImage: "/projects/ADR/cover.png", //getLatestADRCover(),
         },
         {
             id: "recommendations",

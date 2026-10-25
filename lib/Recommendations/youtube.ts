@@ -32,7 +32,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Proko",
                 url: "https://www.youtube.com/@ProkoTV",
-                description: "Not Sinix but still good. Look for the video on lighting. Group of many different artists with different styles and points of view.",
+                description:
+                    "Not Sinix but still good. Look for the video on lighting. Group of many different artists with different styles and points of view.",
             },
             {
                 title: "blfsloth",
@@ -52,7 +53,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "J'ai essayé de créer un manga - Pewdiepie",
                 url: "https://www.youtube.com/watch?v=iRRpvuMG7AM",
-                description: "I just like pewdiepie ok sue me. Still it is valuable to follow the process of a beginner. He knows how to share his journey.",
+                description:
+                    "I just like pewdiepie ok sue me. Still it is valuable to follow the process of a beginner. He knows how to share his journey.",
             },
             {
                 title: "Jeff Haines",
@@ -72,22 +74,26 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "how to choose a drawing tablet  - shar",
                 url: "https://www.youtube.com/watch?v=-gEh8n6dmjg",
-                description: "I do not recommend it if you want to decide which brand to pick. I recommend this video if you want to find out which type of tablet is best for you: pen tablet, pen display, or standalone.",
+                description:
+                    "I do not recommend it if you want to decide which brand to pick. I recommend this video if you want to find out which type of tablet is best for you: pen tablet, pen display, or standalone.",
             },
             {
                 title: "Brad Colbow",
                 url: "https://www.youtube.com/@thebradcolbow/featured",
-                description: "Another link to choose the best tablet. Comprehensive and always up to date. I encourage to explore his website as well.",
+                description:
+                    "Another link to choose the best tablet. Comprehensive and always up to date. I encourage to explore his website as well.",
             },
             {
                 title: "Learn to Procreate - Procreate",
                 url: "https://www.youtube.com/watch?v=8DIkyEjXp4s&list=PLlpSQCrjuGkoZHyUyO3cNEMyYPNkF0Hne",
-                description: "Shortcuts specific to Procreate but also gives general idea on how any digital software should be manipulated.",
+                description:
+                    "Shortcuts specific to Procreate but also gives general idea on how any digital software should be manipulated.",
             },
             {
                 title: "Rakurri",
                 url: "https://www.youtube.com/@Rakurri",
-                description: "Krita tutorials! They are rare! Krita is an open source and free alternative to photoshop. I does everything photoshop does.",
+                description:
+                    "Krita tutorials! They are rare! Krita is an open source and free alternative to photoshop. I does everything photoshop does.",
             },
             {
                 title: "DucThang Ds",
@@ -112,7 +118,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Beginner Blender Tutorial (2026)  - Blender Guru",
                 url: "https://www.youtube.com/watch?v=z-Xl9tGqH14",
-                description: "I mean.. Duh. This is the Hello World for 3D Modelling. Everyone with remote interest for the discipline reveres the Guru.",
+                description:
+                    "I mean.. Duh. This is the Hello World for 3D Modelling. Everyone with remote interest for the discipline reveres the Guru.",
             },
             {
                 title: "Connect 3D Printed Parts | Design for Mass Production 3D Printing - Slant 3D",
@@ -132,7 +139,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Factorian Design",
                 url: "https://www.youtube.com/@Factorian_Designs",
-                description: "All his videos are very important to watch. Gives you a deep understanding of a slicer. Don;t mock his accent like the stupid people in the comments. The master deserves better.",
+                description:
+                    "All his videos are very important to watch. Gives you a deep understanding of a slicer. Don;t mock his accent like the stupid people in the comments. The master deserves better.",
             },
         ],
     },
@@ -147,7 +155,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Gamers Nexus",
                 url: "https://www.youtube.com/@GamersNexus",
-                description: "Good tests on trending components. I like his politics as well. English barely understandable.",
+                description:
+                    "Good tests on trending components. I like his politics as well. English barely understandable.",
             },
             {
                 title: "MrMattLee",
@@ -162,7 +171,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Pro Tech Show",
                 url: "https://www.youtube.com/@ProTechShow",
-                description: "I just remember he's good. Not much more. I think I watched stuff on selfhosting and password managers.",
+                description:
+                    "I just remember he's good. Not much more. I think I watched stuff on selfhosting and password managers.",
             },
         ],
     },
@@ -202,12 +212,14 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "ACMSIGGRAPH",
                 url: "https://www.youtube.com/@ACMSIGGRAPH",
-                description: "The official Siggraph channel. Siggraph is an international conference for Computer Graphics papers.",
+                description:
+                    "The official Siggraph channel. Siggraph is an international conference for Computer Graphics papers.",
             },
             {
                 title: "Two Minute Papers",
                 url: "https://www.youtube.com/@TwoMinutePapers",
-                description: "Overview of latest significant Computer Graphics papers. Nowadays mostly AI unfortunately. Funny guy.",
+                description:
+                    "Overview of latest significant Computer Graphics papers. Nowadays mostly AI unfortunately. Funny guy.",
             },
             {
                 title: "Keenan Crane",
@@ -232,7 +244,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Steve Builds Websites",
                 url: "https://www.youtube.com/@stevebuildswebsites",
-                description: "First result on YouTube page I know, but well deserved. Very good for simple solutions without any coding. Good informative rankings of website frameworks and generators.",
+                description:
+                    "First result on YouTube page I know, but well deserved. Very good for simple solutions without any coding. Good informative rankings of website frameworks and generators.",
             },
         ],
     },
@@ -257,7 +270,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "3blue1brown",
                 url: "https://www.youtube.com/@3blue1brown",
-                description: "I would have never truly understood deep learning without his series on the subject. I come back to it regurlarly. Very intelligent visuals. Terrifying subjects are deconstructed to make you understand anything.",
+                description:
+                    "I would have never truly understood deep learning without his series on the subject. I come back to it regurlarly. Very intelligent visuals. Terrifying subjects are deconstructed to make you understand anything.",
             },
         ],
     },
@@ -267,7 +281,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "TierZoo",
                 url: "https://www.youtube.com/@TierZoo",
-                description: "I love him. Compares biology and evolution to builds in video games. Don't have to know anything about video games to watch though.",
+                description:
+                    "I love him. Compares biology and evolution to builds in video games. Don't have to know anything about video games to watch though.",
             },
         ],
     },
@@ -282,7 +297,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Rabbit Hole",
                 url: "https://www.youtube.com/@rabbithole",
-                description: "Used to work on Veritasium videos. First four videos are excellent. Don't watch the one about four-leaf clovers.",
+                description:
+                    "Used to work on Veritasium videos. First four videos are excellent. Don't watch the one about four-leaf clovers.",
             },
         ],
     },
@@ -337,7 +353,8 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
             {
                 title: "Sing Powerfully Without Straining - Placement, Resonance, and The Mask of Singing",
                 url: "https://www.youtube.com/watch?v=MDYdsJyPkEs&t=5s",
-                description: "I am new to singing so I don't have much knowledge in tutorials yet, but this one was interesting.",
+                description:
+                    "I am new to singing so I don't have much knowledge in tutorials yet, but this one was interesting.",
             },
         ],
     },

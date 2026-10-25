@@ -15,10 +15,7 @@ export default function SuggestionForm() {
 
     return (
         <div className="rounded-xl p-5" style={{ backgroundColor: `${FG}0D` }}>
-            <p
-                className="text-sm mb-3"
-                style={{ color: FG, fontFamily: "var(--font-playfair)" }}
-            >
+            <p className="text-sm mb-3" style={{ color: FG, fontFamily: "var(--font-playfair)" }}>
                 Based on my suggestions, suggest something to me!
             </p>
 

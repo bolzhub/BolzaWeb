@@ -46,8 +46,8 @@ export default function MainHeader() {
                         };
                         img.onerror = () => resolve();
                         img.src = LOGO_SOURCES[size];
-                    })
-            )
+                    }),
+            ),
         ).then(() => {
             if (!cancelled) setLogoWidths(widths as Record<LogoSize, number>);
         });
@@ -187,6 +187,6 @@ export default function MainHeader() {
             >
                 {HELP_ITEM.label}
             </a>
-        </header >
+        </header>
     );
 }

@@ -35,7 +35,5 @@ export async function POST(req: NextRequest) {
         ].join("\n"),
     });
 
-    return sent
-        ? NextResponse.json({ ok: true })
-        : NextResponse.json({ error: "Send failed" }, { status: 500 });
+    return sent ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "Send failed" }, { status: 500 });
 }

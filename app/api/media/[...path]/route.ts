@@ -14,15 +14,12 @@ const MIME: Record<string, string> = {
     ".pdf": "application/pdf",
 };
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: Promise<{ path: string[] }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
     const { path: segments } = await params;
     const relativePath = segments.map(decodeURIComponent).join("/");
 
     const isInAllowedFolder = PUBLIC_FOLDERS.some(
-        (folder) => relativePath === folder || relativePath.startsWith(folder + "/")
+        (folder) => relativePath === folder || relativePath.startsWith(folder + "/"),
     );
     const isAllowedFile = PUBLIC_FILES.includes(relativePath);
 

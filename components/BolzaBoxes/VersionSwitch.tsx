@@ -10,20 +10,16 @@ export default function VersionSwitch() {
             className="fixed left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 bg-cream rounded-full px-5 py-2.5 shadow-lg"
             style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))" }}
         >
-            <span
-                className="text-sm text-ink"
-                style={{ fontFamily: "var(--font-playfair)" }}
-            >
+            <span className="text-sm text-ink" style={{ fontFamily: "var(--font-playfair)" }}>
                 Version:
             </span>
 
             <button
                 onClick={() => setVersion("international")}
                 aria-label="International version"
-                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "international"
-                    ? "bg-ink scale-105"
-                    : "bg-transparent opacity-40 hover:opacity-70"
-                    }`}
+                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
+                    version === "international" ? "bg-ink scale-105" : "bg-transparent opacity-40 hover:opacity-70"
+                }`}
             >
                 <svg
                     width="20"
@@ -43,10 +39,9 @@ export default function VersionSwitch() {
             <button
                 onClick={() => setVersion("french")}
                 aria-label="French version"
-                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${version === "french"
-                    ? "bg-ink scale-105"
-                    : "bg-transparent opacity-40 hover:opacity-70"
-                    }`}
+                className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
+                    version === "french" ? "bg-ink scale-105" : "bg-transparent opacity-40 hover:opacity-70"
+                }`}
             >
                 <span
                     className="text-base leading-none"

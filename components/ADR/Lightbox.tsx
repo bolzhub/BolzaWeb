@@ -2,13 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 
-export default function Lightbox({
-    image,
-    onClose,
-}: {
-    image: string | null;
-    onClose: () => void;
-}) {
+export default function Lightbox({ image, onClose }: { image: string | null; onClose: () => void }) {
     const [scale, setScaleState] = useState(1);
     const [position, setPositionState] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
@@ -138,11 +132,7 @@ export default function Lightbox({
                 x: e.touches[0].clientX - dragStart.x,
                 y: e.touches[0].clientY - dragStart.y,
             });
-        } else if (
-            e.touches.length === 2 &&
-            lastTouchDistance.current !== null &&
-            lastTouchCenter.current !== null
-        ) {
+        } else if (e.touches.length === 2 && lastTouchDistance.current !== null && lastTouchCenter.current !== null) {
             const newDistance = getTouchDistance(e.touches);
             const newCenter = getTouchCenter(e.touches);
             const distanceRatio = newDistance / lastTouchDistance.current;

@@ -11,11 +11,7 @@ export function parseMessage(value: unknown): string | null {
 }
 
 // Envoie un e-mail à ton adresse de contact. Renvoie true si l'envoi a réussi.
-export async function sendContactMail(options: {
-    from: string;
-    subject: string;
-    text: string;
-}): Promise<boolean> {
+export async function sendContactMail(options: { from: string; subject: string; text: string }): Promise<boolean> {
     try {
         const { error } = await resend.emails.send({ to: CONTACT_ADDRESS, ...options });
         if (error) {

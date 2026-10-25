@@ -70,8 +70,9 @@ export default function MistakeBox({
             ref={boxRef}
             role="dialog"
             aria-label={`Report a mistake in puzzle ${puzzleNumber}`}
-            className={`absolute left-0 top-0 z-40 rounded-2xl bg-cream text-ink shadow-2xl ring-1 ring-black/15 ${open ? "block" : "hidden"
-                }`}
+            className={`absolute left-0 top-0 z-40 rounded-2xl bg-cream text-ink shadow-2xl ring-1 ring-black/15 ${
+                open ? "block" : "hidden"
+            }`}
             style={{
                 width: "min(22rem, calc(100% - 1rem))",
                 transform: pos ? `translate3d(${pos.x}px, ${pos.y}px, 0)` : undefined,
@@ -100,8 +101,8 @@ export default function MistakeBox({
                     setPos(
                         clampPos(
                             { x: d.originX + e.clientX - d.startX, y: d.originY + e.clientY - d.startY },
-                            boxRef.current
-                        )
+                            boxRef.current,
+                        ),
                     );
                 }}
                 onPointerUp={(e) => {
