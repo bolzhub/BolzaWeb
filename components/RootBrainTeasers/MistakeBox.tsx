@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-const MAX_LENGTH = 2000;
+import { MAX_MESSAGE_LENGTH } from "@/lib/contact";
+import { useSendMessage } from "@/lib/useSendMessage";
 
 type Pos = { x: number; y: number };
 
@@ -39,7 +39,7 @@ export default function MistakeBox({
 
     const [pos, setPos] = useState<Pos | null>(null);
     const [text, setText] = useState("");
-    const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+    const { status, send: sendMessage, reset } = useSendMessage("/api/brain-teasers/mistake");
 
     // À l'ouverture : position initiale (1re fois) ou recadrage (si la fenêtre a changé)
     useEffect(() => {
@@ -62,19 +62,7 @@ export default function MistakeBox({
 
     const send = async () => {
         if (!text.trim() || status === "sending") return;
-        setStatus("sending");
-        try {
-            const res = await fetch("/api/brain-teasers/mistake", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: text, puzzle: puzzleNumber, section }),
-            });
-            if (!res.ok) throw new Error();
-            setStatus("sent");
-            setText("");
-        } catch {
-            setStatus("error");
-        }
+        if (await sendMessage({ message: text, puzzle: puzzleNumber, section })) setText("");
     };
 
     return (
@@ -140,10 +128,10 @@ export default function MistakeBox({
                 {/* Pas de <form> : Entrée = retour à la ligne, seul le bouton envoie */}
                 <textarea
                     value={text}
-                    maxLength={MAX_LENGTH}
+                    maxLength={MAX_MESSAGE_LENGTH}
                     onChange={(e) => {
                         setText(e.target.value);
-                        if (status !== "idle") setStatus("idle");
+                        if (status !== "idle") reset();
                     }}
                     placeholder="Describe the mistake you noticed…"
                     rows={5}

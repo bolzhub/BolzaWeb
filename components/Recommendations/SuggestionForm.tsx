@@ -2,26 +2,15 @@
 
 import { useState } from "react";
 import { FG } from "@/lib/Recommendations/theme";
+import { useSendMessage } from "@/lib/useSendMessage";
 
 export default function SuggestionForm() {
     const [text, setText] = useState("");
-    const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+    const { status, send, reset } = useSendMessage("/api/recommendations/suggest");
 
     const handleSubmit = async () => {
         if (!text.trim() || status === "sending") return;
-        setStatus("sending");
-        try {
-            const res = await fetch("/api/recommendations/suggest", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: text }),
-            });
-            if (!res.ok) throw new Error();
-            setStatus("sent");
-            setText("");
-        } catch {
-            setStatus("error");
-        }
+        if (await send({ message: text })) setText("");
     };
 
     return (
@@ -37,7 +26,7 @@ export default function SuggestionForm() {
                 value={text}
                 onChange={(e) => {
                     setText(e.target.value);
-                    if (status !== "idle") setStatus("idle");
+                    if (status !== "idle") reset();
                 }}
                 placeholder="Write your recommendation here…"
                 rows={3}

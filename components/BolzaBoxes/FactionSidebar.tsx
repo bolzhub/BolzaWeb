@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FACTIONS } from "@/lib/BolzaBoxes/factions";
+import { FACTIONS, factionPath } from "@/lib/BolzaBoxes/factions";
 import type { Faction } from "@/lib/BolzaBoxes/types";
 
 const SWITCH_RESERVED_SPACE = "6rem"; // 🎛️ doit correspondre au pb-24 réservé dans page.tsx
@@ -20,7 +20,7 @@ export default function FactionSidebar({ active }: { active: Faction }) {
         return (
           <Link
             key={f.slug}
-            href={`/BolzaBoxes/boxes/${f.slug}`}
+            href={factionPath(f.slug)}
             className="relative flex items-center justify-center w-7 h-7 lg:w-9 lg:h-9 shrink-0"
           >
             {isActive && (

@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
+import { DISK_ROOT } from "@/lib/media/config";
+import { mediaUrl } from "@/lib/media/url";
 
-const ADR_PATH = "/mnt/Bolzananas/Projets/ADR";
-const ADR_URL_BASE = "/api/media/Projets/ADR";
+const ADR_RELATIVE = "Projets/ADR";
+const ADR_PATH = path.join(DISK_ROOT, ADR_RELATIVE);
 
 export type HomeItem =
   | { type: "gallery"; slug: string; name: string; cover: string }
@@ -63,7 +65,7 @@ export function getHomeItems(): HomeItem[] {
       const fullPath = path.join(ADR_PATH, item.raw);
       const files = fs.readdirSync(fullPath);
       const images = sortImages(files).map(
-        (f) => `${ADR_URL_BASE}/${encodeURIComponent(item.raw)}/${encodeURIComponent(f)}`
+        (f) => mediaUrl(`${ADR_RELATIVE}/${item.raw}/${f}`)
       );
       return {
         type: "gallery",
@@ -74,7 +76,7 @@ export function getHomeItems(): HomeItem[] {
     }
     return {
       type: "image",
-      url: `${ADR_URL_BASE}/${encodeURIComponent(item.raw)}`,
+      url: mediaUrl(`${ADR_RELATIVE}/${item.raw}`),
       name: stripExtension(stripOrderPrefix(item.raw)),
     };
   });
@@ -88,7 +90,7 @@ export function getGalleryBySlug(slug: string): Gallery | undefined {
   const fullPath = path.join(ADR_PATH, folder.name);
   const files = fs.readdirSync(fullPath);
   const images = sortImages(files).map(
-    (f) => `${ADR_URL_BASE}/${encodeURIComponent(folder.name)}/${encodeURIComponent(f)}`
+    (f) => mediaUrl(`${ADR_RELATIVE}/${folder.name}/${f}`)
   );
 
   return {

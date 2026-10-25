@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { FACTIONS } from "@/lib/BolzaBoxes/factions";
+import { FACTIONS, factionPath } from "@/lib/BolzaBoxes/factions";
 import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
 
 const BASE = "https://bolzanocrafts.com";

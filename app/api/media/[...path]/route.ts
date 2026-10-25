@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { PUBLIC_FOLDERS, PUBLIC_FILES } from "@/lib/media/publicFolders";
-
-const DISK_ROOT = "/mnt/Bolzananas";
+import { DISK_ROOT } from "@/lib/media/config";
 
 const MIME: Record<string, string> = {
     ".png": "image/png",
