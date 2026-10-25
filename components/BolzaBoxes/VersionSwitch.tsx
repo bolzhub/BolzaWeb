@@ -30,7 +30,7 @@ export default function VersionSwitch() {
                     height="20"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke={version === "international" ? "#ECE5D8" : "#3a352c"}
+                    style={{ stroke: version === "international" ? "var(--color-cream)" : "var(--color-ink)" }}
                     strokeWidth="1.6"
                 >
                     <circle cx="12" cy="12" r="9" />
@@ -53,7 +53,7 @@ export default function VersionSwitch() {
                     style={{
                         fontFamily: "var(--font-playfair)",
                         fontWeight: 700,
-                        color: version === "french" ? "#ECE5D8" : "#3a352c",
+                        color: version === "french" ? "var(--color-cream)" : "var(--color-ink)",
                     }}
                 >
                     Fr

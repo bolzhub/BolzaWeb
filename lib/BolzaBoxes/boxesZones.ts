@@ -36,9 +36,9 @@ const INTERNATIONAL_ZONES: BoxZone[] = [
     { id: "col15-brunfonce", label: "Colonne brun foncé (+)", faction: "extra", rect: { x: 1825, y: 940, width: 300, height: 925 } },
 
     // --- Rangée 3 ---
-    // { id: "col16-brunfonce", label: "Colonne brun foncé (setup)", href: "/BolzaBoxes/boxes/setup", rect: { x: 0, y: 1865, width: 270, height: 925 } },
-    // { id: "col17-brunfonce", label: "Colonne brun foncé (cards)", href: "/BolzaBoxes/boxes/cards", rect: { x: 270, y: 1865, width: 1500, height: 925 } },
-    // { id: "col18-brunfonce", label: "Colonne brun foncé (setup2)", href: "/BolzaBoxes/boxes/setup2", rect: { x: 1900, y: 1865, width: 270, height: 925 } },
+    { id: "col16-brunfonce", label: "Colonne brun foncé (setup)", faction: "setup", rect: { x: 0, y: 1865, width: 270, height: 925 } },
+    { id: "col17-brunfonce", label: "Colonne brun foncé (cards)", faction: "cards", rect: { x: 270, y: 1865, width: 1500, height: 925 } },
+    { id: "col18-brunfonce", label: "Colonne brun foncé (setup2)", faction: "setup2", rect: { x: 1900, y: 1865, width: 270, height: 925 } },
 ];
 
 const FRENCH_ZONES: BoxZone[] = [

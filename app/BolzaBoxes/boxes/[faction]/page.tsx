@@ -25,9 +25,12 @@ export default async function FactionPage({
       className="min-h-screen min-h-dvh overflow-x-hidden"
       style={{ backgroundColor: faction.color }}
     >
-      <BolzaBoxesNav fadeOverlayColor={faction.color} />
+      <BolzaBoxesNav background={{ type: "fade", color: faction.color }} />
 
-      <div style={{ paddingTop: "var(--bolzaboxes-nav-height, 80px)" }} className="pb-24 min-w-0">
+      <div
+        style={{ paddingTop: "var(--bolzaboxes-nav-height)", paddingBottom: "var(--bolzaboxes-switch-zone)" }}
+        className="min-w-0"
+      >
         <MobileTopBar title={faction.name} icon={faction.icon} textColor={textColor} />
 
         <div className="flex min-w-0">

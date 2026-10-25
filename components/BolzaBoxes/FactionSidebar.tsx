@@ -2,15 +2,13 @@ import Link from "next/link";
 import { FACTIONS, factionPath } from "@/lib/BolzaBoxes/factions";
 import type { Faction } from "@/lib/BolzaBoxes/types";
 
-const SWITCH_RESERVED_SPACE = "6rem"; // 🎛️ doit correspondre au pb-24 réservé dans page.tsx
-
 export default function FactionSidebar({ active }: { active: Faction }) {
   return (
     <div
       className="flex flex-col items-center gap-1.5 lg:gap-2.5 py-3 lg:py-5 px-1.5 lg:px-2 w-10 lg:w-14 shrink-0 relative rounded-tr-3xl rounded-br-3xl overscroll-contain"
       style={{
         backgroundColor: "#DCD9D2",
-        maxHeight: `calc(100dvh - var(--bolzaboxes-nav-height, 80px) - ${SWITCH_RESERVED_SPACE} - env(safe-area-inset-bottom, 0px))`,
+        maxHeight: "calc(100dvh - var(--bolzaboxes-nav-height) - var(--bolzaboxes-switch-zone) - env(safe-area-inset-bottom, 0px))",
         overflowY: "auto",
         overflowX: "hidden",
       }}

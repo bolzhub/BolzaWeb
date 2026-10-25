@@ -49,6 +49,8 @@ const FACTION_DATA = {
     landmarks: { color: "darkbrown" },
     extra: { color: "darkbrown" },
     setup: { color: "darkbrown" },
+    cards: { color: "darkbrown" },
+    setup2: { color: "darkbrown" },
 } satisfies Record<string, FactionData>;
 
 export type FactionSlug = keyof typeof FACTION_DATA;

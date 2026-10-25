@@ -15,8 +15,6 @@ const BOXES_IMAGES = {
     french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French.png"),
 };
 
-const SWITCH_ZONE = "6rem";
-
 export default function BoxesPage() {
     const { version } = useVersion();
     const [navMenuOpen, setNavMenuOpen] = useState(false);
@@ -26,19 +24,15 @@ export default function BoxesPage() {
         <main className="relative h-[100svh] overflow-hidden">
             <BoxesScrollingBackground src={src} />
 
-            <BolzaBoxesNav
-                backgroundImageSrc={src}
-                transparent
-                onBurgerOpenChange={setNavMenuOpen}
-            />
+            <BolzaBoxesNav onBurgerOpenChange={setNavMenuOpen} />
             <VersionSwitch />
 
             <div
                 className={`absolute left-0 right-0 flex flex-col items-center justify-center gap-3 px-4 transition-opacity duration-200 ${navMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"
                     }`}
                 style={{
-                    top: "var(--bolzaboxes-nav-height, 5rem)",
-                    bottom: SWITCH_ZONE,
+                    top: "var(--bolzaboxes-nav-height)",
+                    bottom: "var(--bolzaboxes-switch-zone)"
                 }}
             >
                 <BoxesTapHint />

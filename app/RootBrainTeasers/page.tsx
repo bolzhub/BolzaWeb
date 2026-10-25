@@ -4,6 +4,7 @@ import ForestBackground from "@/components/RootBrainTeasers/ForestBackground";
 import PuzzlePiece from "@/components/RootBrainTeasers/PuzzlePiece";
 import AssetsEntry from "@/components/RootBrainTeasers/AssetsEntry";
 import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
+import { ResponsiveLogo } from "@/components/site/Logo";
 
 export const metadata: Metadata = {
     title: "Root Brain Teasers",
@@ -20,11 +21,7 @@ export default function RootBrainTeasersPage() {
                     href="/"
                     className="inline-block rounded-full bg-cream/95 px-4 py-2 shadow-md"
                 >
-                    <picture>
-                        <source media="(max-width: 480px)" srcSet="/logo/logo-icon.svg" />
-                        <source media="(max-width: 768px)" srcSet="/logo/logo-medium.svg" />
-                        <img src="/logo/logo-full.svg" alt="Bolzano" className="h-8 md:h-10" />
-                    </picture>
+                    <ResponsiveLogo />
                 </Link>
             </header>
 

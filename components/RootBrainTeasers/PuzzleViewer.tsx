@@ -5,6 +5,7 @@ import Link from "next/link";
 import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
 import ZoomImage from "@/components/RootBrainTeasers/ZoomImage";
 import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
+import { LOGO_SOURCES } from "@/components/site/Logo";
 
 export type SectionId = "rules" | "teaser" | "solution";
 export type SectionContent = { url: string; kind: "pdf" | "image" };
@@ -80,7 +81,7 @@ export default function PuzzleViewer({
             {/* Barre du haut : retour à la page principale, retour à la liste, numéro */}
             <div className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3" style={{ height: TOP_BAR }}>
                 <Link href="/" aria-label="Home" className={`${PILL} p-2`}>
-                    <img src="/logo/logo-icon.svg" alt="Bolzano" className="h-7 w-auto" />
+                    <img src={LOGO_SOURCES.small} alt="Bolzano" className="h-7 w-auto" />
                 </Link>
                 <Link href="/RootBrainTeasers" className={`${PILL} px-3 py-2 text-sm`}>
                     ← Puzzles

@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+    /* Repli : la nav le remplace par sa hauteur réelle mesurée (BolzaBoxesNav) */
+  --bolzaboxes-nav-height: 5rem;
+  /* Espace réservé en bas des pages BolzaBoxes pour le sélecteur de version */
+  --bolzaboxes-switch-zone: 6rem;
 }
 
 @theme inline {

@@ -16,10 +16,9 @@ export default function ScrollHint() {
         <button
             aria-label="Scroll down"
             onClick={() => window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" })}
-            className={`absolute left-1/2 -translate-x-1/2 z-10 text-cream transition-opacity duration-300 ${
-                visible ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-            style={{ bottom: "calc(6.5rem + env(safe-area-inset-bottom, 0px))" }}
+            className={`absolute left-1/2 -translate-x-1/2 z-10 text-cream transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+            style={{ bottom: "calc(var(--bolzaboxes-switch-zone) + 0.5rem + env(safe-area-inset-bottom, 0px))" }}
         >
             <svg
                 className="animate-bounce drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"

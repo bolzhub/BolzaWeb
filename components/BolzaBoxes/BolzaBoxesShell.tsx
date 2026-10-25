@@ -29,7 +29,7 @@ export default function BolzaBoxesShell({
                     alt=""
                     className="fixed inset-0 w-full h-full object-cover -z-10"
                 />
-                <BolzaBoxesNav backgroundImageSrc={heroImage} />
+                <BolzaBoxesNav background={{ type: "image", src: heroImage }} />
                 <ScrollHint />
                 <VersionSwitch />
             </div>

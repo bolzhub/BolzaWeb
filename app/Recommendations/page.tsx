@@ -1,19 +1,14 @@
 import Link from "next/link";
 import RecommendationsYoutube from "@/components/Recommendations/RecommendationsYoutube";
-
-const BG = "#1E2420";
-const FG = "#ECE5D8";
+import { BG, FG } from "@/lib/Recommendations/theme";
+import { ResponsiveLogo } from "@/components/site/Logo";
 
 export default function RecommendationsPage() {
     return (
         <main className="min-h-screen" style={{ backgroundColor: BG }}>
             <header className="flex items-center justify-between px-6 md:px-10 py-6">
                 <Link href="/" className="shrink-0">
-                    <picture>
-                        <source media="(max-width: 480px)" srcSet="/logo/logo-icon.svg" />
-                        <source media="(max-width: 768px)" srcSet="/logo/logo-medium.svg" />
-                        <img src="/logo/logo-full.svg" alt="Bolzano" className="h-8 md:h-10 invert" />
-                    </picture>
+                    <ResponsiveLogo className="h-8 md:h-10 invert" />
                 </Link>
                 <h1
                     className="text-xl md:text-2xl"

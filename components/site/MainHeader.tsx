@@ -2,20 +2,12 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import Logo from "./Logo";
+import Logo, { LOGO_SOURCES, type LogoSize } from "./Logo";
 
 const LOGO_HEIGHT = 40;
 const NAV_FONT_SIZE = "0.875rem";
 const SIDE_GAP = 24;
 const BURGER_WIDTH = 44;
-
-type LogoSize = "full" | "medium" | "small";
-
-const LOGO_SRC: Record<LogoSize, string> = {
-    full: "/logo/logo-full.svg",
-    medium: "/logo/logo-medium.svg",
-    small: "/logo/logo-icon.svg",
-};
 
 const NAV_ITEMS = [
     { label: "Home", href: "/" },
@@ -53,7 +45,7 @@ export default function MainHeader() {
                             resolve();
                         };
                         img.onerror = () => resolve();
-                        img.src = LOGO_SRC[size];
+                        img.src = LOGO_SOURCES[size];
                     })
             )
         ).then(() => {

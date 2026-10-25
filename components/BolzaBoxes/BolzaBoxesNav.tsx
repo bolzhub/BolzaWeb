@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { LOGO_SOURCES } from "@/components/site/Logo";
 
 const NAV_LINKS = [
   { label: "Home", href: "/BolzaBoxes" },
@@ -34,9 +35,8 @@ function NavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`whitespace-nowrap tracking-wide text-ink hover:opacity-60 transition-opacity ${
-        small ? "text-xs sm:text-sm" : "text-sm md:text-base"
-      } ${active ? "underline underline-offset-4" : ""}`}
+      className={`whitespace-nowrap tracking-wide text-ink hover:opacity-60 transition-opacity ${small ? "text-xs sm:text-sm" : "text-sm md:text-base"
+        } ${active ? "underline underline-offset-4" : ""}`}
       style={{ fontFamily: "var(--font-playfair)" }}
     >
       {label}
@@ -56,17 +56,20 @@ function BackgroundLayer({ src }: { src: string }) {
   );
 }
 
+export type NavBackground =
+  | { type: "image"; src: string } // photo fixe derrière la barre, avec fondu en dessous
+  | { type: "fade"; color: string } // couleur unie qui apparaît au défilement
+  | { type: "transparent" }; // laisse voir le fond de la page
+
 export default function BolzaBoxesNav({
-  backgroundImageSrc,
-  transparent = false,
-  fadeOverlayColor,
+  background = { type: "transparent" },
   onBurgerOpenChange,
 }: {
-  backgroundImageSrc?: string;
-  transparent?: boolean;
-  fadeOverlayColor?: string;
+  background?: NavBackground;
   onBurgerOpenChange?: (open: boolean) => void;
 }) {
+  const imageSrc = background.type === "image" ? background.src : null;
+  const fadeColor = background.type === "fade" ? background.color : null;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -82,7 +85,7 @@ export default function BolzaBoxesNav({
   }, [open, onBurgerOpenChange]);
 
   useEffect(() => {
-    if (!fadeOverlayColor) return;
+    if (!fadeColor) return;
     const THRESHOLD = 60;
     const update = () => {
       const ratio = Math.min(window.scrollY / THRESHOLD, 1);
@@ -91,7 +94,7 @@ export default function BolzaBoxesNav({
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, [fadeOverlayColor]);
+  }, [fadeColor]);
 
   useEffect(() => {
     const el = headerRef.current;
@@ -111,23 +114,18 @@ export default function BolzaBoxesNav({
   return (
     <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50">
       <div className="relative" style={{ clipPath: "inset(0)" }}>
-        {fadeOverlayColor ? (
+        {fadeColor && (
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundColor: fadeOverlayColor,
-              opacity: scrollOpacity,
-              transition: "opacity 0.15s ease-out",
-            }}
+            style={{ backgroundColor: fadeColor, opacity: scrollOpacity, transition: "opacity 0.15s ease-out" }}
           />
-        ) : (
-          !transparent && backgroundImageSrc && <BackgroundLayer src={backgroundImageSrc} />
         )}
+        {imageSrc && <BackgroundLayer src={imageSrc} />}
 
         <div className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 md:px-8 py-3">
           <Link href="/" className="shrink-0 flex items-center gap-2">
-            <img src="/logo/logo-icon.svg" alt="Bolzano Crafts" className="h-10 md:h-12" />
+            <img src={LOGO_SOURCES.small} alt="Bolzano Crafts" className="h-10 md:h-12" />
           </Link>
 
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center flex-1 min-w-0">
@@ -185,7 +183,7 @@ export default function BolzaBoxesNav({
         )}
       </div>
 
-      {!transparent && !fadeOverlayColor && backgroundImageSrc && (
+      {imageSrc && (
         <div
           className="absolute left-0 right-0 top-full h-24 pointer-events-none"
           style={{
@@ -194,7 +192,7 @@ export default function BolzaBoxesNav({
             maskImage: "linear-gradient(to bottom, black, transparent)",
           }}
         >
-          <BackgroundLayer src={backgroundImageSrc} />
+          <BackgroundLayer src={imageSrc} />
         </div>
       )}
     </header>

@@ -2,72 +2,43 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ADRHeader from "./ADRHeader";
+import ImageTile from "./ImageTile";
 import Lightbox from "./Lightbox";
-import type { HomeItem } from "@/lib/ADR/galleries";
 import Logo from "@/components/site/Logo";
+import type { HomeItem } from "@/lib/ADR/galleries";
 
 export default function HomeGallery({ items }: { items: HomeItem[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 pt-8 pb-2 px-4 md:px-8">
-                <Logo size="small" height={32} />
-
-                <h1
-                    className="text-center text-white m-0 text-5xl tracking-wide"
-                    style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
-                >
-                    Life Drawing
-                </h1>
-
-                <div className="invisible" aria-hidden="true">
-                    <Logo size="small" height={32} />
-                </div>
-            </div>
+            <ADRHeader left={<Logo size="small" height={32} />} title="Life Drawing" />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-10 gap-y-14 md:gap-y-16 p-8 md:p-16">
-                {items.map((item, i) =>
-                    item.type === "gallery" ? (
+                {items.map((item, i) => {
+                    const imageUrl = item.type === "image" ? item.url : undefined;
+                    const tile = (
+                        <>
+                            <ImageTile
+                                src={item.type === "gallery" ? item.cover : item.url}
+                                alt={item.name}
+                                onClick={imageUrl ? () => setSelectedImage(imageUrl) : undefined}
+                            />
+                            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic">{item.name}</p>
+                        </>
+                    );
+
+                    return item.type === "gallery" ? (
                         <Link key={i} href={`/ADR/gallery/${item.slug}`} className="block">
-                            <div className="relative w-full cursor-pointer" style={{ paddingTop: "100%" }}>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <img
-                                        src={item.cover}
-                                        alt={item.name}
-                                        className="max-w-full max-h-full object-contain rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white active:scale-105 active:ring-2 active:ring-white"
-                                    />
-                                </div>
-                            </div>
-                            <p
-                                className="text-center text-white/70 mt-5 text-sm md:text-base italic"
-                            >
-                                {item.name}
-                            </p>
+                            {tile}
                         </Link>
                     ) : (
                         <div key={i} className="block">
-                            <div
-                                className="relative w-full cursor-pointer"
-                                style={{ paddingTop: "100%" }}
-                                onClick={() => setSelectedImage(item.url)}
-                            >
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <img
-                                        src={item.url}
-                                        alt={item.name}
-                                        className="max-w-full max-h-full object-contain rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-white active:scale-105 active:ring-2 active:ring-white"
-                                    />
-                                </div>
-                            </div>
-                            <p
-                                className="text-center text-white/70 mt-5 text-sm md:text-base italic"
-                            >
-                                {item.name}
-                            </p>
+                            {tile}
                         </div>
-                    )
-                )}
+                    );
+                })}
             </div>
 
             <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
