@@ -10,14 +10,40 @@ const INACTIVE_WEIGHT = 1;
 const MAX_ASPECT_RATIO = 4 / 3;
 const GAP = 8; // doit correspondre à gap-2 (0.5rem = 8px)
 
-// Portable : grille de MOBILE_COLS colonnes. Le rectangle touché agrandit sa colonne
-// et sa ligne, ce qui repousse les rectangles de toutes les lignes.
-const MOBILE_COLS = 3;
-const MOBILE_ACTIVE_COL = 3; // largeur de la colonne active (en fr, les autres valent 1)
+// Portable : grille de MOBILE_ROWS lignes (les lignes du bas reçoivent les rectangles en trop :
+// 7 projets → 3 + 4). Les colonnes sont découpées en pistes communes à toutes les lignes
+// (12 pistes pour 3 + 4) : le rectangle touché élargit ses pistes et agrandit sa ligne,
+// ce qui repousse les rectangles des deux lignes.
+const MOBILE_ROWS = 2;
+const MOBILE_ACTIVE_COL = 3; // poids des pistes du rectangle actif (en fr, les autres valent 1)
 const MOBILE_ACTIVE_ROW = 2.2; // hauteur de la ligne active (en fr, les autres valent 1)
 const DESKTOP_QUERY = "(min-width: 768px)"; // = breakpoint md de Tailwind
 
-// "3fr 1fr 1fr" : la piste active pèse `active`, les autres 1
+const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+
+// Place chaque rectangle dans la grille portable : ligne, première piste et nombre de pistes
+function mobileLayout(count: number) {
+    const rows = Math.min(MOBILE_ROWS, count);
+    const base = Math.floor(count / rows);
+    const extra = count % rows;
+    const sizes = Array.from({ length: rows }, (_, r) => base + (r >= rows - extra ? 1 : 0));
+    const trackCount = sizes.reduce((a, b) => (a * b) / gcd(a, b), 1);
+    const cells: { row: number; start: number; span: number }[] = [];
+    sizes.forEach((size, row) => {
+        const span = trackCount / size;
+        for (let j = 0; j < size; j++) cells.push({ row, start: j * span, span });
+    });
+    return { rows, trackCount, cells };
+}
+
+// Poids de chaque piste de colonnes : celles du rectangle actif pèsent MOBILE_ACTIVE_COL
+function columnWeights(trackCount: number, active?: { start: number; span: number }) {
+    return Array.from({ length: trackCount }, (_, t) =>
+        active && t >= active.start && t < active.start + active.span ? MOBILE_ACTIVE_COL : 1,
+    );
+}
+
+// "2.2fr 1fr" : la piste active pèse `active`, les autres 1
 const tracks = (count: number, activeIndex: number | null, active: number) =>
     Array.from({ length: count }, (_, i) => (i === activeIndex ? `${active}fr` : "1fr")).join(" ");
 
@@ -42,15 +68,14 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
         // Portable : on ne calcule que la largeur de chaque rectangle (pour le disque
         // en coin) ; la grille CSS fait la mise en page
         if (!window.matchMedia(DESKTOP_QUERY).matches) {
-            const activeIndex = projects.findIndex((p) => p.id === activeId);
-            const activeCol = activeIndex >= 0 ? activeIndex % MOBILE_COLS : -1;
-            const cols = Math.min(MOBILE_COLS, count);
-            const gridAvailable = Math.max(containerWidth - GAP * (cols - 1), 0);
-            const totalWeight = cols - 1 + (activeCol >= 0 ? MOBILE_ACTIVE_COL : 1);
+            const { trackCount, cells } = mobileLayout(count);
+            const weights = columnWeights(trackCount, cells[projects.findIndex((p) => p.id === activeId)]);
+            const totalWeight = weights.reduce((a, b) => a + b, 0);
+            const trackSpace = Math.max(containerWidth - GAP * (trackCount - 1), 0);
             setWidths(
-                projects.map((_, i) => {
-                    const weight = i % MOBILE_COLS === activeCol ? MOBILE_ACTIVE_COL : 1;
-                    return (gridAvailable * weight) / totalWeight;
+                cells.map(({ start, span }) => {
+                    const own = weights.slice(start, start + span).reduce((a, b) => a + b, 0);
+                    return (trackSpace * own) / totalWeight + GAP * (span - 1);
                 }),
             );
             return;
@@ -84,15 +109,13 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
         return () => observer.disconnect();
     }, [recompute]);
 
-    const activeIndex = projects.findIndex((p) => p.id === activeId);
-    const rowCount = Math.ceil(projects.length / MOBILE_COLS);
+    const layout = mobileLayout(projects.length);
+    const activeCell = layout.cells[projects.findIndex((p) => p.id === activeId)];
     const gridStyle = {
-        "--cols": tracks(
-            Math.min(MOBILE_COLS, projects.length),
-            activeIndex >= 0 ? activeIndex % MOBILE_COLS : null,
-            MOBILE_ACTIVE_COL,
-        ),
-        "--rows": tracks(rowCount, activeIndex >= 0 ? Math.floor(activeIndex / MOBILE_COLS) : null, MOBILE_ACTIVE_ROW),
+        "--cols": columnWeights(layout.trackCount, activeCell)
+            .map((w) => `${w}fr`)
+            .join(" "),
+        "--rows": tracks(layout.rows, activeCell ? activeCell.row : null, MOBILE_ACTIVE_ROW),
     } as React.CSSProperties;
 
     return (
@@ -105,12 +128,20 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
         >
             {projects.map((project, i) => {
                 const width = widths ? widths[i] : undefined;
+                const cell = layout.cells[i];
 
                 return (
                     <div
                         key={project.id}
                         className="relative min-h-0 min-w-0 md:w-(--w) md:shrink-0 md:transition-[width] md:duration-500 md:ease-out"
-                        style={{ "--w": width !== undefined ? `${width}px` : undefined } as React.CSSProperties}
+                        style={
+                            {
+                                "--w": width !== undefined ? `${width}px` : undefined,
+                                // placement dans la grille portable (sans effet sur ordi, en flex)
+                                gridRow: cell.row + 1,
+                                gridColumn: `${cell.start + 1} / span ${cell.span}`,
+                            } as React.CSSProperties
+                        }
                         onPointerEnter={(e) => {
                             if (e.pointerType === "mouse") setActiveId(project.id);
                         }}

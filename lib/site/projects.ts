@@ -68,5 +68,12 @@ export function getProjects(): Project[] {
             href: "#",
             color: "#4a4a3d",
         },
+        {
+            id: "red-flags",
+            title: "Jeu des Red Flags",
+            href: "/RedFlags",
+            color: "#2a0b11",
+            previewImage: "/projects/red-flags/cover.svg",
+        },
     ];
 }
