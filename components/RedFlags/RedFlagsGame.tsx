@@ -113,6 +113,7 @@ function Intro({ onStart }: { onStart: () => void }) {
                 date. Jusqu’où iras-tu ?
             </p>
             <PrimaryButton onClick={onStart}>Lancer le jeu</PrimaryButton>
+            <p className="text-sm opacity-50">Un jeu de Hugo Mahasith</p>
         </div>
     );
 }
