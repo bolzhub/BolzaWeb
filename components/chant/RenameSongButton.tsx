@@ -8,13 +8,13 @@ export default function RenameSongButton({
     diskName,
     name,
     onRenamed,
-    icon = false,
+    size = "sm",
     className = "",
 }: {
     diskName: string;
     name: string;
     onRenamed?: (slug: string) => void;
-    icon?: boolean;
+    size?: "sm" | "md";
     className?: string;
 }) {
     const router = useRouter();
@@ -52,26 +52,26 @@ export default function RenameSongButton({
 
     return (
         <>
-            {icon ? (
-                <button
-                    onClick={show}
-                    aria-label="Renommer le dossier"
-                    title="Renommer"
-                    className={`rounded-full p-1.5 opacity-60 hover:bg-black/5 hover:opacity-100 ${className}`}
+            <button
+                onClick={show}
+                aria-label={`Renommer ${name}`}
+                title="Renommer"
+                className={`shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:opacity-100 ${className}`}
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    className={size === "md" ? "h-5 w-5" : "h-4 w-4"}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
                 >
-                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.9 4.1a2.1 2.1 0 0 1 3 3L8.5 18.5 4 20l1.5-4.5L16.9 4.1Z"
-                        />
-                    </svg>
-                </button>
-            ) : (
-                <button onClick={show} className={`text-xs opacity-50 hover:opacity-100 ${className}`}>
-                    Renommer
-                </button>
-            )}
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M16.9 4.1a2.1 2.1 0 0 1 3 3L8.5 18.5 4 20l1.5-4.5L16.9 4.1Z"
+                    />
+                </svg>
+            </button>
 
             {open && (
                 <div

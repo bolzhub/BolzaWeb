@@ -9,7 +9,7 @@ import TagPicker from "./TagPicker";
 import UploadStatus from "./UploadStatus";
 import { extractDroppedFiles, useUploader } from "./useUploader";
 import TagChip from "./TagChip";
-import DeleteSongButton from "./DeleteSongButton";
+import DeleteSongButton, { XIcon } from "./DeleteSongButton";
 import RenameSongButton from "./RenameSongButton";
 
 const KIND_LABEL = { pdf: "PDF", image: "Image", audio: "Audio", video: "Vidéo", other: "Fichier" } as const;
@@ -165,7 +165,7 @@ export default function SongView({
                         <RenameSongButton
                             diskName={diskName}
                             name={name}
-                            icon
+                            size="md"
                             onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
                         />
                     </h1>
@@ -193,7 +193,13 @@ export default function SongView({
                             if (list.length) upload(diskName, list);
                         }}
                     />
-                    <DeleteSongButton diskName={diskName} name={name} fileCount={files.length} redirectTo={backHref} />
+                    <DeleteSongButton
+                        diskName={diskName}
+                        name={name}
+                        fileCount={files.length}
+                        redirectTo={backHref}
+                        size="md"
+                    />
                 </div>
                 {shownTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pl-1">
@@ -317,19 +323,7 @@ export default function SongView({
                                             title="Supprimer"
                                             className="shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:text-red-700 hover:opacity-100 disabled:opacity-20"
                                         >
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                className="h-5 w-5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth={2}
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M4 7h16M10 11v6m4-6v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"
-                                                />
-                                            </svg>
+                                            <XIcon className="h-5 w-5" />
                                         </button>
                                     </li>
                                 );

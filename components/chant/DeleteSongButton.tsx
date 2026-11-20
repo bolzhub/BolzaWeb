@@ -3,17 +3,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Croix de suppression, partagée avec la liste des fichiers
+export function XIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
 export default function DeleteSongButton({
   diskName,
   name,
   fileCount = 0,
   redirectTo,
+  size = "sm",
   className = "",
 }: {
   diskName: string;
   name: string;
   fileCount?: number;
   redirectTo?: string;
+  size?: "sm" | "md";
   className?: string;
 }) {
   const router = useRouter();
@@ -49,9 +60,11 @@ export default function DeleteSongButton({
       <button
         onClick={remove}
         disabled={busy}
-        className={`text-xs opacity-50 hover:text-red-700 hover:opacity-100 disabled:opacity-30 ${className}`}
+        aria-label={`Supprimer ${name}`}
+        title="Supprimer"
+        className={`shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:text-red-700 hover:opacity-100 disabled:opacity-20 ${className}`}
       >
-        {busy ? "Suppression…" : "Supprimer"}
+        <XIcon className={size === "md" ? "h-5 w-5" : "h-4 w-4"} />
       </button>
       {error && <span className="w-full text-xs text-red-700">{error}</span>}
     </>
