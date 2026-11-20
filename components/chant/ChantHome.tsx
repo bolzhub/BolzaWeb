@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { SongSummary } from "@/lib/chant/types";
@@ -62,12 +62,83 @@ export default function ChantHome({
     const [error, setError] = useState<string | null>(null);
     const [dragOver, setDragOver] = useState<string | null>(null);
 
+    // Mode tag (« coloriage ») : un clic sur un dossier ajoute ou retire le tag pinceau
+    const [tagMode, setTagMode] = useState(false);
+    const [brush, setBrush] = useState<string | null>(null);
+    const [paintError, setPaintError] = useState<string | null>(null);
+    // Tags modifiés localement, affichés tout de suite sans attendre le serveur
+    const [overrides, setOverrides] = useState<Record<string, string[]>>({});
+    const [pending, setPending] = useState(0);
+    const queue = useRef<Promise<unknown>>(Promise.resolve());
+
+    // Données fraîches du serveur et plus aucun envoi en attente : elles font foi
+    const [prevSongs, setPrevSongs] = useState(songs);
+    if (songs !== prevSongs) {
+        setPrevSongs(songs);
+        if (pending === 0) setOverrides({});
+    }
+
+    const tagsOf = (song: SongSummary) => overrides[song.diskName] ?? song.tags;
+    const brushTag = brush && tags.includes(brush) ? brush : null;
+
     function setActiveTag(tag: string | null) {
         // replaceState : changer de tag ne crée pas d'entrée d'historique, et ne recharge pas la page
         window.history.replaceState(null, "", tag ? `/chant?${new URLSearchParams({ tag })}` : "/chant");
     }
 
-    const visible = activeTag ? songs.filter((s) => s.tags.includes(activeTag)) : songs;
+    function enterTagMode() {
+        setBrush(brushTag ?? activeTag ?? tagOrder[0] ?? null);
+        setPaintError(null);
+        setShowNew(false);
+        setTagMode(true);
+    }
+
+    function exitTagMode() {
+        setTagMode(false);
+        router.refresh();
+    }
+
+    useEffect(() => {
+        if (!tagMode) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                setTagMode(false);
+                router.refresh();
+            }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [tagMode, router]);
+
+    function paint(song: SongSummary) {
+        if (!brushTag) return;
+        const tag = brushTag;
+        const current = tagsOf(song);
+        const on = !current.includes(tag);
+        setOverrides((o) => ({ ...o, [song.diskName]: on ? [...current, tag] : current.filter((t) => t !== tag) }));
+        setPending((n) => n + 1);
+        // Envois à la file : deux clics rapides sur un dossier arrivent dans l'ordre
+        queue.current = queue.current
+            .then(async () => {
+                const res = await fetch("/api/chant/song-tags", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ song: song.diskName, tag, on }),
+                }).catch(() => null);
+                if (!res?.ok) {
+                    setPaintError(`Impossible de modifier « ${song.name} ». L'affichage a été rechargé.`);
+                    setOverrides((o) => {
+                        const rest = { ...o };
+                        delete rest[song.diskName];
+                        return rest;
+                    });
+                    router.refresh();
+                }
+            })
+            .finally(() => setPending((n) => n - 1));
+    }
+
+    const visible = tagMode || !activeTag ? songs : songs.filter((s) => tagsOf(s).includes(activeTag));
 
     async function createFolder(e: React.FormEvent) {
         e.preventDefault();
@@ -100,6 +171,20 @@ export default function ChantHome({
         >
             <header className="mb-6 flex flex-wrap items-center gap-3">
                 <h1 className="flex-1 text-2xl font-semibold">Chant Fratellini</h1>
+                <button
+                    onClick={tagMode ? exitTagMode : enterTagMode}
+                    aria-pressed={tagMode}
+                    className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm ${tagMode ? "border-[#2b2926] bg-[#2b2926] text-white" : "border-black/20 hover:bg-black/5"}`}
+                >
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M18.4 2.6a2 2 0 0 1 2.9 2.9L12 14.8 9.2 12l9.2-9.4ZM9.2 12c-2.3 0-4 1.7-4 4 0 1.5-.8 2.6-2.2 3.2 1 1 2.6 1.6 4.2 1.6 3 0 5-2 5-4.8"
+                        />
+                    </svg>
+                    {tagMode ? "Terminer" : "Mode tag"}
+                </button>
                 <button
                     onClick={() => setShowNew((v) => !v)}
                     className="rounded-full bg-[#2b2926] px-4 py-2 text-sm text-white"
@@ -135,17 +220,41 @@ export default function ChantHome({
             )}
 
             <div className="mb-6 flex flex-wrap items-center gap-2">
-                <button
-                    onClick={() => setActiveTag(null)}
-                    className={`rounded-full border px-3 py-1 text-sm ${activeTag === null ? "border-[#2b2926] bg-[#2b2926] text-white" : "border-black/20 hover:bg-black/5"}`}
-                >
-                    Tous
-                </button>
-                <TagBar allTags={tags} tagOrder={tagOrder} activeTag={activeTag} onSelect={setActiveTag} />
+                {!tagMode && (
+                    <button
+                        onClick={() => setActiveTag(null)}
+                        className={`rounded-full border px-3 py-1 text-sm ${activeTag === null ? "border-[#2b2926] bg-[#2b2926] text-white" : "border-black/20 hover:bg-black/5"}`}
+                    >
+                        Tous
+                    </button>
+                )}
+                {/* En mode tag, la barre choisit le pinceau au lieu de filtrer */}
+                <TagBar
+                    allTags={tags}
+                    tagOrder={tagOrder}
+                    activeTag={tagMode ? brushTag : activeTag}
+                    onSelect={tagMode ? (t) => t && setBrush(t) : setActiveTag}
+                />
                 <div className="w-48">
-                    <NewTagForm />
+                    <NewTagForm onCreated={tagMode ? setBrush : undefined} />
                 </div>
             </div>
+
+            {tagMode && (
+                <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm">
+                    {brushTag ? (
+                        <p className="flex-1">
+                            Cliquez sur les dossiers pour ajouter ou retirer{" "}
+                            <TagChip tag={brushTag} allTags={tags} active /> · choisissez un autre tag dans la barre
+                            ci-dessus.
+                        </p>
+                    ) : (
+                        <p className="flex-1">Créez d&apos;abord un tag pour pouvoir colorier les dossiers.</p>
+                    )}
+                    <span className="text-xs opacity-50">Échap pour quitter</span>
+                    {paintError && <p className="w-full text-red-700">{paintError}</p>}
+                </div>
+            )}
 
             {visible.length === 0 ? (
                 <p className="opacity-60">
@@ -155,8 +264,56 @@ export default function ChantHome({
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                     {visible.map((song) => {
                         // Tags du dossier, dans l'ordre d'affichage choisi (couleurs : ordre de création)
-                        const songTags = tagOrder.filter((t) => song.tags.includes(t));
+                        const current = tagsOf(song);
+                        const songTags = tagOrder.filter((t) => current.includes(t));
                         const colors = songTags.map((t) => getTagColor(t, tags).solid);
+
+                        const content = (
+                            <>
+                                <FolderIcon colors={colors} />
+                                <div>
+                                    <p className="break-words font-medium leading-snug">{song.name}</p>
+                                    <p className="text-sm opacity-60">
+                                        {song.fileCount} fichier{song.fileCount > 1 ? "s" : ""}
+                                    </p>
+                                </div>
+                            </>
+                        );
+
+                        if (tagMode) {
+                            const painted = brushTag !== null && current.includes(brushTag);
+                            const color = brushTag ? getTagColor(brushTag, tags) : null;
+                            return (
+                                <button
+                                    key={song.slug}
+                                    type="button"
+                                    onClick={() => paint(song)}
+                                    disabled={!brushTag}
+                                    aria-pressed={painted}
+                                    style={
+                                        {
+                                            "--brush": color?.solid,
+                                            "--brush-soft": color?.soft,
+                                            ...(painted && color
+                                                ? {
+                                                      borderColor: color.solid,
+                                                      backgroundColor: color.soft,
+                                                      boxShadow: `0 0 0 1px ${color.solid}`,
+                                                  }
+                                                : {}),
+                                        } as React.CSSProperties
+                                    }
+                                    className={`flex select-none flex-col gap-3 rounded-2xl border bg-white p-4 text-left transition enabled:cursor-pointer ${painted ? "" : "border-black/10 enabled:hover:border-(--brush)"}`}
+                                >
+                                    {content}
+                                    <div className="flex min-h-6 flex-wrap items-center gap-1.5">
+                                        {songTags.map((t) => (
+                                            <TagChip key={t} tag={t} allTags={tags} />
+                                        ))}
+                                    </div>
+                                </button>
+                            );
+                        }
 
                         return (
                             <div
@@ -180,13 +337,7 @@ export default function ChantHome({
                                     href={`/chant/${song.slug}${activeTag ? `?${new URLSearchParams({ tag: activeTag })}` : ""}`}
                                     className="flex flex-col gap-3"
                                 >
-                                    <FolderIcon colors={colors} />
-                                    <div>
-                                        <p className="break-words font-medium leading-snug">{song.name}</p>
-                                        <p className="text-sm opacity-60">
-                                            {song.fileCount} fichier{song.fileCount > 1 ? "s" : ""}
-                                        </p>
-                                    </div>
+                                    {content}
                                 </Link>
 
                                 <div className="flex flex-wrap items-center gap-1.5">
@@ -198,7 +349,7 @@ export default function ChantHome({
                                         songName={song.name}
                                         allTags={tags}
                                         order={tagOrder}
-                                        selected={song.tags}
+                                        selected={current}
                                     />
                                     <RenameSongButton diskName={song.diskName} name={song.name} className="ml-auto" />
                                     <DeleteSongButton
