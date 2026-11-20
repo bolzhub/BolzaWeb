@@ -64,7 +64,12 @@ function TouchMenu({ diskName, name, fileCount, allTags, tagOrder, selected }: P
 
             {dialog === "menu" &&
                 createPortal(
-                    <div className="fixed inset-0 z-40 flex items-end bg-black/30 text-ink" onClick={close}>
+                    <div
+                        role="dialog"
+                        aria-modal="true"
+                        className="fixed inset-0 z-40 flex items-end bg-black/30 text-ink"
+                        onClick={close}
+                    >
                         <div
                             className="w-full space-y-1 rounded-t-2xl bg-white p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-xl"
                             onClick={(e) => e.stopPropagation()}

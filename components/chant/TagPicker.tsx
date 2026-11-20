@@ -114,7 +114,9 @@ export function TagPickerDialog({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 p-4 text-ink" onClick={onClose}>
+    <div role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 p-4 text-ink" onClick={onClose}>
       <div
         className="w-full max-w-sm space-y-3 rounded-2xl bg-white p-4 shadow-xl"
         onClick={(e) => e.stopPropagation()}

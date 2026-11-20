@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { SongFile } from "@/lib/chant/types";
@@ -96,6 +96,37 @@ export default function SongView({
     const media = files.find((f) => f.name === mediaName) ?? null;
     const doc = files.find((f) => f.name === docName) ?? null;
     const hasViewer = Boolean(media || doc);
+
+    // Raccourcis clavier du lecteur, actifs dès qu'un audio ou une vidéo est ouvert
+    // (pas seulement quand le lecteur a le focus) : Espace = lecture/pause, ← → = -5 s / +5 s
+    // Type commun pour pouvoir le poser sur <audio> comme sur <video>
+    const mediaRef = useRef<HTMLAudioElement & HTMLVideoElement>(null);
+    const mediaOpen = media !== null;
+    useEffect(() => {
+        if (!mediaOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            const el = mediaRef.current;
+            if (!el || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+            const target = e.target as HTMLElement;
+            // Le lecteur gère lui-même ses touches quand il a le focus ; on laisse aussi
+            // tranquilles les champs de saisie et les fenêtres (renommage, tags…)
+            if (target === el || target.closest('input, textarea, select, [contenteditable="true"], [role="dialog"]')) {
+                return;
+            }
+            if (e.key === " ") {
+                e.preventDefault(); // pas de défilement, ni de « clic » sur le bouton qui a le focus
+                if (el.paused) void el.play();
+                else el.pause();
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+                e.preventDefault();
+                const step = e.key === "ArrowLeft" ? -5 : 5;
+                const end = Number.isFinite(el.duration) ? el.duration : Infinity;
+                el.currentTime = Math.min(Math.max(el.currentTime + step, 0), end);
+            }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [mediaOpen]);
 
     const fileUrl = (fileName: string, download = false) =>
         `/api/chant/file?${new URLSearchParams({ song: diskName, name: fileName, ...(download ? { download: "1" } : {}) })}`;
@@ -261,6 +292,7 @@ export default function SongView({
                             >
                                 {media.kind === "audio" ? (
                                     <audio
+                                        ref={mediaRef}
                                         key={media.name}
                                         src={fileUrl(media.name)}
                                         controls
@@ -269,6 +301,7 @@ export default function SongView({
                                     />
                                 ) : (
                                     <video
+                                        ref={mediaRef}
                                         key={media.name}
                                         src={fileUrl(media.name)}
                                         controls
