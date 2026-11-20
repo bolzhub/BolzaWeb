@@ -331,7 +331,7 @@ export default function ChantHome({
                                     const { files, skippedFolders } = extractDroppedFiles(e.dataTransfer);
                                     if (files.length || skippedFolders) upload(song.diskName, files, skippedFolders);
                                 }}
-                                className={`flex flex-col gap-3 rounded-2xl border bg-white p-4 transition ${dragOver === song.slug ? "border-[#2b2926] ring-2 ring-[#2b2926]/30" : "border-black/10"}`}
+                                className={`group flex flex-col gap-3 rounded-2xl border bg-white p-4 transition ${dragOver === song.slug ? "border-[#2b2926] ring-2 ring-[#2b2926]/30" : "border-black/10"}`}
                             >
                                 <Link
                                     href={`/chant/${song.slug}${activeTag ? `?${new URLSearchParams({ tag: activeTag })}` : ""}`}
@@ -351,12 +351,15 @@ export default function ChantHome({
                                         order={tagOrder}
                                         selected={current}
                                     />
-                                    <RenameSongButton diskName={song.diskName} name={song.name} className="ml-auto" />
-                                    <DeleteSongButton
-                                        diskName={song.diskName}
-                                        name={song.name}
-                                        fileCount={song.fileCount}
-                                    />
+                                    {/* Avec une souris : visibles seulement au survol de la carte (ou au clavier) */}
+                                    <span className="ml-auto flex items-center transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
+                                        <RenameSongButton diskName={song.diskName} name={song.name} />
+                                        <DeleteSongButton
+                                            diskName={song.diskName}
+                                            name={song.name}
+                                            fileCount={song.fileCount}
+                                        />
+                                    </span>
                                 </div>
                             </div>
                         );

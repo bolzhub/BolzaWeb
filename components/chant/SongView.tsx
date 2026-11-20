@@ -171,56 +171,68 @@ export default function SongView({
             }}
         >
             <header className="mb-6 space-y-3">
-                <div className="flex flex-wrap items-center gap-3">
-                    <Link
-                        href={backHref}
-                        aria-label="Retour aux chansons"
-                        className="rounded-full p-1.5 hover:bg-black/5"
-                    >
-                        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </Link>
-                    <h1 className="flex min-w-0 flex-1 items-center gap-1 text-xl font-semibold md:text-2xl">
-                        <span className="min-w-0 break-words">{name}</span>
-                        <RenameSongButton
+                {/* Portable : titre sur toute la largeur, boutons en dessous. Ordi : une seule ligne */}
+                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                    <div className="flex min-w-0 items-center gap-2 md:flex-1">
+                        <Link
+                            href={backHref}
+                            aria-label="Retour aux chansons"
+                            className="shrink-0 rounded-full p-1.5 hover:bg-black/5"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                className="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </Link>
+                        <h1 className="flex min-w-0 flex-1 items-center gap-1 text-xl font-semibold md:text-2xl">
+                            <span className="min-w-0 break-words">{name}</span>
+                            <RenameSongButton
+                                diskName={diskName}
+                                name={name}
+                                size="md"
+                                onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
+                            />
+                        </h1>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3 pl-1 md:shrink-0 md:pl-0">
+                        <TagPicker
+                            song={diskName}
+                            songName={name}
+                            allTags={allTags}
+                            order={tagOrder}
+                            selected={selectedTags}
+                        />
+                        <button
+                            onClick={() => inputRef.current?.click()}
+                            className="rounded-full bg-[#2b2926] px-4 py-2 text-sm text-white"
+                        >
+                            Ajouter des fichiers
+                        </button>
+                        <input
+                            ref={inputRef}
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={(e) => {
+                                const list = Array.from(e.target.files ?? []);
+                                e.target.value = "";
+                                if (list.length) upload(diskName, list);
+                            }}
+                        />
+                        <DeleteSongButton
                             diskName={diskName}
                             name={name}
+                            fileCount={files.length}
+                            redirectTo={backHref}
                             size="md"
-                            onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
+                            className="ml-auto md:ml-0"
                         />
-                    </h1>
-                    <TagPicker
-                        song={diskName}
-                        songName={name}
-                        allTags={allTags}
-                        order={tagOrder}
-                        selected={selectedTags}
-                    />
-                    <button
-                        onClick={() => inputRef.current?.click()}
-                        className="rounded-full bg-[#2b2926] px-4 py-2 text-sm text-white"
-                    >
-                        Ajouter des fichiers
-                    </button>
-                    <input
-                        ref={inputRef}
-                        type="file"
-                        multiple
-                        className="hidden"
-                        onChange={(e) => {
-                            const list = Array.from(e.target.files ?? []);
-                            e.target.value = "";
-                            if (list.length) upload(diskName, list);
-                        }}
-                    />
-                    <DeleteSongButton
-                        diskName={diskName}
-                        name={name}
-                        fileCount={files.length}
-                        redirectTo={backHref}
-                        size="md"
-                    />
+                    </div>
                 </div>
                 {shownTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pl-1">
