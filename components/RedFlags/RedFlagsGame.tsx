@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ResponsiveLogo } from "@/components/site/Logo";
 import { RED_FLAGS } from "@/lib/RedFlags/redFlags";
-import { DATE_NAMES, shuffle, verdict } from "@/lib/RedFlags/game";
+import { shuffle, verdict } from "@/lib/RedFlags/game";
 
 const BG = "#2a0b11";
 const RED = "#e0313f";
@@ -34,12 +34,15 @@ export default function RedFlagsGame() {
         else setCount((c) => c + 1);
     }
 
+    const centered = phase === "intro" || phase === "name";
+
     return (
         <main
-            className="flex min-h-screen min-h-dvh flex-col text-cream"
+            className="relative flex min-h-screen min-h-dvh flex-col text-cream"
             style={{ backgroundColor: BG, fontFamily: "var(--font-manrope)" }}
         >
-            <header className="flex items-center justify-between px-6 py-5 md:px-10">
+            {/* En-tête superposé : l'accueil et le choix du prénom se centrent sur tout l'écran */}
+            <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10">
                 <Link href="/" className="shrink-0">
                     <ResponsiveLogo className="h-8 brightness-0 invert md:h-10" />
                 </Link>
@@ -53,7 +56,11 @@ export default function RedFlagsGame() {
                 )}
             </header>
 
-            <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-6 pb-8">
+            <div
+                className={`mx-auto flex w-full max-w-xl flex-1 flex-col px-6 ${
+                    centered ? "py-24" : "pb-8 pt-20 md:pt-24"
+                }`}
+            >
                 {phase === "intro" && <Intro onStart={() => setPhase("name")} />}
                 {phase === "name" && <NamePicker onPick={startDate} />}
                 {phase === "date" && (
@@ -118,17 +125,6 @@ function NamePicker({ onPick }: { onPick: (name: string) => void }) {
             <h2 className="text-center text-3xl" style={TITLE_FONT}>
                 Avec qui as-tu rendez-vous ?
             </h2>
-            <div className="grid grid-cols-2 gap-3">
-                {DATE_NAMES.map((n) => (
-                    <button
-                        key={n}
-                        onClick={() => onPick(n)}
-                        className="rounded-2xl border border-cream/20 px-4 py-3 text-lg transition hover:border-cream/60 hover:bg-cream/5 active:scale-95"
-                    >
-                        {n}
-                    </button>
-                ))}
-            </div>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -139,7 +135,8 @@ function NamePicker({ onPick }: { onPick: (name: string) => void }) {
                 <input
                     value={custom}
                     onChange={(e) => setCustom(e.target.value)}
-                    placeholder="Ou un autre prénom…"
+                    autoFocus
+                    placeholder="Son prénom"
                     maxLength={30}
                     className="min-w-0 flex-1 rounded-full border border-cream/20 bg-transparent px-4 py-2 outline-none placeholder:text-cream/40 focus:border-cream/60"
                 />

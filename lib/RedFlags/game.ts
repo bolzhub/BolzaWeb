@@ -1,6 +1,3 @@
-// Prénoms proposés pour le date (épicènes : le jeu marche quel que soit le genre)
-export const DATE_NAMES = ["Camille", "Alex", "Sacha", "Charlie", "Lou", "Noa", "Andréa", "Dominique"];
-
 // Mélange de Fisher-Yates : l'ordre de tirage des red flags pour une partie
 export function shuffle<T>(list: readonly T[]): T[] {
     const out = [...list];
