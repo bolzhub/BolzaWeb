@@ -6,10 +6,19 @@ import SongView from "@/components/chant/SongView";
 
 export const dynamic = "force-dynamic";
 
-export default async function SongPage({ params }: { params: Promise<{ song: string }> }) {
+export default async function SongPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ song: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   if (!(await isAuthenticated())) return <PasswordGate />;
 
   const { song: slug } = await params;
+  // Tag depuis lequel on a ouvert le dossier : le retour ramène dans ce tag
+  const { tag } = await searchParams;
+  const backHref = typeof tag === "string" && tag ? `/chant?${new URLSearchParams({ tag })}` : "/chant";
 
   let detail;
   try {
@@ -26,6 +35,7 @@ export default async function SongPage({ params }: { params: Promise<{ song: str
       files={detail.files}
       allTags={detail.allTags}
       selectedTags={detail.selectedTags}
+      backHref={backHref}
     />
   );
 }

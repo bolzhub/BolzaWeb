@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { SongSummary } from "@/lib/chant/types";
 import { getTagColor } from "@/lib/chant/tagColors";
 import TagChip from "./TagChip";
@@ -43,11 +43,19 @@ function FolderIcon({ colors }: { colors: string[] }) {
 export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags: string[] }) {
     const router = useRouter();
     const { items, upload, clearFinished } = useUploader();
-    const [activeTag, setActiveTag] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    // Le tag actif vit dans l'URL (?tag=…) pour être conservé quand on revient d'un dossier
+    const tagParam = searchParams.get("tag");
+    const activeTag = tagParam && tags.includes(tagParam) ? tagParam : null;
     const [showNew, setShowNew] = useState(false);
     const [newName, setNewName] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [dragOver, setDragOver] = useState<string | null>(null);
+
+    function setActiveTag(tag: string | null) {
+        // replaceState : changer de tag ne crée pas d'entrée d'historique, et ne recharge pas la page
+        window.history.replaceState(null, "", tag ? `/chant?${new URLSearchParams({ tag })}` : "/chant");
+    }
 
     const visible = activeTag ? songs.filter((s) => s.tags.includes(activeTag)) : songs;
 
@@ -167,7 +175,10 @@ export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags:
                                 }}
                                 className={`flex flex-col gap-3 rounded-2xl border bg-white p-4 transition ${dragOver === song.slug ? "border-[#2b2926] ring-2 ring-[#2b2926]/30" : "border-black/10"}`}
                             >
-                                <Link href={`/chant/${song.slug}`} className="flex flex-col gap-3">
+                                <Link
+                                    href={`/chant/${song.slug}${activeTag ? `?${new URLSearchParams({ tag: activeTag })}` : ""}`}
+                                    className="flex flex-col gap-3"
+                                >
                                     <FolderIcon colors={colors} />
                                     <div>
                                         <p className="break-words font-medium leading-snug">{song.name}</p>

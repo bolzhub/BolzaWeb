@@ -67,12 +67,14 @@ export default function SongView({
     files,
     allTags,
     selectedTags,
+    backHref = "/chant",
 }: {
     diskName: string;
     name: string;
     files: SongFile[];
     allTags: string[];
     selectedTags: string[];
+    backHref?: string;
 }) {
     const { items, upload, clearFinished } = useUploader();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -115,7 +117,7 @@ export default function SongView({
             <header className="mb-6 space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                     <Link
-                        href="/chant"
+                        href={backHref}
                         aria-label="Retour aux chansons"
                         className="rounded-full p-1.5 hover:bg-black/5"
                     >
@@ -142,7 +144,7 @@ export default function SongView({
                             if (list.length) upload(diskName, list);
                         }}
                     />
-                    {files.length === 0 && <DeleteSongButton diskName={diskName} name={name} redirectTo="/chant" />}
+                    {files.length === 0 && <DeleteSongButton diskName={diskName} name={name} redirectTo={backHref} />}
                 </div>
                 {selectedTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pl-1">
