@@ -260,6 +260,28 @@ export function renameSong(disk: string, display: string): Promise<{ slug: strin
     });
 }
 
+export function renameFile(disk: string, name: string, raw: string): Promise<string> {
+    return withLock(async () => {
+        const newName = sanitizeFileName(raw);
+        if (!newName) throw new ChantError("Nom de fichier invalide.");
+
+        const from = filePath(disk, name);
+        const fromStat = await fs.lstat(from).catch(() => null);
+        if (!fromStat?.isFile()) throw new ChantError("Fichier introuvable.", 404);
+        if (newName === name) return name;
+
+        // Cible déjà prise ? (même fichier si seule la casse change sur un disque insensible à la casse)
+        const to = filePath(disk, newName);
+        const toStat = await fs.lstat(to).catch(() => null);
+        if (toStat && !(toStat.ino === fromStat.ino && toStat.dev === fromStat.dev)) {
+            throw new ChantError("Un fichier porte déjà ce nom dans ce dossier.", 409);
+        }
+
+        await fs.rename(from, to);
+        return newName;
+    });
+}
+
 /* ---------- Envois ---------- */
 
 async function exists(p: string) {

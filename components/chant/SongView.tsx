@@ -10,7 +10,7 @@ import UploadStatus from "./UploadStatus";
 import { extractDroppedFiles, useUploader } from "./useUploader";
 import TagChip from "./TagChip";
 import DeleteSongButton, { XIcon } from "./DeleteSongButton";
-import RenameSongButton from "./RenameSongButton";
+import RenameSongButton, { RenameButton } from "./RenameSongButton";
 
 const KIND_LABEL = { pdf: "PDF", image: "Image", audio: "Audio", video: "Vidéo", other: "Fichier" } as const;
 
@@ -122,6 +122,27 @@ export default function SongView({
         if (mediaName === file.name) setMediaName(null);
         if (docName === file.name) setDocName(null);
         router.refresh();
+    }
+
+    // L'extension reste fixe : on ne renomme que la partie avant (comme le fait storage.uniqueFileName)
+    function splitName(fileName: string) {
+        const dot = fileName.lastIndexOf(".");
+        return dot > 0 ? { stem: fileName.slice(0, dot), ext: fileName.slice(dot) } : { stem: fileName, ext: "" };
+    }
+
+    async function renameFile(file: SongFile, stem: string): Promise<string | null> {
+        const res = await fetch("/api/chant/file", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ song: diskName, name: file.name, newName: stem + splitName(file.name).ext }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) return data.error ?? "Erreur.";
+        // Le lecteur suit le fichier renommé
+        if (mediaName === file.name) setMediaName(data.name);
+        if (docName === file.name) setDocName(data.name);
+        router.refresh();
+        return null;
     }
 
     function open(file: SongFile) {
@@ -296,6 +317,13 @@ export default function SongView({
                                                 <span className="block text-xs opacity-60">{formatSize(f.size)}</span>
                                             </span>
                                         </button>
+                                        <RenameButton
+                                            title={`Renommer ${f.name}`}
+                                            value={splitName(f.name).stem}
+                                            suffix={splitName(f.name).ext}
+                                            size="md"
+                                            onRename={(stem) => renameFile(f, stem)}
+                                        />
                                         <a
                                             href={fileUrl(f.name, true)}
                                             download={f.name}
