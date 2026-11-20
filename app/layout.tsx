@@ -1,28 +1,37 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Manrope, Cinzel_Decorative, Cinzel } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 
-const playfair = Playfair_Display({
+const playfair = localFont({
+    src: [
+        { path: "./fonts/PlayfairDisplay-Variable.ttf", weight: "400 900", style: "normal" },
+        { path: "./fonts/PlayfairDisplay-Italic-Variable.ttf", weight: "400 900", style: "italic" },
+    ],
     variable: "--font-playfair",
-    subsets: ["latin"],
-    weight: ["400", "700"],
+    display: "swap",
 });
 
-const manrope = Manrope({
+const manrope = localFont({
+    src: "./fonts/Manrope-Variable.ttf",
+    weight: "200 800",
     variable: "--font-manrope",
-    subsets: ["latin"],
+    display: "swap",
 });
 
-const cinzelDecorative = Cinzel_Decorative({
+const cinzelDecorative = localFont({
+    src: [
+        { path: "./fonts/CinzelDecorative-Bold.ttf", weight: "700", style: "normal" },
+        { path: "./fonts/CinzelDecorative-Black.ttf", weight: "900", style: "normal" },
+    ],
     variable: "--font-cinzel-decorative",
-    subsets: ["latin"],
-    weight: ["700", "900"],
+    display: "swap",
 });
 
-const cinzel = Cinzel({
+const cinzel = localFont({
+    src: "./fonts/Cinzel-Variable.ttf",
+    weight: "400 900",
     variable: "--font-cinzel",
-    subsets: ["latin"],
-    weight: ["400", "600"],
+    display: "swap",
 });
 
 export const metadata: Metadata = {

@@ -145,6 +145,29 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
         ],
     },
     {
+        title: "How to DIY",
+        items: [
+            {
+                title: "Stuff Madde Here",
+                url: "https://www.youtube.com/@StuffMadeHere",
+                description:
+                    "Every video is excellent. Guy is no joke. He really is incredible at Math, Computer Science, Physics, Engineering and basically everything techy. Projects are fun and entertaining to follow.",
+            },
+            {
+                title: "I did a thing",
+                url: "https://www.youtube.com/@Ididathing",
+                description:
+                    "Stuff made here chaotic simbling: dumb and incredibly dangerous. I am amazed he is not dead yet.",
+            },
+            {
+                title: "HTX Studio",
+                url: "https://www.youtube.com/@HTXStudio",
+                description:
+                    "Brilliant but I'm not sure about the company's ethics.",
+            },
+        ],
+    },
+    {
         title: "How to Build a PC",
         items: [
             {
@@ -231,6 +254,21 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 url: "https://www.youtube.com/@acegikmo",
                 description: "Very simple stuff but I like her.",
             },
+            {
+                title: "How Pixar Changed 3D Animation With Every Movie (Part 1, 'Toy Story' to 'Cars 2') | Movies Insider",
+                url: "https://www.youtube.com/watch?v=n1xAYik1g-w",
+                description: "Careful: 2 videos! More on the history of Computer Graphics rather than Computer Graphics directly.",
+            },
+        ],
+    },
+    {
+        title: "How to VFX",
+        items: [
+            {
+                title: "Corridor Crew",
+                url: "https://www.youtube.com/@CorridorCrew",
+                description: "Artistic side of Computer Graphics: creating Visual Effects for the cinema. Some engineering as well.",
+            },
         ],
     },
     {
@@ -284,6 +322,12 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 description:
                     "I love him. Compares biology and evolution to builds in video games. Don't have to know anything about video games to watch though.",
             },
+            {
+                title: "Faune Cool",
+                url: "https://www.youtube.com/@FauneCool",
+                description:
+                    "Should post moooore. Fellow leftist. French though",
+            },
         ],
     },
     {
@@ -309,21 +353,6 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 title: "History of the entire world, I guess - billwurtz",
                 url: "https://www.youtube.com/watch?v=xuCn8ux2gbs",
                 description: "Best video on youtube. Period.",
-            },
-        ],
-    },
-    {
-        title: "How to Cinema",
-        items: [
-            {
-                title: "It’s Just Cinema",
-                url: "https://www.youtube.com/@itsjustcinema",
-                description: "I recommend what he recommends.",
-            },
-            {
-                title: "Thomas Flight",
-                url: "https://www.youtube.com/@ThomasFlight/",
-                description: "Restricts himself too much to popular movies, but analysis is still good.",
             },
         ],
     },
@@ -359,12 +388,87 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
         ],
     },
     {
+        title: "How to Produce Music",
+        items: [
+            {
+                title: "Music & Sound production on Linux - diinki",
+                url: "https://www.youtube.com/watch?v=2iRbyVo6mg0",
+                description: "This is what I will come back to to start producing.",
+            },
+        ],
+    },
+    {
         title: "How to Origami",
         items: [
             {
                 title: "Origami with Jo Nakashima",
                 url: "https://www.youtube.com/@jonakashima",
                 description: "Very advanced. I think he is a creator.",
+            },
+        ],
+    },
+    {
+        title: "How to Game Design",
+        items: [
+            {
+                title: "Every Game Genre. Ever - Game Maker's Toolkit",
+                url: "https://www.youtube.com/watch?v=Dbgdi7BzMR0",
+                description: "An inspiring 2 hour watch. Simply learning about game genres give plenty of ideas for your own conception.",
+            },
+            {
+                title: "Game Maker's Toolkit",
+                url: "https://www.youtube.com/@GMTK",
+                description: "Deserves a spot. I don't watch him much but he is hard-working and well informed.",
+            },
+        ],
+    },
+    {
+        title: "How to Game",
+        items: [
+            {
+                title: "16 Y/O UNDERDOG vs. 7-TIME CHAMP - Classic Tetris World Championship 2018 Final Round - Classic Tetris",
+                url: "https://www.youtube.com/watch?v=L_UPHsGR6fM",
+                description: "History. I watched it when it was released. RIP Jonas you were a good one.",
+            },
+            {
+                title: "Balatro by adef in 1:04:49 - Summer Games Done Quick 2026 - Games Done Quick",
+                url: "https://www.youtube.com/watch?v=A7Go7IXlYLg",
+                description: "Cinema. I was on the edge of my seat. Need to know the game pretty well to fully apreciate the video.",
+            },
+            {
+                title: "Silksong Any% 47:52 | First 47! - Nebula",
+                url: "https://www.youtube.com/watch?v=5T5XOVVigO8",
+                description: "Any Silksong any% speedrun will do. Most talented person on the game today (end of 2026).",
+            },
+            {
+                title: "SMO Hide and Seek - cjya",
+                url: "https://www.youtube.com/watch?v=SStdceQJKzU&list=PLZvsmoFpb4hztplxk0jP5AAHxr9aDkV-m",
+                description: "Fun. Love them. cjya is a nice guy.",
+            },
+            {
+                title: "Coach by Lege: Tours 1 à 5: Bien commencer sa partie - Lege",
+                url: "https://www.youtube.com/watch?v=BBG32QxOd8E&list=PLf0m3hwAMY7aD9PglZyFDYV_fGt74IOd-",
+                description: "How to play civ6 optimally. French though.",
+            },
+            {
+                title: "Team Darkside",
+                url: "https://www.youtube.com/@TeamDarkside",
+                description: "Cool Moster Hunter stuff. Don't mind the edgy name.",
+            },
+        ],
+    },
+    {
+        title: "How to Cinema",
+        items: [
+            {
+                title: "It’s Just Cinema",
+                url: "https://www.youtube.com/@itsjustcinema",
+                description: "I recommend what he recommends.",
+            },
+            {
+                title: "Thomas Flight",
+                url: "https://www.youtube.com/@ThomasFlight/",
+                description: "Restricts himself too much to popular movies, but analysis is still good.",
             },
         ],
     },

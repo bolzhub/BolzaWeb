@@ -45,6 +45,15 @@ export function getProjects(): Project[] {
             previewImage: "/projects/ADR/cover.png", //getLatestADRCover(),
         },
         {
+            id: "tintin",
+            title: "Tintin",
+            href: "/tintin",
+            color: "#8a6d3b",
+            previewImage: "/projects/tintin/cover.jpg",
+            imagePosition: "top",
+            imagePositionX: "right",
+        },
+        {
             id: "recommendations",
             title: "Recommendations",
             href: "/Recommendations",

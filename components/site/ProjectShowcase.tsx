@@ -59,7 +59,7 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
     return (
         <div
             ref={containerRef}
-            className="flex w-full h-[65vh] gap-2 px-6 md:px-10"
+            className="flex w-full min-h-0 flex-1 gap-2 px-6 md:h-[65vh] md:flex-none md:px-10"
             onMouseLeave={() => setActiveId(null)}
         >
             {projects.map((project, i) => {

@@ -106,8 +106,8 @@ export default function MainHeader() {
     }, [recompute]);
 
     return (
-        <header ref={containerRef} className="flex items-baseline gap-6 px-6 md:px-10 py-5">
-            <Logo size={logoSize} height={LOGO_HEIGHT} />
+        <header ref={containerRef} className="flex items-baseline gap-6 px-6 md:px-10 py-2 md:py-5">
+            <Logo size={logoSize} height={LOGO_HEIGHT} className="[&_img]:h-8! md:[&_img]:h-10!" />
 
             {!burgerMode && (
                 <>

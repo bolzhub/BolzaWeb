@@ -1,6 +1,6 @@
 export default function SocialLinks() {
     return (
-        <div className="flex justify-center gap-6 py-8">
+        <div className="flex justify-center gap-6 py-3 md:py-8">
             <a
                 href="mailto:contact@bolzanocrafts.com"
                 aria-label="Email"
