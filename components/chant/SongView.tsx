@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { SongFile } from "@/lib/chant/types";
 import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
 import TagPicker from "./TagPicker";
@@ -9,6 +10,7 @@ import UploadStatus from "./UploadStatus";
 import { extractDroppedFiles, useUploader } from "./useUploader";
 import TagChip from "./TagChip";
 import DeleteSongButton from "./DeleteSongButton";
+import RenameSongButton from "./RenameSongButton";
 
 const KIND_LABEL = { pdf: "PDF", image: "Image", audio: "Audio", video: "Vidéo", other: "Fichier" } as const;
 
@@ -67,15 +69,22 @@ export default function SongView({
     files,
     allTags,
     selectedTags,
-    backHref = "/chant",
+    tagOrder,
+    fromTag = null,
 }: {
     diskName: string;
     name: string;
     files: SongFile[];
-    allTags: string[];
+    allTags: string[]; // ordre de création (couleurs)
     selectedTags: string[];
-    backHref?: string;
+    tagOrder: string[]; // ordre d'affichage
+    fromTag?: string | null; // tag depuis lequel le dossier a été ouvert
 }) {
+    const router = useRouter();
+    // On garde le tag d'origine dans l'URL : le retour ramène dans ce tag
+    const tagQuery = fromTag ? `?${new URLSearchParams({ tag: fromTag })}` : "";
+    const backHref = `/chant${tagQuery}`;
+    const shownTags = tagOrder.filter((t) => selectedTags.includes(t));
     const { items, upload, clearFinished } = useUploader();
     const inputRef = useRef<HTMLInputElement>(null);
     const [mediaName, setMediaName] = useState<string | null>(null);
@@ -125,8 +134,22 @@ export default function SongView({
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                         </svg>
                     </Link>
-                    <h1 className="min-w-0 flex-1 break-words text-xl font-semibold md:text-2xl">{name}</h1>
-                    <TagPicker song={diskName} songName={name} allTags={allTags} selected={selectedTags} />
+                    <h1 className="flex min-w-0 flex-1 items-center gap-1 text-xl font-semibold md:text-2xl">
+                        <span className="min-w-0 break-words">{name}</span>
+                        <RenameSongButton
+                            diskName={diskName}
+                            name={name}
+                            icon
+                            onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
+                        />
+                    </h1>
+                    <TagPicker
+                        song={diskName}
+                        songName={name}
+                        allTags={allTags}
+                        order={tagOrder}
+                        selected={selectedTags}
+                    />
                     <button
                         onClick={() => inputRef.current?.click()}
                         className="rounded-full bg-[#2b2926] px-4 py-2 text-sm text-white"
@@ -146,9 +169,9 @@ export default function SongView({
                     />
                     {files.length === 0 && <DeleteSongButton diskName={diskName} name={name} redirectTo={backHref} />}
                 </div>
-                {selectedTags.length > 0 && (
+                {shownTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pl-1">
-                        {selectedTags.map((t) => (
+                        {shownTags.map((t) => (
                             <TagChip key={t} tag={t} allTags={allTags} />
                         ))}
                     </div>

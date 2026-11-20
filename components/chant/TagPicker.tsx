@@ -51,11 +51,13 @@ export default function TagPicker({
   song,
   songName,
   allTags,
+  order = allTags,
   selected,
 }: {
   song: string;
   songName: string;
-  allTags: string[];
+  allTags: string[]; // ordre de création (couleurs)
+  order?: string[]; // ordre d'affichage
   selected: string[];
 }) {
   const router = useRouter();
@@ -117,7 +119,7 @@ export default function TagPicker({
             </div>
 
             <div className="max-h-[40vh] space-y-2 overflow-y-auto">
-              {allTags.map((tag) => (
+              {order.map((tag) => (
                 <div key={tag} className="flex items-center gap-2">
                   <label className="flex flex-1 cursor-pointer items-center gap-2 text-sm">
                     <input

@@ -10,6 +10,8 @@ import TagPicker, { NewTagForm } from "./TagPicker";
 import UploadStatus from "./UploadStatus";
 import { extractDroppedFiles, useUploader } from "./useUploader";
 import DeleteSongButton from "./DeleteSongButton";
+import RenameSongButton from "./RenameSongButton";
+import TagBar from "./TagBar";
 
 // Icône de dossier : bandes diagonales aux couleurs des tags du dossier
 function FolderIcon({ colors }: { colors: string[] }) {
@@ -40,7 +42,15 @@ function FolderIcon({ colors }: { colors: string[] }) {
     );
 }
 
-export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags: string[] }) {
+export default function ChantHome({
+    songs,
+    tags,
+    tagOrder,
+}: {
+    songs: SongSummary[];
+    tags: string[]; // ordre de création (couleurs)
+    tagOrder: string[]; // ordre d'affichage
+}) {
     const router = useRouter();
     const { items, upload, clearFinished } = useUploader();
     const searchParams = useSearchParams();
@@ -131,16 +141,7 @@ export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags:
                 >
                     Tous
                 </button>
-                {tags.map((tag) => (
-                    <TagChip
-                        key={tag}
-                        tag={tag}
-                        allTags={tags}
-                        size="md"
-                        active={activeTag === tag}
-                        onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                    />
-                ))}
+                <TagBar allTags={tags} tagOrder={tagOrder} activeTag={activeTag} onSelect={setActiveTag} />
                 <div className="w-48">
                     <NewTagForm />
                 </div>
@@ -153,8 +154,8 @@ export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags:
             ) : (
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                     {visible.map((song) => {
-                        // Tags du dossier, dans l'ordre global des tags (couleurs stables)
-                        const songTags = tags.filter((t) => song.tags.includes(t));
+                        // Tags du dossier, dans l'ordre d'affichage choisi (couleurs : ordre de création)
+                        const songTags = tagOrder.filter((t) => song.tags.includes(t));
                         const colors = songTags.map((t) => getTagColor(t, tags).solid);
 
                         return (
@@ -196,15 +197,11 @@ export default function ChantHome({ songs, tags }: { songs: SongSummary[]; tags:
                                         song={song.diskName}
                                         songName={song.name}
                                         allTags={tags}
+                                        order={tagOrder}
                                         selected={song.tags}
                                     />
-                                    {song.isEmpty && (
-                                        <DeleteSongButton
-                                            diskName={song.diskName}
-                                            name={song.name}
-                                            className="ml-auto"
-                                        />
-                                    )}
+                                    <RenameSongButton diskName={song.diskName} name={song.name} className="ml-auto" />
+                                    {song.isEmpty && <DeleteSongButton diskName={song.diskName} name={song.name} />}
                                 </div>
                             </div>
                         );

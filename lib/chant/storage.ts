@@ -132,6 +132,7 @@ export async function getSongDetail(disk: string) {
         files,
         selectedTags: store.songs[disk] ?? [],
         allTags: store.tags,
+        tagOrder: displayOrder(store),
     };
 }
 
@@ -206,6 +207,47 @@ export function deleteSong(disk: string): Promise<void> {
   });
 }
 
+export function renameSong(disk: string, display: string): Promise<{ slug: string; diskName: string; name: string }> {
+    return withLock(async () => {
+        const newDisk = displayToDisk(display);
+        if (!newDisk) throw new ChantError("Nom de dossier invalide.");
+
+        const from = songPath(disk);
+        const fromStat = await fs.stat(from).catch(() => null);
+        if (!fromStat?.isDirectory()) throw new ChantError("Dossier introuvable.", 404);
+
+        const result = { slug: toSlug(newDisk), diskName: newDisk, name: diskToDisplay(newDisk) };
+        if (newDisk === disk) return result;
+
+        // Un envoi en cours écrit dans le dossier : le renommer le ferait échouer
+        await cleanupStaleUploads(from);
+        const inner = await fs.readdir(from);
+        if (inner.some((n) => /^\.upload-[A-Za-z0-9_-]+\.part$/.test(n))) {
+            throw new ChantError("Un envoi est en cours dans ce dossier : réessayez quand il sera terminé.", 409);
+        }
+
+        // Cible déjà prise par un autre dossier ? (sur un disque insensible à la casse,
+        // « Titre » et « titre » sont le même dossier : on compare les inodes)
+        const to = songPath(newDisk);
+        const toStat = await fs.stat(to).catch(() => null);
+        if (toStat && !(toStat.ino === fromStat.ino && toStat.dev === fromStat.dev)) {
+            throw new ChantError("Un dossier porte déjà ce nom.", 409);
+        }
+
+        await fs.rename(from, to);
+
+        // Les tags suivent le dossier
+        const store = await readStore();
+        if (Object.prototype.hasOwnProperty.call(store.songs, disk)) {
+            store.songs[newDisk] = store.songs[disk];
+            delete store.songs[disk];
+            await writeStore(store);
+        }
+
+        return result;
+    });
+}
+
 /* ---------- Envois ---------- */
 
 async function exists(p: string) {
@@ -243,7 +285,15 @@ export async function cleanupStaleUploads(dir: string) {
 
 /* ---------- Tags ---------- */
 
-type TagStore = { tags: string[]; songs: Record<string, string[]> };
+// tags : ordre de création (sert aux couleurs, qui restent donc stables)
+// order : ordre d'affichage choisi par glisser-déposer
+type TagStore = { tags: string[]; order?: string[]; songs: Record<string, string[]> };
+
+// Ordre d'affichage : l'ordre enregistré, puis les tags absents (nouveaux) à la fin
+function displayOrder(store: TagStore): string[] {
+    const known = (store.order ?? []).filter((t) => store.tags.includes(t));
+    return [...new Set([...known, ...store.tags])];
+}
 
 let queue: Promise<unknown> = Promise.resolve();
 function withLock<T>(fn: () => Promise<T>): Promise<T> {
@@ -257,6 +307,7 @@ async function readStore(): Promise<TagStore> {
         const parsed = JSON.parse(await fs.readFile(TAGS_FILE, "utf8"));
         return {
             tags: Array.isArray(parsed.tags) ? parsed.tags.filter((t: unknown) => typeof t === "string") : [],
+            order: Array.isArray(parsed.order) ? parsed.order.filter((t: unknown) => typeof t === "string") : undefined,
             songs: parsed.songs && typeof parsed.songs === "object" ? parsed.songs : {},
         };
     } catch (err) {
@@ -273,8 +324,25 @@ async function writeStore(store: TagStore) {
     await fs.rename(tmp, TAGS_FILE);
 }
 
-export async function getTags(): Promise<string[]> {
-    return (await readStore()).tags;
+// allTags : ordre de création (couleurs) ; tagOrder : ordre d'affichage
+export async function getTagLists(): Promise<{ allTags: string[]; tagOrder: string[] }> {
+    const store = await readStore();
+    return { allTags: store.tags, tagOrder: displayOrder(store) };
+}
+
+export function reorderTags(order: string[]): Promise<string[]> {
+    return withLock(async () => {
+        const store = await readStore();
+        const same =
+            order.length === store.tags.length &&
+            new Set(order).size === order.length &&
+            order.every((t) => store.tags.includes(t));
+        if (!same) throw new ChantError("La liste des tags a changé : rechargez la page.", 409);
+
+        store.order = order;
+        await writeStore(store);
+        return order;
+    });
 }
 
 export function createTag(raw: string): Promise<string> {
@@ -314,6 +382,7 @@ export function deleteTag(raw: string): Promise<void> {
         }
 
         store.tags = store.tags.filter((t) => t !== canonical);
+        if (store.order) store.order = store.order.filter((t) => t !== canonical);
         for (const disk of Object.keys(store.songs)) {
             store.songs[disk] = store.songs[disk].filter((t) => t !== canonical);
         }

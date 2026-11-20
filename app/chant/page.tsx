@@ -1,5 +1,5 @@
 import { isAuthenticated } from "@/lib/chant/auth";
-import { getTags, listSongs } from "@/lib/chant/storage";
+import { getTagLists, listSongs } from "@/lib/chant/storage";
 import PasswordGate from "@/components/chant/PasswordGate";
 import ChantHome from "@/components/chant/ChantHome";
 
@@ -9,8 +9,8 @@ export default async function ChantPage() {
   if (!(await isAuthenticated())) return <PasswordGate />;
 
   try {
-    const [songs, tags] = await Promise.all([listSongs(), getTags()]);
-    return <ChantHome songs={songs} tags={tags} />;
+    const [songs, { allTags, tagOrder }] = await Promise.all([listSongs(), getTagLists()]);
+    return <ChantHome songs={songs} tags={allTags} tagOrder={tagOrder} />;
   } catch (err) {
     console.error("[chant]", err);
     return (

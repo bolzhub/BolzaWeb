@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/chant/auth";
-import { ChantError, createSong, deleteSong } from "@/lib/chant/storage";
+import { ChantError, createSong, deleteSong, renameSong } from "@/lib/chant/storage";
 import { errorResponse, unauthorized } from "@/lib/chant/http";
 
 export const runtime = "nodejs";
@@ -12,6 +12,19 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => null);
     if (typeof body?.name !== "string") throw new ChantError("Nom manquant.");
     return NextResponse.json({ song: await createSong(body.name) });
+  } catch (err) {
+    return errorResponse(err);
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  if (!(await isAuthenticated())) return unauthorized();
+  try {
+    const body = await req.json().catch(() => null);
+    if (typeof body?.song !== "string" || typeof body?.name !== "string") {
+      throw new ChantError("Paramètres invalides.");
+    }
+    return NextResponse.json({ song: await renameSong(body.song, body.name) });
   } catch (err) {
     return errorResponse(err);
   }

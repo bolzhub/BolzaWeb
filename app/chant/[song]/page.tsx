@@ -18,7 +18,7 @@ export default async function SongPage({
   const { song: slug } = await params;
   // Tag depuis lequel on a ouvert le dossier : le retour ramène dans ce tag
   const { tag } = await searchParams;
-  const backHref = typeof tag === "string" && tag ? `/chant?${new URLSearchParams({ tag })}` : "/chant";
+  const fromTag = typeof tag === "string" && tag ? tag : null;
 
   let detail;
   try {
@@ -35,7 +35,8 @@ export default async function SongPage({
       files={detail.files}
       allTags={detail.allTags}
       selectedTags={detail.selectedTags}
-      backHref={backHref}
+      tagOrder={detail.tagOrder}
+      fromTag={fromTag}
     />
   );
 }
