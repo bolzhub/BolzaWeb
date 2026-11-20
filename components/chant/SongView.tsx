@@ -102,7 +102,7 @@ export default function SongView({
 
     async function removeFile(file: SongFile) {
         const message =
-            `Supprimer « ${file.name} » ?\n\n` +
+            `Êtes-vous sûr de vouloir supprimer le fichier « ${file.name} » ?\n\n` +
             "Il sera placé dans la corbeille (.corbeille) et effacé définitivement après 30 jours.";
         if (!window.confirm(message)) return;
         setDeleting(file.name);

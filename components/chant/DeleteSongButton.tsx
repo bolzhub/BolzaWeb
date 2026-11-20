@@ -32,7 +32,7 @@ export function useDeleteSong({
     const content =
       fileCount === 1 ? " et son fichier" : fileCount > 1 ? ` et ses ${fileCount} fichiers` : "";
     const message =
-      `Supprimer le dossier « ${name} »${content} ?\n\n` +
+      `Êtes-vous sûr de vouloir supprimer le dossier « ${name} »${content} ?\n\n` +
       "Il sera placé dans la corbeille (.corbeille) et effacé définitivement après 30 jours.";
     if (!window.confirm(message)) return;
     setBusy(true);
