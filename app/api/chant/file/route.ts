@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import { Readable } from "node:stream";
 import { isAuthenticated } from "@/lib/chant/auth";
 import { getFileInfo } from "@/lib/chant/fileTypes";
-import { filePath } from "@/lib/chant/storage";
+import { ChantError, deleteFile, filePath } from "@/lib/chant/storage";
 import { errorResponse, unauthorized } from "@/lib/chant/http";
 
 export const runtime = "nodejs";
@@ -73,6 +73,20 @@ export async function GET(req: NextRequest) {
     headers.set("Content-Length", String(end - start + 1));
     const stream = createReadStream(full, { start, end });
     return new Response(Readable.toWeb(stream) as unknown as ReadableStream, { status, headers });
+  } catch (err) {
+    return errorResponse(err);
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  if (!(await isAuthenticated())) return unauthorized();
+  try {
+    const body = await req.json().catch(() => null);
+    if (typeof body?.song !== "string" || typeof body?.name !== "string") {
+      throw new ChantError("Paramètres invalides.");
+    }
+    await deleteFile(body.song, body.name);
+    return NextResponse.json({ ok: true });
   } catch (err) {
     return errorResponse(err);
   }

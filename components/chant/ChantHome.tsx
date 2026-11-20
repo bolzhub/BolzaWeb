@@ -201,7 +201,11 @@ export default function ChantHome({
                                         selected={song.tags}
                                     />
                                     <RenameSongButton diskName={song.diskName} name={song.name} className="ml-auto" />
-                                    {song.isEmpty && <DeleteSongButton diskName={song.diskName} name={song.name} />}
+                                    <DeleteSongButton
+                                        diskName={song.diskName}
+                                        name={song.name}
+                                        fileCount={song.fileCount}
+                                    />
                                 </div>
                             </div>
                         );

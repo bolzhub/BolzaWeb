@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
@@ -157,54 +158,67 @@ export async function createSong(display: string): Promise<SongSummary> {
     };
 }
 
-export function deleteSong(disk: string): Promise<void> {
-  return withLock(async () => {
-    const dir = songPath(disk);
+/* ---------- Suppression (corbeille) ---------- */
 
-    let entries: Dirent[];
-    try {
-      entries = await fs.readdir(dir, { withFileTypes: true });
-    } catch {
-      throw new ChantError("Dossier introuvable.", 404);
-    }
+// Rien n'est supprimé directement : tout part dans CHANT_ROOT/.corbeille (caché,
+// même disque donc déplacement instantané), puis est purgé après TRASH_DAYS jours.
+// Chaque suppression a son sous-dossier daté : .corbeille/<date>/<dossier>[/<fichier>]
+const TRASH_DIR = path.join(CHANT_ROOT, ".corbeille");
+const TRASH_DAYS = 30;
 
-    if (entries.some((e) => !e.name.startsWith("."))) {
-      throw new ChantError(
-        "Ce dossier n'est pas vide : il contient des fichiers ou des sous-dossiers.",
-        409
-      );
-    }
-
-    // Débris sans valeur : .DS_Store et envois interrompus
+async function purgeTrash() {
+    const entries = await fs.readdir(TRASH_DIR, { withFileTypes: true }).catch(() => [] as Dirent[]);
+    const limit = Date.now() - TRASH_DAYS * 24 * 3600 * 1000;
     await Promise.all(
-      entries
-        .filter(
-          (e) =>
-            e.isFile() &&
-            (e.name === ".DS_Store" || /^\.upload-[A-Za-z0-9_-]+\.part$/.test(e.name))
-        )
-        .map((e) => fs.rm(path.join(dir, e.name), { force: true }))
+        entries.map(async (e) => {
+            const p = path.join(TRASH_DIR, e.name);
+            const st = await fs.stat(p).catch(() => null);
+            if (st && st.mtimeMs < limit) await fs.rm(p, { recursive: true, force: true });
+        }),
     );
+}
 
-    try {
-      await fs.rmdir(dir); // non récursif : échoue si quoi que ce soit reste dedans
-    } catch (err) {
-      const code = (err as NodeJS.ErrnoException).code;
-      if (code === "ENOTEMPTY" || code === "EEXIST") {
-        throw new ChantError(
-          "Le dossier n'est pas vide (fichiers cachés ou envoi en cours).",
-          409
-        );
-      }
-      throw err;
-    }
+async function moveToTrash(src: string, ...relative: string[]) {
+    await purgeTrash().catch((err) => console.error("[chant] purge corbeille", err));
+    const stamp = `${new Date().toISOString().replace(/[:.]/g, "-")}_${crypto.randomUUID().slice(0, 8)}`;
+    const dest = path.join(TRASH_DIR, stamp, ...relative);
+    await fs.mkdir(path.dirname(dest), { recursive: true });
+    await fs.rename(src, dest);
+}
 
-    const store = await readStore();
-    if (Object.prototype.hasOwnProperty.call(store.songs, disk)) {
-      delete store.songs[disk];
-      await writeStore(store);
-    }
-  });
+async function hasActiveUpload(dir: string): Promise<boolean> {
+    await cleanupStaleUploads(dir);
+    const inner = await fs.readdir(dir).catch(() => [] as string[]);
+    return inner.some((n) => /^\.upload-[A-Za-z0-9_-]+\.part$/.test(n));
+}
+
+export function deleteSong(disk: string): Promise<void> {
+    return withLock(async () => {
+        const dir = songPath(disk);
+        const st = await fs.stat(dir).catch(() => null);
+        if (!st?.isDirectory()) throw new ChantError("Dossier introuvable.", 404);
+
+        if (await hasActiveUpload(dir)) {
+            throw new ChantError("Un envoi est en cours dans ce dossier : réessayez quand il sera terminé.", 409);
+        }
+
+        await moveToTrash(dir, disk);
+
+        const store = await readStore();
+        if (Object.prototype.hasOwnProperty.call(store.songs, disk)) {
+            delete store.songs[disk];
+            await writeStore(store);
+        }
+    });
+}
+
+export function deleteFile(disk: string, name: string): Promise<void> {
+    return withLock(async () => {
+        const full = filePath(disk, name);
+        const st = await fs.lstat(full).catch(() => null);
+        if (!st?.isFile()) throw new ChantError("Fichier introuvable.", 404);
+        await moveToTrash(full, disk, name);
+    });
 }
 
 export function renameSong(disk: string, display: string): Promise<{ slug: string; diskName: string; name: string }> {
@@ -220,9 +234,7 @@ export function renameSong(disk: string, display: string): Promise<{ slug: strin
         if (newDisk === disk) return result;
 
         // Un envoi en cours écrit dans le dossier : le renommer le ferait échouer
-        await cleanupStaleUploads(from);
-        const inner = await fs.readdir(from);
-        if (inner.some((n) => /^\.upload-[A-Za-z0-9_-]+\.part$/.test(n))) {
+        if (await hasActiveUpload(from)) {
             throw new ChantError("Un envoi est en cours dans ce dossier : réessayez quand il sera terminé.", 409);
         }
 

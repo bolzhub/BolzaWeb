@@ -6,11 +6,13 @@ import { useRouter } from "next/navigation";
 export default function DeleteSongButton({
   diskName,
   name,
+  fileCount = 0,
   redirectTo,
   className = "",
 }: {
   diskName: string;
   name: string;
+  fileCount?: number;
   redirectTo?: string;
   className?: string;
 }) {
@@ -19,7 +21,12 @@ export default function DeleteSongButton({
   const [error, setError] = useState<string | null>(null);
 
   async function remove() {
-    if (!window.confirm(`Supprimer le dossier vide « ${name} » ?`)) return;
+    const content =
+      fileCount > 0 ? ` et ses ${fileCount} fichier${fileCount > 1 ? "s" : ""}` : "";
+    const message =
+      `Supprimer le dossier « ${name} »${content} ?\n\n` +
+      "Il sera placé dans la corbeille (.corbeille) et effacé définitivement après 30 jours.";
+    if (!window.confirm(message)) return;
     setBusy(true);
     setError(null);
     const res = await fetch("/api/chant/songs", {

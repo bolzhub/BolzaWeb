@@ -90,6 +90,8 @@ export default function SongView({
     const [mediaName, setMediaName] = useState<string | null>(null);
     const [docName, setDocName] = useState<string | null>(null);
     const [dragging, setDragging] = useState(false);
+    const [deleting, setDeleting] = useState<string | null>(null);
+    const [fileError, setFileError] = useState<string | null>(null);
 
     const media = files.find((f) => f.name === mediaName) ?? null;
     const doc = files.find((f) => f.name === docName) ?? null;
@@ -97,6 +99,30 @@ export default function SongView({
 
     const fileUrl = (fileName: string, download = false) =>
         `/api/chant/file?${new URLSearchParams({ song: diskName, name: fileName, ...(download ? { download: "1" } : {}) })}`;
+
+    async function removeFile(file: SongFile) {
+        const message =
+            `Supprimer « ${file.name} » ?\n\n` +
+            "Il sera placé dans la corbeille (.corbeille) et effacé définitivement après 30 jours.";
+        if (!window.confirm(message)) return;
+        setDeleting(file.name);
+        setFileError(null);
+        const res = await fetch("/api/chant/file", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ song: diskName, name: file.name }),
+        });
+        const data = await res.json().catch(() => ({}));
+        setDeleting(null);
+        if (!res.ok) {
+            setFileError(data.error ?? "Erreur.");
+            return;
+        }
+        // Ferme le lecteur s'il affichait ce fichier
+        if (mediaName === file.name) setMediaName(null);
+        if (docName === file.name) setDocName(null);
+        router.refresh();
+    }
 
     function open(file: SongFile) {
         if (file.kind === "audio" || file.kind === "video") setMediaName(file.name);
@@ -167,7 +193,7 @@ export default function SongView({
                             if (list.length) upload(diskName, list);
                         }}
                     />
-                    {files.length === 0 && <DeleteSongButton diskName={diskName} name={name} redirectTo={backHref} />}
+                    <DeleteSongButton diskName={diskName} name={name} fileCount={files.length} redirectTo={backHref} />
                 </div>
                 {shownTags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 pl-1">
@@ -284,11 +310,33 @@ export default function SongView({
                                                 />
                                             </svg>
                                         </a>
+                                        <button
+                                            onClick={() => removeFile(f)}
+                                            disabled={deleting === f.name}
+                                            aria-label={`Supprimer ${f.name}`}
+                                            title="Supprimer"
+                                            className="shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:text-red-700 hover:opacity-100 disabled:opacity-20"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                className="h-5 w-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth={2}
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M4 7h16M10 11v6m4-6v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"
+                                                />
+                                            </svg>
+                                        </button>
                                     </li>
                                 );
                             })}
                         </ul>
                     )}
+                    {fileError && <p className="mt-2 text-sm text-red-700">{fileError}</p>}
                 </div>
             </div>
 
