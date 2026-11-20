@@ -6,11 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { SongSummary } from "@/lib/chant/types";
 import { getTagColor } from "@/lib/chant/tagColors";
 import TagChip from "./TagChip";
-import TagPicker, { NewTagForm } from "./TagPicker";
+import { NewTagForm } from "./TagPicker";
 import UploadStatus from "./UploadStatus";
 import { extractDroppedFiles, useUploader } from "./useUploader";
-import DeleteSongButton from "./DeleteSongButton";
-import RenameSongButton from "./RenameSongButton";
+import SongCardActions from "./SongCardActions";
 import TagBar from "./TagBar";
 
 // Icône de dossier : bandes diagonales aux couleurs des tags du dossier
@@ -331,7 +330,7 @@ export default function ChantHome({
                                     const { files, skippedFolders } = extractDroppedFiles(e.dataTransfer);
                                     if (files.length || skippedFolders) upload(song.diskName, files, skippedFolders);
                                 }}
-                                className={`group flex flex-col gap-3 rounded-2xl border bg-white p-4 transition ${dragOver === song.slug ? "border-[#2b2926] ring-2 ring-[#2b2926]/30" : "border-black/10"}`}
+                                className={`group relative flex flex-col gap-3 rounded-2xl border bg-white p-4 transition ${dragOver === song.slug ? "border-[#2b2926] ring-2 ring-[#2b2926]/30" : "border-black/10"}`}
                             >
                                 <Link
                                     href={`/chant/${song.slug}${activeTag ? `?${new URLSearchParams({ tag: activeTag })}` : ""}`}
@@ -344,22 +343,14 @@ export default function ChantHome({
                                     {songTags.map((t) => (
                                         <TagChip key={t} tag={t} allTags={tags} />
                                     ))}
-                                    <TagPicker
-                                        song={song.diskName}
-                                        songName={song.name}
+                                    <SongCardActions
+                                        diskName={song.diskName}
+                                        name={song.name}
+                                        fileCount={song.fileCount}
                                         allTags={tags}
-                                        order={tagOrder}
+                                        tagOrder={tagOrder}
                                         selected={current}
                                     />
-                                    {/* Avec une souris : visibles seulement au survol de la carte (ou au clavier) */}
-                                    <span className="ml-auto flex items-center transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
-                                        <RenameSongButton diskName={song.diskName} name={song.name} />
-                                        <DeleteSongButton
-                                            diskName={song.diskName}
-                                            name={song.name}
-                                            fileCount={song.fileCount}
-                                        />
-                                    </span>
                                 </div>
                             </div>
                         );
