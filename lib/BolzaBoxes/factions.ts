@@ -1,4 +1,4 @@
-import type { Faction } from "./types";
+import { FACTION_ASSETS_URL, type Faction } from "./types";
 
 // Teintes adoucies utilisées pour le fond des pages de faction
 const PAGE_COLORS = {
@@ -67,7 +67,7 @@ export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).
         slug,
         name: data.name ?? toTitleCase(slug),
         color: PAGE_COLORS[data.color],
-        icon: `/projects/BolzaBoxes/factions/${slug}/icon.svg`,
+        icon: `${FACTION_ASSETS_URL}/${slug}/icon.svg`,
         description: data.description ?? "Description coming soon.",
         buyUrl: data.buyUrl,
     };

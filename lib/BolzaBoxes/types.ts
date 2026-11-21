@@ -42,7 +42,11 @@ const EXT_BY_TYPE: Record<ViewModeType, string> = {
     link: "",
 };
 
+// Dossier des fichiers de chaque boîte sur le disque de la Pi :
+// /mnt/Bolzananas/Projets/Root_Organiser/Extra/Presentation/Website/Boxes/<slug>/
+export const FACTION_ASSETS_URL = "/api/media/Projets/Root_Organiser/Extra/Presentation/Website/Boxes";
+
 export function getAssetPath(factionSlug: string, objectType: ObjectType, viewMode: ViewMode, glass: Glass): string {
     const ext = EXT_BY_TYPE[viewMode.type];
-    return `/projects/BolzaBoxes/factions/${factionSlug}/${objectType}-${viewMode.id}-${glass}.${ext}`;
+    return `${FACTION_ASSETS_URL}/${factionSlug}/${objectType}-${viewMode.id}-${glass}.${ext}`;
 }
