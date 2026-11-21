@@ -8,6 +8,7 @@ import Lightbox from "./Lightbox";
 import Logo from "@/components/site/Logo";
 import type { HomeItem } from "@/lib/ADR/galleries";
 import { useLang } from "@/lib/i18n/LanguageContext";
+import { localizeAdrName } from "@/lib/ADR/names";
 
 export default function HomeGallery({ items }: { items: HomeItem[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -23,14 +24,15 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-10 gap-y-14 md:gap-y-16 p-8 md:p-16">
                 {items.map((item, i) => {
                     const imageUrl = item.type === "image" ? item.url : undefined;
+                    const name = localizeAdrName(item.name, lang);
                     const tile = (
                         <>
                             <ImageTile
                                 src={item.type === "gallery" ? item.cover : item.url}
-                                alt={item.name}
+                                alt={name}
                                 onClick={imageUrl ? () => setSelectedImage(imageUrl) : undefined}
                             />
-                            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic">{item.name}</p>
+                            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic">{name}</p>
                         </>
                     );
 

@@ -48,7 +48,7 @@ const PROJECTS: ProjectData[] = [
     },
     {
         id: "herodotus",
-        title: { en: "Herodotus The Owl", fr: "Hérodote le hibou" },
+        title: { en: "Herodotus The Owl", fr: "La Chouette Hérodote" },
         href: "/herodotus",
         color: "#4a4a3d",
         previewImage: "/projects/herodotus/cover.png",

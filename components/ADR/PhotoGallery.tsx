@@ -6,6 +6,7 @@ import ADRHeader from "./ADRHeader";
 import ImageTile from "./ImageTile";
 import Lightbox from "./Lightbox";
 import { useLang } from "@/lib/i18n/LanguageContext";
+import { localizeAdrName } from "@/lib/ADR/names";
 
 export default function PhotoGallery({ title, images }: { title: string; images: string[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -14,7 +15,7 @@ export default function PhotoGallery({ title, images }: { title: string; images:
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
             <ADRHeader
-                title={title}
+                title={localizeAdrName(title, lang)}
                 left={
                     <Link
                         href="/ADR"

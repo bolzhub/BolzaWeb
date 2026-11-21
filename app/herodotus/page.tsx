@@ -8,8 +8,8 @@ const TEXT = {
         text: "Herodotus' The Owl is a children's book. It has yet to be finished.",
     },
     fr: {
-        title: "Hérodote le hibou",
-        text: "Hérodote le hibou est un livre pour enfants. Il n'est pas encore terminé.",
+        title: "La Chouette Hérodote",
+        text: "La Chouette Hérodote est un livre pour enfants. Il n'est pas encore terminé.",
     },
 };
 
