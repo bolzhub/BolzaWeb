@@ -17,7 +17,7 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
             <ADRHeader
-                left={<Logo size="small" height={32} className="[&_img]:brightness-0 [&_img]:invert" />}
+                left={<Logo size="small" height={32} className="[&_img]:max-w-none [&_img]:brightness-0 [&_img]:invert" />}
                 title={lang === "fr" ? "Modèle vivant" : "Life Drawing"}
             />
 
