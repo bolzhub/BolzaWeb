@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ASSETS_LINK } from "@/lib/RootBrainTeasers/puzzles";
+import type { Lang } from "@/lib/i18n/lang";
 
-export default function AssetsEntry() {
+export default function AssetsEntry({ lang }: { lang: Lang }) {
     const external = /^https?:\/\//.test(ASSETS_LINK.href);
 
     const content = (
@@ -28,10 +29,10 @@ export default function AssetsEntry() {
                     className="block text-lg md:text-xl text-parchment mb-1"
                     style={{ fontFamily: "var(--font-playfair)", fontWeight: 700 }}
                 >
-                    {ASSETS_LINK.label}
+                    {ASSETS_LINK.label[lang]}
                 </span>
                 <span className="block text-base md:text-lg leading-relaxed text-parchment/90">
-                    {ASSETS_LINK.description}
+                    {ASSETS_LINK.description[lang]}
                 </span>
             </span>
         </>

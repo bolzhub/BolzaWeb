@@ -1,5 +1,6 @@
 import { FACTION_ASSETS_URL, type Faction, type ObjectType } from "./types";
 import type { Version } from "./VersionContext";
+import type { Localized } from "@/lib/i18n/lang";
 
 // Teintes adoucies utilisées pour le fond des pages de faction
 const PAGE_COLORS = {
@@ -23,8 +24,8 @@ const PAGE_COLORS = {
 
 type FactionData = {
     color: keyof typeof PAGE_COLORS;
-    name?: string; // par défaut : le slug avec une majuscule
-    description?: string; // par défaut : « Description coming soon. »
+    name: Localized;
+    description?: Localized; // par défaut : « Description coming soon. »
     buyUrl?: string;
     objects?: ObjectType[]; // par défaut : container, box, drawer
 };
@@ -32,32 +33,35 @@ type FactionData = {
 // Chaque entrée ajoutée ici crée la page /BolzaBoxes/boxes/<slug>.
 // L'ordre de la barre latérale est défini plus bas, par version (SIDEBAR_ORDER).
 const FACTION_DATA = {
-    cats: { color: "orange" },
-    eyries: { color: "blue" },
-    alliance: { color: "green" },
-    vagabond: { color: "greywhite" },
+    cats: { name: { en: "Cats", fr: "Chats" }, color: "orange" },
+    eyries: { name: { en: "Eyries", fr: "Aigles" }, color: "blue" },
+    alliance: { name: { en: "Alliance", fr: "Alliance" }, color: "green" },
+    vagabond: { name: { en: "Vagabond", fr: "Vagabond" }, color: "greywhite" },
     lizards: {
         color: "yellow",
-        name: "The Lizard Cult",
-        description: "25 warriors, 1 stone patron. Lizard head with tongue on the side.",
+        name: { en: "The Lizard Cult", fr: "Le Culte des Lézards" },
+        description: {
+            en: "25 warriors, 1 stone patron. Lizard head with tongue on the side.",
+            fr: "25 guerriers, 1 patron de pierre. Tête de lézard avec la langue sur le côté.",
+        },
         buyUrl: "#",
     },
-    otters: { color: "teal" },
-    moles: { color: "peach" },
-    corvids: { color: "purple" },
-    rats: { color: "red" },
-    badgers: { color: "gray" },
-    frogs: { color: "olive" },
-    bats: { color: "rust" },
-    skunks: { color: "black" },
-    setup: { color: "darkbrown" },
-    setup2: { color: "darkbrown" },
-    landmarks: { color: "darkbrown" },
-    cards: { color: "darkbrown", objects: ["holder"] },
-    "hirelings-setup": { color: "darkbrown", name: "Hirelings Setup" },
-    "hirelings-unique": { color: "pink", name: "Hirelings Unique" },
-    "hirelings-factions": { color: "lightpink", name: "Hirelings Factions" },
-    extra: { color: "darkbrown", objects: ["holder"] },
+    otters: { name: { en: "Otters", fr: "Loutres" }, color: "teal" },
+    moles: { name: { en: "Moles", fr: "Taupes" }, color: "peach" },
+    corvids: { name: { en: "Corvids", fr: "Corvidés" }, color: "purple" },
+    rats: { name: { en: "Rats", fr: "Rats" }, color: "red" },
+    badgers: { name: { en: "Badgers", fr: "Blaireaux" }, color: "gray" },
+    frogs: { name: { en: "Frogs", fr: "Grenouilles" }, color: "olive" },
+    bats: { name: { en: "Bats", fr: "Chauves-souris" }, color: "rust" },
+    skunks: { name: { en: "Skunks", fr: "Mouffettes" }, color: "black" },
+    setup: { name: { en: "Setup", fr: "Mise en place" }, color: "darkbrown" },
+    setup2: { name: { en: "Setup2", fr: "Mise en place 2" }, color: "darkbrown" },
+    landmarks: { name: { en: "Landmarks", fr: "Repères" }, color: "darkbrown" },
+    cards: { name: { en: "Cards", fr: "Cartes" }, color: "darkbrown", objects: ["holder"] },
+    "hirelings-setup": { color: "darkbrown", name: { en: "Hirelings Setup", fr: "Mise en place des mercenaires" } },
+    "hirelings-unique": { color: "pink", name: { en: "Hirelings Unique", fr: "Mercenaires uniques" } },
+    "hirelings-factions": { color: "lightpink", name: { en: "Hirelings Factions", fr: "Mercenaires de faction" } },
+    extra: { name: { en: "Extra", fr: "Extra" }, color: "darkbrown", objects: ["holder"] },
 } satisfies Record<string, FactionData>;
 
 export type FactionSlug = keyof typeof FACTION_DATA;
@@ -111,18 +115,14 @@ export const SLUG_ALIASES: Record<string, FactionSlug> = {
 
 export const factionPath = (slug: string) => `/BolzaBoxes/boxes/${slug}`;
 
-function toTitleCase(slug: string): string {
-    return slug.charAt(0).toUpperCase() + slug.slice(1);
-}
-
 export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).map((slug) => {
     const data: FactionData = FACTION_DATA[slug];
     return {
         slug,
-        name: data.name ?? toTitleCase(slug),
+        name: data.name,
         color: PAGE_COLORS[data.color],
         icon: `${FACTION_ASSETS_URL}/${slug}/icon.svg`,
-        description: data.description ?? "Description coming soon.",
+        description: data.description ?? { en: "Description coming soon.", fr: "Description à venir." },
         buyUrl: data.buyUrl,
         objects: data.objects ?? ["container", "box", "drawer"],
     };

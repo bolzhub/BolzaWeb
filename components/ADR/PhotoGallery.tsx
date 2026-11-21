@@ -5,9 +5,11 @@ import Link from "next/link";
 import ADRHeader from "./ADRHeader";
 import ImageTile from "./ImageTile";
 import Lightbox from "./Lightbox";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function PhotoGallery({ title, images }: { title: string; images: string[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const lang = useLang();
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
@@ -16,7 +18,9 @@ export default function PhotoGallery({ title, images }: { title: string; images:
                 left={
                     <Link
                         href="/ADR"
-                        aria-label="Back to Atelier Double Raisin"
+                        aria-label={
+                            lang === "fr" ? "Retour à l'Atelier Double Raisin" : "Back to Atelier Double Raisin"
+                        }
                         className="block text-white/70 hover:text-white transition-colors"
                     >
                         <svg

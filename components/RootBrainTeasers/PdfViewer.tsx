@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { PDFDocumentProxy, PDFPageProxy } from "pdfjs-dist";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 type PdfJs = typeof import("pdfjs-dist");
 
@@ -138,6 +139,7 @@ function PdfPage({
 }
 
 export default function PdfViewer({ src, active }: { src: string; active: boolean }) {
+    const fr = useLang() === "fr";
     const scrollRef = useRef<HTMLDivElement>(null);
     const pageEls = useRef(new Map<number, HTMLDivElement>());
     const keepCenter = useRef<{ x: number; y: number } | null>(null);
@@ -257,7 +259,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                     className="absolute inset-0 flex items-center justify-center text-parchment/70 animate-pulse pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                    Loading…
+                    {fr ? "Chargement…" : "Loading…"}
                 </p>
             )}
 
@@ -266,14 +268,14 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                     className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-parchment/80"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                    <p>The document could not be displayed.</p>
+                    <p>{fr ? "Le document n’a pas pu être affiché." : "The document could not be displayed."}</p>
                     <a
                         href={src}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="rounded-full bg-cream px-4 py-2 text-sm text-ink"
                     >
-                        Open the PDF
+                        {fr ? "Ouvrir le PDF" : "Open the PDF"}
                     </a>
                 </div>
             )}
@@ -287,7 +289,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                     <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-cream/95 p-1 shadow-md">
                         <button
                             type="button"
-                            aria-label="Zoom out"
+                            aria-label={fr ? "Dézoomer" : "Zoom out"}
                             className={button}
                             disabled={zoomIndex === 0}
                             onClick={() => changeZoom(-1)}
@@ -299,7 +301,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                         </span>
                         <button
                             type="button"
-                            aria-label="Zoom in"
+                            aria-label={fr ? "Zoomer" : "Zoom in"}
                             className={button}
                             disabled={zoomIndex === ZOOM_STEPS.length - 1}
                             onClick={() => changeZoom(1)}
@@ -310,7 +312,7 @@ export default function PdfViewer({ src, active }: { src: string; active: boolea
                             href={src}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Open the PDF in a new tab"
+                            aria-label={fr ? "Ouvrir le PDF dans un nouvel onglet" : "Open the PDF in a new tab"}
                             className={button}
                         >
                             ↗

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 type Size = { w: number; h: number };
 type View = { zoom: number; x: number; y: number };
@@ -51,6 +52,7 @@ export default function ZoomImage({
     const tap = useRef({ downAt: 0, startX: 0, startY: 0, moved: false, lastAt: 0, lastX: 0, lastY: 0 });
     const interactRef = useRef(onInteract);
 
+    const fr = useLang() === "fr";
     const [box, setBox] = useState<Size | null>(null);
     const [natural, setNatural] = useState<Size | null>(null);
     const [view, setView] = useState<View | null>(null);
@@ -290,7 +292,7 @@ export default function ZoomImage({
                     className="absolute inset-0 flex items-center justify-center text-parchment/70 animate-pulse pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                    Loading…
+                    {fr ? "Chargement…" : "Loading…"}
                 </p>
             )}
             {failed && (
@@ -298,7 +300,7 @@ export default function ZoomImage({
                     className="absolute inset-0 flex items-center justify-center text-parchment/70 pointer-events-none"
                     style={{ fontFamily: "var(--font-playfair)" }}
                 >
-                    Image unavailable
+                    {fr ? "Image indisponible" : "Image unavailable"}
                 </p>
             )}
 
@@ -307,7 +309,7 @@ export default function ZoomImage({
                 <div className="absolute right-3 bottom-3 z-20 flex items-center gap-0.5 rounded-full bg-cream/95 p-1 shadow-md">
                     <button
                         type="button"
-                        aria-label="Zoom out"
+                        aria-label={fr ? "Dézoomer" : "Zoom out"}
                         className={button}
                         disabled={!view || view.zoom <= 1.001}
                         onClick={() => zoomBy(1 / BUTTON_FACTOR)}
@@ -317,7 +319,7 @@ export default function ZoomImage({
                     <span className="w-12 text-center text-xs tabular-nums text-ink">{zoomPercent}%</span>
                     <button
                         type="button"
-                        aria-label="Zoom in"
+                        aria-label={fr ? "Zoomer" : "Zoom in"}
                         className={button}
                         disabled={atMax}
                         onClick={() => zoomBy(BUTTON_FACTOR)}
@@ -326,7 +328,7 @@ export default function ZoomImage({
                     </button>
                     <button
                         type="button"
-                        aria-label="Show the whole image"
+                        aria-label={fr ? "Afficher l’image entière" : "Show the whole image"}
                         className={`${button} text-xs`}
                         disabled={!view || view.zoom <= 1.001}
                         onClick={reset}

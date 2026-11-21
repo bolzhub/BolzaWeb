@@ -1,40 +1,42 @@
+import type { Localized } from "@/lib/i18n/lang";
+
 export type ObjectType = "box" | "drawer" | "container" | "holder";
 export type ViewModeType = "image" | "video" | "mesh" | "link";
 export type Glass = "glass" | "no-glass";
 
 export type ViewMode = {
     id: string;
-    label: string;
+    label: Localized;
     type: ViewModeType;
 };
 
 export type Faction = {
     slug: string;
-    name: string;
+    name: Localized;
     color: string;
     icon: string;
-    description: string;
+    description: Localized;
     buyUrl?: string;
     objects: ObjectType[];
 };
 
-export const OBJECT_TYPES: { id: ObjectType; label: string }[] = [
-    { id: "container", label: "Container" },
-    { id: "box", label: "Box" },
-    { id: "drawer", label: "Drawer" },
-    { id: "holder", label: "Holder" },
+export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
+    { id: "container", label: { en: "Container", fr: "Conteneur" } },
+    { id: "box", label: { en: "Box", fr: "Boîte" } },
+    { id: "drawer", label: { en: "Drawer", fr: "Tiroir" } },
+    { id: "holder", label: { en: "Holder", fr: "Support" } },
 ];
 
 // 🎛️ Ajustez cette liste si vous ajoutez/retirez des modes de vue
 export const VIEW_MODES: ViewMode[] = [
-    { id: "full", label: "Full", type: "image" },
-    { id: "empty", label: "Empty", type: "image" },
-    { id: "logos", label: "Logos", type: "image" },
-    { id: "mesh", label: "Mesh", type: "mesh" },
-    { id: "video", label: "Video", type: "video" },
-    { id: "in-box", label: "In Box", type: "image" },
-    { id: "stickers", label: "Stickers", type: "image" },
-    { id: "buy", label: "Buy", type: "link" },
+    { id: "full", label: { en: "Full", fr: "Pleine" }, type: "image" },
+    { id: "empty", label: { en: "Empty", fr: "Vide" }, type: "image" },
+    { id: "logos", label: { en: "Logos", fr: "Logos" }, type: "image" },
+    { id: "mesh", label: { en: "Mesh", fr: "Maillage 3D" }, type: "mesh" },
+    { id: "video", label: { en: "Video", fr: "Vidéo" }, type: "video" },
+    { id: "in-box", label: { en: "In Box", fr: "Dans la boîte" }, type: "image" },
+    { id: "stickers", label: { en: "Stickers", fr: "Autocollants" }, type: "image" },
+    { id: "buy", label: { en: "Buy", fr: "Acheter" }, type: "link" },
 ];
 
 const EXT_BY_TYPE: Record<ViewModeType, string> = {

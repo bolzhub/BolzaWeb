@@ -175,7 +175,7 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
 
                             <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                                 <p
-                                    className="text-white tracking-wide break-words"
+                                    className="text-white tracking-wide break-words hyphens-auto"
                                     style={{ fontSize: "clamp(0.7rem, 9cqw, 1.75rem)" }}
                                 >
                                     {project.title}

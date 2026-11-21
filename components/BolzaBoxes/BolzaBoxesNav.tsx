@@ -4,18 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LOGO_SOURCES } from "@/components/site/Logo";
+import LanguageSwitch from "@/components/i18n/LanguageSwitch";
+import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Localized } from "@/lib/i18n/lang";
 
-const NAV_LINKS = [
-    { label: "Home", href: "/BolzaBoxes" },
-    { label: "Configurations", href: "/BolzaBoxes/configurations" },
-    { label: "Boxes", href: "/BolzaBoxes/boxes" },
-    { label: "Making of", href: "/BolzaBoxes/making-of" },
-    { label: "Gallery", href: "/BolzaBoxes/gallery" },
+const NAV_LINKS: { label: Localized; href: string }[] = [
+    { label: { en: "Home", fr: "Accueil" }, href: "/BolzaBoxes" },
+    { label: { en: "Configurations", fr: "Configurations" }, href: "/BolzaBoxes/configurations" },
+    { label: { en: "Boxes", fr: "Boîtes" }, href: "/BolzaBoxes/boxes" },
+    { label: { en: "Making of", fr: "Coulisses" }, href: "/BolzaBoxes/making-of" },
+    { label: { en: "Gallery", fr: "Galerie" }, href: "/BolzaBoxes/gallery" },
 ];
 
-const SIDE_LINKS = [
-    // { label: "About", href: "/about" },
-    { label: "Contact", href: "mailto:contact@bolzanocrafts.com" },
+const SIDE_LINKS: { label: Localized; href: string }[] = [
+    // { label: { en: "About", fr: "À propos" }, href: "/about" },
+    { label: { en: "Contact", fr: "Contact" }, href: "mailto:contact@bolzanocrafts.com" },
 ];
 
 function NavLink({
@@ -72,6 +75,7 @@ export default function BolzaBoxesNav({
     const imageSrc = background.type === "image" ? background.src : null;
     const fadeColor = background.type === "fade" ? background.color : null;
     const pathname = usePathname();
+    const lang = useLang();
     const [open, setOpen] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
     const [scrollOpacity, setScrollOpacity] = useState(0);
@@ -133,7 +137,7 @@ export default function BolzaBoxesNav({
                             <NavLink
                                 key={link.href}
                                 href={link.href}
-                                label={link.label}
+                                label={link.label[lang]}
                                 active={isActive(link.href)}
                                 small
                             />
@@ -142,9 +146,16 @@ export default function BolzaBoxesNav({
 
                     <div className="hidden lg:flex items-center gap-6 shrink-0">
                         {SIDE_LINKS.map((link) => (
-                            <NavLink key={link.href} href={link.href} label={link.label} active={isActive(link.href)} />
+                            <NavLink
+                                key={link.href}
+                                href={link.href}
+                                label={link.label[lang]}
+                                active={isActive(link.href)}
+                            />
                         ))}
                     </div>
+
+                    <LanguageSwitch />
 
                     <button
                         className="lg:hidden shrink-0 text-ink"
@@ -182,7 +193,7 @@ export default function BolzaBoxesNav({
                             <NavLink
                                 key={link.href}
                                 href={link.href}
-                                label={link.label}
+                                label={link.label[lang]}
                                 active={isActive(link.href)}
                                 onClick={() => setOpen(false)}
                             />

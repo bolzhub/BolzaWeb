@@ -1,3 +1,5 @@
+import type { Localized } from "@/lib/i18n/lang";
+
 // Couleurs des boîtes Root, utilisables par nom
 export const PUZZLE_COLORS = {
     orange: "#F3852A",
@@ -22,7 +24,7 @@ export type PuzzleFiles = {
 
 export type Puzzle = {
     number: number;
-    description: string;
+    description: Localized;
     color?: PuzzleColor;
     href?: string;
     files?: PuzzleFiles; // même formats de chemins que pour les autres images
@@ -31,15 +33,21 @@ export type Puzzle = {
 // Lien de l'icône placée au début de la liste (assets pour créer ses propres puzzles)
 export const ASSETS_LINK = {
     href: "#", // TODO : adresse réelle (page interne ou lien externe)
-    label: "Make your own",
-    description: "Download the assets and build your own puzzles.",
+    label: { en: "Make your own", fr: "Crée les tiens" } as Localized,
+    description: {
+        en: "Download the assets and build your own puzzles.",
+        fr: "Télécharge les ressources et construis tes propres puzzles.",
+    } as Localized,
 };
 
 export const PUZZLES: Puzzle[] = [
     {
         number: 1,
         color: "purple",
-        description: "Puzzle proposed during 2025 French National competition. Win with Corvids.",
+        description: {
+            en: "Puzzle proposed during the 2025 French national championship. Win with the Corvids.",
+            fr: "Puzzle proposé lors du Championnat de France 2025. Gagne avec les Corvidés.",
+        },
         files: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
@@ -49,7 +57,10 @@ export const PUZZLES: Puzzle[] = [
     {
         number: 2,
         color: "darkbrown",
-        description: "Puzzle A proposed during 2026 French National competition. Trivia question.",
+        description: {
+            en: "Puzzle A proposed during the 2026 French national championship. Trivia question.",
+            fr: "Puzzle A proposé lors du Championnat de France 2026. Question de culture Root.",
+        },
         files: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
@@ -59,8 +70,10 @@ export const PUZZLES: Puzzle[] = [
     {
         number: 3,
         color: "greywhite",
-        description:
-            "Puzzle B proposed during 2026 French National competition. Win with Vagabond on very first turn of the game.",
+        description: {
+            en: "Puzzle B proposed during the 2026 French national championship. Win with the Vagabond on the very first turn of the game.",
+            fr: "Puzzle B proposé lors du Championnat de France 2026. Gagne avec le Vagabond dès le tout premier tour de la partie.",
+        },
         files: {
             rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
             teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",

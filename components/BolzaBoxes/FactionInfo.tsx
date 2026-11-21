@@ -1,6 +1,10 @@
+"use client";
+
 import type { Faction } from "@/lib/BolzaBoxes/types";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function FactionInfo({ faction, textColor }: { faction: Faction; textColor: string }) {
+    const lang = useLang();
     return (
         <div className="flex flex-col gap-3" style={{ color: textColor }}>
             <div className="hidden lg:flex items-center gap-3">
@@ -9,11 +13,11 @@ export default function FactionInfo({ faction, textColor }: { faction: Faction; 
                     className="text-3xl md:text-4xl tracking-wide"
                     style={{ fontFamily: "var(--font-cinzel-decorative)", fontWeight: 700 }}
                 >
-                    {faction.name}
+                    {faction.name[lang]}
                 </h1>
             </div>
             <p className="opacity-80 leading-relaxed" style={{ fontFamily: "var(--font-cinzel)" }}>
-                {faction.description}
+                {faction.description[lang]}
             </p>
         </div>
     );

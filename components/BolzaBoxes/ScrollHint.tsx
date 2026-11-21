@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function ScrollHint() {
     const [visible, setVisible] = useState(true);
+    const lang = useLang();
 
     useEffect(() => {
         const onScroll = () => setVisible(window.scrollY < 40);
@@ -14,7 +16,7 @@ export default function ScrollHint() {
 
     return (
         <button
-            aria-label="Scroll down"
+            aria-label={lang === "fr" ? "Défiler vers le bas" : "Scroll down"}
             onClick={() => window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" })}
             className={`absolute left-1/2 -translate-x-1/2 z-10 text-cream transition-opacity duration-300 ${
                 visible ? "opacity-100" : "opacity-0 pointer-events-none"

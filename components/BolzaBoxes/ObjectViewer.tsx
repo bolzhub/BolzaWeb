@@ -11,9 +11,14 @@ import {
 } from "@/lib/BolzaBoxes/types";
 import { FRAME_BG, TAB_RADIUS } from "@/lib/BolzaBoxes/style";
 import MeshViewer from "./MeshViewer";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function ObjectViewer({ faction, textColor }: { faction: Faction; textColor: string }) {
-    const [objectType, setObjectType] = useState<ObjectType>(faction.objects.includes("box") ? "box" : faction.objects[0]);
+    const lang = useLang();
+    const name = faction.name[lang];
+    const [objectType, setObjectType] = useState<ObjectType>(
+        faction.objects.includes("box") ? "box" : faction.objects[0],
+    );
     const [viewModeId, setViewModeId] = useState("full");
     const [glass, setGlass] = useState<Glass>("glass");
 
@@ -36,7 +41,7 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                                 opacity: isActive ? 1 : 0.6,
                             }}
                         >
-                            {v.label}
+                            {v.label[lang]}
                         </button>
                     );
                 })}
@@ -59,7 +64,7 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                                         opacity: isActive ? 1 : 0.55,
                                     }}
                                 >
-                                    {o.label}
+                                    {o.label[lang]}
                                 </button>
                             </div>
                         );
@@ -75,7 +80,7 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                         {viewMode.type === "image" && (
                             <img
                                 src={getAssetPath(faction.slug, objectType, viewMode, glass)}
-                                alt={`${faction.name} ${objectType} ${viewMode.label}`}
+                                alt={`${name} — ${OBJECT_TYPES.find((o) => o.id === objectType)!.label[lang]} — ${viewMode.label[lang]}`}
                                 className="absolute inset-0 w-full h-full object-contain"
                             />
                         )}
@@ -99,7 +104,7 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                                     className="px-6 py-3 rounded-full tracking-wide"
                                     style={{ backgroundColor: textColor, color: faction.color }}
                                 >
-                                    Buy {faction.name}
+                                    {lang === "fr" ? "Acheter" : "Buy"} {name}
                                 </a>
                             </div>
                         )}
@@ -119,7 +124,13 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                                         opacity: isActive ? 1 : 0.55,
                                     }}
                                 >
-                                    {g === "glass" ? "Glass" : "No Glass"}
+                                    {g === "glass"
+                                        ? lang === "fr"
+                                            ? "Avec vitre"
+                                            : "Glass"
+                                        : lang === "fr"
+                                          ? "Sans vitre"
+                                          : "No Glass"}
                                 </button>
                             );
                         })}

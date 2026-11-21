@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function Lightbox({ image, onClose }: { image: string | null; onClose: () => void }) {
+    const lang = useLang();
     const [scale, setScaleState] = useState(1);
     const [position, setPositionState] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
@@ -195,7 +197,7 @@ export default function Lightbox({ image, onClose }: { image: string | null; onC
         >
             <img
                 src={image}
-                alt="Image agrandie"
+                alt={lang === "fr" ? "Image agrandie" : "Enlarged image"}
                 className="max-w-full max-h-full object-contain select-none"
                 style={{
                     transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,

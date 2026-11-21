@@ -5,6 +5,8 @@ import { YOUTUBE_SECTIONS, type YoutubeItem } from "@/lib/Recommendations/youtub
 import { getVideoThumbnail } from "@/lib/Recommendations/youtubeThumbnail";
 import SuggestionForm from "@/components/Recommendations/SuggestionForm";
 import { FG } from "@/lib/Recommendations/theme";
+import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Localized } from "@/lib/i18n/lang";
 
 function YoutubeIcon({ size = 22 }: { size?: number }) {
     return (
@@ -39,6 +41,7 @@ function usePreview(item: YoutubeItem) {
 
 function Entry({ item }: { item: YoutubeItem }) {
     const preview = usePreview(item);
+    const lang = useLang();
 
     return (
         <li>
@@ -60,7 +63,7 @@ function Entry({ item }: { item: YoutubeItem }) {
                         {item.title}
                     </span>
                     <span className="text-sm leading-relaxed" style={{ color: `${FG}99` }}>
-                        {item.description}
+                        {item.description[lang]}
                     </span>
                 </span>
             </a>
@@ -68,13 +71,14 @@ function Entry({ item }: { item: YoutubeItem }) {
     );
 }
 
-function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle: string }) {
+function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle: Localized }) {
     const preview = usePreview(item);
+    const lang = useLang();
 
     return (
         <section>
             <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: `${FG}66` }}>
-                Random suggestion
+                {lang === "fr" ? "Suggestion au hasard" : "Random suggestion"}
             </p>
 
             <a
@@ -93,7 +97,7 @@ function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle
 
                 <span className="flex flex-col justify-center min-w-0">
                     <span className="text-xs mb-1" style={{ color: `${FG}66`, fontFamily: "var(--font-playfair)" }}>
-                        {sectionTitle}
+                        {sectionTitle[lang]}
                     </span>
                     <span
                         className="text-xl mb-2 group-hover:opacity-60 transition-opacity"
@@ -102,7 +106,7 @@ function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle
                         {item.title}
                     </span>
                     <span className="text-sm leading-relaxed" style={{ color: `${FG}99` }}>
-                        {item.description}
+                        {item.description[lang]}
                     </span>
                 </span>
             </a>
@@ -113,9 +117,10 @@ function FeaturedEntry({ item, sectionTitle }: { item: YoutubeItem; sectionTitle
 }
 
 export default function RecommendationsYoutube() {
+    const lang = useLang();
     // Choisie après montage (pas dans l'état initial) pour éviter tout
     // écart entre le rendu serveur et le rendu client lors de l'hydratation.
-    const [featured, setFeatured] = useState<{ item: YoutubeItem; sectionTitle: string } | null>(null);
+    const [featured, setFeatured] = useState<{ item: YoutubeItem; sectionTitle: Localized } | null>(null);
 
     useEffect(() => {
         const all = YOUTUBE_SECTIONS.flatMap((s) => s.items.map((item) => ({ item, sectionTitle: s.title })));
@@ -129,12 +134,12 @@ export default function RecommendationsYoutube() {
             <SuggestionForm />
 
             {YOUTUBE_SECTIONS.map((section) => (
-                <section key={section.title}>
+                <section key={section.title.en}>
                     <h2
                         className="text-2xl md:text-3xl mb-5"
                         style={{ fontFamily: "var(--font-playfair)", fontWeight: 700, color: FG }}
                     >
-                        {section.title}
+                        {section.title[lang]}
                     </h2>
                     <ul className="divide-y" style={{ borderColor: `${FG}1A` }}>
                         {section.items.map((item) => (

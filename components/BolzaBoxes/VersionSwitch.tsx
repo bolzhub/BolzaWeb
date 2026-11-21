@@ -1,9 +1,11 @@
 "use client";
 
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function VersionSwitch() {
     const { version, setVersion } = useVersion();
+    const fr = useLang() === "fr";
 
     return (
         <div
@@ -11,12 +13,12 @@ export default function VersionSwitch() {
             style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom, 0px))" }}
         >
             <span className="text-sm text-ink" style={{ fontFamily: "var(--font-playfair)" }}>
-                Version:
+                {fr ? "Version\u00a0:" : "Version:"}
             </span>
 
             <button
                 onClick={() => setVersion("international")}
-                aria-label="International version"
+                aria-label={fr ? "Version internationale" : "International version"}
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
                     version === "international" ? "bg-ink scale-105" : "bg-transparent opacity-40 hover:opacity-70"
                 }`}
@@ -38,7 +40,7 @@ export default function VersionSwitch() {
 
             <button
                 onClick={() => setVersion("french")}
-                aria-label="French version"
+                aria-label={fr ? "Version française" : "French version"}
                 className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
                     version === "french" ? "bg-ink scale-105" : "bg-transparent opacity-40 hover:opacity-70"
                 }`}

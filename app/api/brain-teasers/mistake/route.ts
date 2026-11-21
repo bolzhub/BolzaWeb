@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         from: "Brain Teasers <teasers@bolzanocrafts.com>",
         subject: `Brain Teaser #${puzzle.number} — mistake reported`,
         text: [
-            `Puzzle: #${puzzle.number} (${puzzle.description})`,
+            `Puzzle: #${puzzle.number} (${puzzle.description.en})`,
             `Section being viewed: ${sectionLabel}`,
             "",
             message,

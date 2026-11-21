@@ -3,22 +3,36 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Logo, { LOGO_SOURCES, type LogoSize } from "./Logo";
+import LanguageSwitch from "@/components/i18n/LanguageSwitch";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 const LOGO_HEIGHT = 40;
 const NAV_FONT_SIZE = "0.875rem";
 const SIDE_GAP = 24;
 const BURGER_WIDTH = 44;
+const SWITCH_WIDTH = 84; // largeur du sélecteur de langue + son espacement
 
-const NAV_ITEMS = [
-    { label: "Home", href: "/" },
-    { label: "Updates", href: "#" },
-    { label: "About", href: "#" },
-    { label: "Contact", href: "#" },
-];
+const NAV_ITEMS = {
+    en: [
+        { label: "Home", href: "/" },
+        { label: "Updates", href: "#" },
+        { label: "About", href: "#" },
+        { label: "Contact", href: "#" },
+    ],
+    fr: [
+        { label: "Accueil", href: "/" },
+        { label: "Actualités", href: "#" },
+        { label: "À propos", href: "#" },
+        { label: "Contact", href: "#" },
+    ],
+};
 
-const HELP_ITEM = { label: "Help", href: "#" };
+const HELP_ITEM = { en: { label: "Help", href: "#" }, fr: { label: "Aide", href: "#" } };
 
 export default function MainHeader() {
+    const lang = useLang();
+    const NAV = NAV_ITEMS[lang];
+    const HELP = HELP_ITEM[lang];
     const containerRef = useRef<HTMLDivElement>(null);
     const navProbeRef = useRef<HTMLDivElement>(null);
     const helpProbeRef = useRef<HTMLAnchorElement>(null);
@@ -59,8 +73,8 @@ export default function MainHeader() {
 
     useEffect(() => {
         if (navProbeRef.current) setNavWidth(navProbeRef.current.scrollWidth);
-        if (helpProbeRef.current) setHelpWidth(helpProbeRef.current.scrollWidth);
-    }, []);
+        if (helpProbeRef.current) setHelpWidth(helpProbeRef.current.scrollWidth + SWITCH_WIDTH);
+    }, [lang]);
 
     const recompute = useCallback(() => {
         if (!containerRef.current || !logoWidths || navWidth === null || helpWidth === null) return;
@@ -92,7 +106,7 @@ export default function MainHeader() {
         }
 
         setBurgerMode(true);
-        const fitsBurger = (logoW: number) => logoW + BURGER_WIDTH + SIDE_GAP * 2 <= contentWidth;
+        const fitsBurger = (logoW: number) => logoW + BURGER_WIDTH + SWITCH_WIDTH + SIDE_GAP * 2 <= contentWidth;
         if (fitsBurger(logoWidths.full)) setLogoSize("full");
         else if (fitsBurger(logoWidths.medium)) setLogoSize("medium");
         else setLogoSize("small");
@@ -113,7 +127,7 @@ export default function MainHeader() {
                 <>
                     <div className="flex-1" aria-hidden="true" />
                     <div style={{ display: "contents" }}>
-                        {NAV_ITEMS.map((item) => (
+                        {NAV.map((item) => (
                             <Link
                                 key={item.label}
                                 href={item.href}
@@ -126,12 +140,13 @@ export default function MainHeader() {
                     </div>
                     <div className="flex-1" aria-hidden="true" />
                     <Link
-                        href={HELP_ITEM.href}
+                        href={HELP.href}
                         className="shrink-0 rounded-full px-4 py-1.5 text-white bg-[#7a2e2e] hover:bg-[#8f3636] transition-colors"
                         style={{ fontSize: NAV_FONT_SIZE }}
                     >
-                        {HELP_ITEM.label}
+                        {HELP.label}
                     </Link>
+                    <LanguageSwitch className="self-center" />
                 </>
             )}
 
@@ -152,7 +167,7 @@ export default function MainHeader() {
 
                         {menuOpen && (
                             <div className="absolute right-0 mt-2 flex flex-col gap-1 bg-cream border border-ink/10 rounded-xl shadow-lg py-2 min-w-[160px] z-50">
-                                {[...NAV_ITEMS, HELP_ITEM].map((item) => (
+                                {[...NAV, HELP].map((item) => (
                                     <Link
                                         key={item.label}
                                         href={item.href}
@@ -165,6 +180,7 @@ export default function MainHeader() {
                             </div>
                         )}
                     </div>
+                    <LanguageSwitch className="self-center" />
                 </>
             )}
 
@@ -174,7 +190,7 @@ export default function MainHeader() {
                 className="absolute -z-10 opacity-0 pointer-events-none flex items-baseline gap-6 whitespace-nowrap"
                 style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}
             >
-                {NAV_ITEMS.map((item) => (
+                {NAV.map((item) => (
                     <span key={item.label}>{item.label}</span>
                 ))}
             </div>
@@ -185,7 +201,7 @@ export default function MainHeader() {
                 className="absolute -z-10 opacity-0 pointer-events-none rounded-full px-4 py-1.5 whitespace-nowrap"
                 style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}
             >
-                {HELP_ITEM.label}
+                {HELP.label}
             </a>
         </header>
     );

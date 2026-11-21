@@ -6,15 +6,18 @@ import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
 import ZoomImage from "@/components/RootBrainTeasers/ZoomImage";
 import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
 import { LOGO_SOURCES } from "@/components/site/Logo";
+import LanguageSwitch from "@/components/i18n/LanguageSwitch";
+import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Localized } from "@/lib/i18n/lang";
 
 export type SectionId = "rules" | "teaser" | "solution";
 export type SectionContent = { url: string; kind: "pdf" | "image" };
 export type PuzzleContents = Partial<Record<SectionId, SectionContent>>;
 
-const SECTIONS: { id: SectionId; label: string }[] = [
-    { id: "rules", label: "Rules" },
-    { id: "teaser", label: "Brain teaser" },
-    { id: "solution", label: "Solution" },
+const SECTIONS: { id: SectionId; label: Localized }[] = [
+    { id: "rules", label: { en: "Rules", fr: "Règles" } },
+    { id: "teaser", label: { en: "Brain teaser", fr: "Casse-tête" } },
+    { id: "solution", label: { en: "Solution", fr: "Solution" } },
 ];
 
 // Le contenu occupe la zone entre ces deux barres, pour que rien ne le recouvre
@@ -25,6 +28,8 @@ const PILL = "rounded-full bg-cream/95 shadow-md text-ink";
 const TAB = "whitespace-nowrap rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm transition-colors";
 
 export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber: number; contents: PuzzleContents }) {
+    const lang = useLang();
+    const fr = lang === "fr";
     const [section, setSection] = useState<SectionId>("rules");
     const [visited, setVisited] = useState<SectionId[]>(["rules"]);
     const [mistakeOpen, setMistakeOpen] = useState(false);
@@ -53,7 +58,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                                 className="absolute inset-0 flex items-center justify-center text-xl text-parchment/80"
                                 style={{ fontFamily: "var(--font-playfair)" }}
                             >
-                                Coming soon…
+                                {fr ? "Bientôt disponible…" : "Coming soon…"}
                             </p>
                         ) : null;
                     }
@@ -64,7 +69,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                         <ZoomImage
                             key={id}
                             src={content.url}
-                            alt={`Puzzle ${puzzleNumber} — ${label}`}
+                            alt={`Puzzle ${puzzleNumber} — ${label[lang]}`}
                             active={active}
                             onInteract={() => setHintGone(true)}
                         />
@@ -77,13 +82,14 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                 className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3"
                 style={{ height: TOP_BAR }}
             >
-                <Link href="/" aria-label="Home" className={`${PILL} p-2`}>
+                <Link href="/" aria-label={fr ? "Accueil" : "Home"} className={`${PILL} p-2`}>
                     <img src={LOGO_SOURCES.small} alt="Bolzano" className="h-7 w-auto" />
                 </Link>
                 <Link href="/RootBrainTeasers" className={`${PILL} px-3 py-2 text-sm`}>
                     ← Puzzles
                 </Link>
                 <span className={`${PILL} px-3 py-2 text-sm font-bold`}>Puzzle {puzzleNumber}</span>
+                <LanguageSwitch className="ml-auto" />
             </div>
 
             {/* Indice, qui disparaît dès la première interaction avec l'image */}
@@ -93,7 +99,9 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                 }`}
                 style={{ bottom: `calc(${BOTTOM_BAR} + 0.75rem)` }}
             >
-                Scroll or pinch to zoom, drag to move
+                {fr
+                    ? "Molette ou pincement pour zoomer, glisser pour déplacer"
+                    : "Scroll or pinch to zoom, drag to move"}
             </p>
 
             <MistakeBox open={mistakeOpen} puzzleNumber={puzzleNumber} section={section} />
@@ -111,7 +119,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                         onClick={() => select(id)}
                         className={`${TAB} ${section === id ? "bg-ink text-cream" : "text-ink hover:bg-ink/10"}`}
                     >
-                        {label}
+                        {label[lang]}
                     </button>
                 ))}
 
@@ -123,7 +131,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                     onClick={() => setMistakeOpen((o) => !o)}
                     className={`${TAB} ${mistakeOpen ? "bg-[#7a2e2e] text-white" : "text-ink hover:bg-ink/10"}`}
                 >
-                    Notice a mistake
+                    {fr ? "Signaler une erreur" : "Notice a mistake"}
                 </button>
             </nav>
         </div>

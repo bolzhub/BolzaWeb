@@ -1,9 +1,25 @@
-import Link from "next/link";
+"use client";
 
-export default function MobileTopBar({ title, icon, textColor }: { title: string; icon: string; textColor: string }) {
+import Link from "next/link";
+import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Localized } from "@/lib/i18n/lang";
+
+export default function MobileTopBar({
+    title,
+    icon,
+    textColor,
+}: {
+    title: Localized;
+    icon: string;
+    textColor: string;
+}) {
+    const lang = useLang();
     return (
         <div className="lg:hidden flex items-center gap-4 px-4 py-3" style={{ color: textColor }}>
-            <Link href="/BolzaBoxes/configurations" aria-label="Back to all factions">
+            <Link
+                href="/BolzaBoxes/configurations"
+                aria-label={lang === "fr" ? "Retour à toutes les factions" : "Back to all factions"}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-6 h-6"
@@ -20,7 +36,7 @@ export default function MobileTopBar({ title, icon, textColor }: { title: string
             </Link>
             <img src={icon} alt="" className="h-6 w-6 shrink-0" />
             <h1 className="text-xl tracking-wide" style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}>
-                {title}
+                {title[lang]}
             </h1>
         </div>
     );

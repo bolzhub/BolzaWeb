@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PUZZLE_COLORS, type Puzzle } from "@/lib/RootBrainTeasers/puzzles";
 import { readableTextOn } from "@/lib/colors";
+import type { Lang } from "@/lib/i18n/lang";
 
 const FALLBACK_COLORS = Object.values(PUZZLE_COLORS);
 const DARK = "#2A2018";
@@ -13,7 +14,7 @@ const CENTER = { x: 12, y: 12 };
 // se place à la moitié de cette hauteur sous le point central.
 const DIGIT_HALF_HEIGHT = 0.354;
 
-export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: number }) {
+export default function PuzzlePiece({ puzzle, index, lang }: { puzzle: Puzzle; index: number; lang: Lang }) {
     const color = puzzle.color ? PUZZLE_COLORS[puzzle.color] : FALLBACK_COLORS[index % FALLBACK_COLORS.length];
     const href = puzzle.href ?? `/RootBrainTeasers/${puzzle.number}`;
     const digits = String(puzzle.number).length;
@@ -22,7 +23,7 @@ export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: 
     return (
         <Link
             href={href}
-            aria-label={`Puzzle ${puzzle.number} : ${puzzle.description}`}
+            aria-label={`Puzzle ${puzzle.number} : ${puzzle.description[lang]}`}
             className="rbt-item flex flex-col items-center gap-5 text-center outline-none"
         >
             <svg
@@ -58,7 +59,7 @@ export default function PuzzlePiece({ puzzle, index }: { puzzle: Puzzle; index: 
                 className="text-base md:text-lg leading-relaxed text-parchment/90 max-w-[calc(var(--rbt-size)*1.2)]"
                 style={{ textShadow: "0 1px 3px rgba(0,0,0,0.55)" }}
             >
-                {puzzle.description}
+                {puzzle.description[lang]}
             </span>
         </Link>
     );

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PuzzleViewer, { type SectionContent } from "@/components/RootBrainTeasers/PuzzleViewer";
 import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
 import { resolveImageSrc } from "@/lib/media/url";
+import { getLang } from "@/lib/i18n/server";
 
 type Props = { params: Promise<{ number: string }> };
 
@@ -20,9 +21,11 @@ function toContent(path?: string): SectionContent | undefined {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { number } = await params;
     const puzzle = findPuzzle(number);
+    const lang = await getLang();
+    const site = lang === "fr" ? "Casse-têtes Root" : "Root Brain Teasers";
     return {
-        title: puzzle ? `Puzzle ${puzzle.number} — Root Brain Teasers` : "Root Brain Teasers",
-        description: puzzle?.description,
+        title: puzzle ? `Puzzle ${puzzle.number} — ${site}` : site,
+        description: puzzle?.description[lang],
     };
 }
 

@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { SIDEBAR_ORDER, factionPath, getFactionBySlug } from "@/lib/BolzaBoxes/factions";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Faction } from "@/lib/BolzaBoxes/types";
 
 export default function FactionSidebar({ active }: { active: Faction }) {
     const { version } = useVersion();
+    const lang = useLang();
     const factions = SIDEBAR_ORDER[version].map((slug) => getFactionBySlug(slug)!);
 
     return (
@@ -42,7 +44,7 @@ export default function FactionSidebar({ active }: { active: Faction }) {
                         )}
                         <img
                             src={f.icon}
-                            alt={f.name}
+                            alt={f.name[lang]}
                             className={`relative z-10 w-5 h-5 lg:w-6 lg:h-6 transition-opacity ${
                                 isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
                             }`}

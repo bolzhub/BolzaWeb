@@ -2,9 +2,11 @@
 
 import { SECTIONS } from "@/lib/BolzaBoxes/section";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function AlternatingSections() {
     const { version } = useVersion();
+    const lang = useLang();
 
     return (
         <div className="flex flex-col gap-6 md:gap-8 px-6 md:px-10 py-6 md:py-8">
@@ -22,7 +24,7 @@ export default function AlternatingSections() {
                         <div className="w-full md:w-1/4 aspect-square relative shrink-0">
                             <img
                                 src={image}
-                                alt={section.imageAlt}
+                                alt={section.imageAlt[lang]}
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
                         </div>
@@ -36,13 +38,13 @@ export default function AlternatingSections() {
                                     fontSize: "clamp(1.5rem, 3.2vw, 3rem)",
                                 }}
                             >
-                                {section.title}
+                                {section.title[lang]}
                             </h2>
                             <p
                                 className="text-ink leading-relaxed"
                                 style={{ fontSize: "clamp(0.95rem, 1.5vw, 1.3rem)" }}
                             >
-                                {section.text}
+                                {section.text[lang]}
                             </p>
                         </div>
                     </div>

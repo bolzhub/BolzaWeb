@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BoxesLayout } from "@/lib/BolzaBoxes/boxesZones";
 import { factionPath, getFactionBySlug } from "@/lib/BolzaBoxes/factions";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function BoxesImageMap({ src, layout }: { src: string; layout: BoxesLayout }) {
     const router = useRouter();
+    const lang = useLang();
     const [debug, setDebug] = useState(false);
 
     useEffect(() => {
@@ -24,13 +26,13 @@ export default function BoxesImageMap({ src, layout }: { src: string; layout: Bo
                 maxHeight: "100%",
             }}
             role="img"
-            aria-label="Box selection"
+            aria-label={lang === "fr" ? "Choix de la boîte" : "Box selection"}
         >
             <image href={src} x={0} y={0} width={layout.width} height={layout.height} />
 
             {layout.zones.map((zone) => {
                 const href = zone.faction ? factionPath(zone.faction) : null;
-                const tooltip = (zone.faction && getFactionBySlug(zone.faction)?.name) || zone.label;
+                const tooltip = (zone.faction && getFactionBySlug(zone.faction)?.name[lang]) || zone.label;
 
                 return (
                     <rect

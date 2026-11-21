@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MAX_MESSAGE_LENGTH } from "@/lib/contact";
 import { useSendMessage } from "@/lib/useSendMessage";
+import { useLang } from "@/lib/i18n/LanguageContext";
 
 type Pos = { x: number; y: number };
 
@@ -34,6 +35,7 @@ export default function MistakeBox({
     puzzleNumber: number;
     section: string; // section visible au moment de l'envoi
 }) {
+    const fr = useLang() === "fr";
     const boxRef = useRef<HTMLDivElement>(null);
     const drag = useRef<{ id: number; startX: number; startY: number; originX: number; originY: number } | null>(null);
 
@@ -69,7 +71,9 @@ export default function MistakeBox({
         <div
             ref={boxRef}
             role="dialog"
-            aria-label={`Report a mistake in puzzle ${puzzleNumber}`}
+            aria-label={
+                fr ? `Signaler une erreur dans le puzzle ${puzzleNumber}` : `Report a mistake in puzzle ${puzzleNumber}`
+            }
             className={`absolute left-0 top-0 z-40 rounded-2xl bg-cream text-ink shadow-2xl ring-1 ring-black/15 ${
                 open ? "block" : "hidden"
             }`}
@@ -121,7 +125,7 @@ export default function MistakeBox({
                     <circle cx="15" cy="18" r="1.8" />
                 </svg>
                 <span className="text-sm" style={{ fontFamily: "var(--font-playfair)" }}>
-                    Notice a mistake · Puzzle {puzzleNumber}
+                    {fr ? "Signaler une erreur" : "Notice a mistake"} · Puzzle {puzzleNumber}
                 </span>
             </div>
 
@@ -134,15 +138,16 @@ export default function MistakeBox({
                         setText(e.target.value);
                         if (status !== "idle") reset();
                     }}
-                    placeholder="Describe the mistake you noticed…"
+                    placeholder={fr ? "Décris l’erreur que tu as remarquée…" : "Describe the mistake you noticed…"}
                     rows={5}
                     className="w-full resize-none rounded-lg bg-ink/8 px-3 py-2 text-base outline-none placeholder:text-ink/40 focus:ring-2 focus:ring-ink/30"
                 />
 
                 <div className="mt-3 flex items-center justify-between gap-3">
                     <p className="text-xs text-ink/70">
-                        {status === "sent" && "Thanks, sent!"}
-                        {status === "error" && "Couldn't send, please try again."}
+                        {status === "sent" && (fr ? "Merci, c’est envoyé !" : "Thanks, sent!")}
+                        {status === "error" &&
+                            (fr ? "Échec de l’envoi, réessaie." : "Couldn't send, please try again.")}
                     </p>
                     <button
                         type="button"
@@ -150,7 +155,7 @@ export default function MistakeBox({
                         disabled={!text.trim() || status === "sending"}
                         className="shrink-0 rounded-full bg-[#7a2e2e] px-5 py-2 text-sm text-white transition-colors hover:bg-[#8f3636] disabled:opacity-40"
                     >
-                        {status === "sending" ? "Sending…" : "Send"}
+                        {status === "sending" ? (fr ? "Envoi…" : "Sending…") : fr ? "Envoyer" : "Send"}
                     </button>
                 </div>
             </div>

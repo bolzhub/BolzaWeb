@@ -5,6 +5,54 @@ import Link from "next/link";
 import { ResponsiveLogo } from "@/components/site/Logo";
 import { RED_FLAGS } from "@/lib/RedFlags/redFlags";
 import { shuffle, verdict } from "@/lib/RedFlags/game";
+import LanguageSwitch from "@/components/i18n/LanguageSwitch";
+import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Lang } from "@/lib/i18n/lang";
+
+const T = {
+    fr: {
+        restart: "Recommencer",
+        title: "Jeu des Red Flags",
+        intro: "Ton date te révèle ses red flags, un par un. À chaque fois, tu choisis : tu continues, ou tu mets fin au date. Jusqu’où iras-tu ?",
+        start: "Lancer le jeu",
+        credit: "Un jeu de Hugo Mahasith",
+        who: "Avec qui as-tu rendez-vous ?",
+        namePlaceholder: "Son prénom",
+        dateWith: "Date avec",
+        flagNumber: (n: number) => `Red flag n°${n}`,
+        stop: "Mettre fin au date",
+        noMore: "Plus aucun red flag…",
+        continue: "Continuer",
+        alreadyAccepted: (n: number) => `Déjà accepté${n > 1 ? "s" : ""} (${n})`,
+        endOfDate: (name: string) => `Fin du date avec ${name}`,
+        accepted: (n: number) => ["Tu as accepté ", ` red flag${n > 1 ? "s" : ""}.`],
+        lastStraw: "Le red flag de trop",
+        letSlide: "Ce que tu as laissé passer",
+        newDate: "Nouveau date",
+    },
+    en: {
+        restart: "Start over",
+        title: "Red Flags Game",
+        intro: "Your date reveals their red flags, one by one. Each time, you choose: keep going, or end the date. How far will you go?",
+        start: "Start the game",
+        credit: "A game by Hugo Mahasith",
+        who: "Who’s your date with?",
+        namePlaceholder: "Their first name",
+        dateWith: "Date with",
+        flagNumber: (n: number) => `Red flag #${n}`,
+        stop: "End the date",
+        noMore: "No red flags left…",
+        continue: "Continue",
+        alreadyAccepted: (n: number) => `Already accepted (${n})`,
+        endOfDate: (name: string) => `End of your date with ${name}`,
+        accepted: (n: number) => ["You accepted ", ` red flag${n > 1 ? "s" : ""}.`],
+        lastStraw: "The last straw",
+        letSlide: "What you let slide",
+        newDate: "New date",
+    },
+};
+
+type Texts = (typeof T)["fr"];
 
 const BG = "#2a0b11";
 const RED = "#e0313f";
@@ -16,15 +64,18 @@ const TITLE_FONT = { fontFamily: "var(--font-playfair)", fontWeight: 700 } as co
 export default function RedFlagsGame() {
     const [phase, setPhase] = useState<Phase>("intro");
     const [name, setName] = useState("");
-    const [deck, setDeck] = useState<string[]>([]); // ordre de tirage de la partie
+    const [deck, setDeck] = useState<number[]>([]); // ordre de tirage de la partie (indices dans RED_FLAGS)
     const [count, setCount] = useState(0); // nombre de red flags apparus
+    const lang = useLang();
+    const t = T[lang];
 
-    const flags = deck.slice(0, count);
+    // Textes affichés dans la langue courante : changer de langue en cours de partie traduit tout
+    const flags = deck.slice(0, count).map((i) => RED_FLAGS[i][lang]);
     const exhausted = count >= deck.length;
 
     function startDate(chosen: string) {
         setName(chosen);
-        setDeck(shuffle(RED_FLAGS));
+        setDeck(shuffle(RED_FLAGS.map((_, i) => i)));
         setCount(1);
         setPhase("date");
     }
@@ -46,14 +97,17 @@ export default function RedFlagsGame() {
                 <Link href="/" className="shrink-0">
                     <ResponsiveLogo className="h-8 brightness-0 invert md:h-10" />
                 </Link>
-                {phase !== "intro" && (
-                    <button
-                        onClick={() => setPhase("intro")}
-                        className="text-sm opacity-60 underline-offset-4 hover:underline hover:opacity-100"
-                    >
-                        Recommencer
-                    </button>
-                )}
+                <div className="flex items-center gap-4">
+                    {phase !== "intro" && (
+                        <button
+                            onClick={() => setPhase("intro")}
+                            className="text-sm opacity-60 underline-offset-4 hover:underline hover:opacity-100"
+                        >
+                            {t.restart}
+                        </button>
+                    )}
+                    <LanguageSwitch />
+                </div>
             </header>
 
             <div
@@ -61,10 +115,11 @@ export default function RedFlagsGame() {
                     centered ? "py-24" : "pb-8 pt-20 md:pt-24"
                 }`}
             >
-                {phase === "intro" && <Intro onStart={() => setPhase("name")} />}
-                {phase === "name" && <NamePicker onPick={startDate} />}
+                {phase === "intro" && <Intro t={t} onStart={() => setPhase("name")} />}
+                {phase === "name" && <NamePicker t={t} onPick={startDate} />}
                 {phase === "date" && (
                     <DateScreen
+                        t={t}
                         name={name}
                         flags={flags}
                         exhausted={exhausted}
@@ -73,7 +128,14 @@ export default function RedFlagsGame() {
                     />
                 )}
                 {phase === "summary" && (
-                    <Summary name={name} flags={flags} exhausted={exhausted} onReplay={() => setPhase("name")} />
+                    <Summary
+                        t={t}
+                        lang={lang}
+                        name={name}
+                        flags={flags}
+                        exhausted={exhausted}
+                        onReplay={() => setPhase("name")}
+                    />
                 )}
             </div>
         </main>
@@ -101,30 +163,27 @@ function PrimaryButton({ children, ...props }: React.ButtonHTMLAttributes<HTMLBu
     );
 }
 
-function Intro({ onStart }: { onStart: () => void }) {
+function Intro({ t, onStart }: { t: Texts; onStart: () => void }) {
     return (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
             <Flag className="h-20 w-20" />
             <h1 className="text-4xl md:text-5xl" style={TITLE_FONT}>
-                Jeu des Red Flags
+                {t.title}
             </h1>
-            <p className="max-w-sm opacity-80">
-                Ton date te révèle ses red flags, un par un. À chaque fois, tu choisis : tu continues, ou tu mets fin au
-                date. Jusqu’où iras-tu ?
-            </p>
-            <PrimaryButton onClick={onStart}>Lancer le jeu</PrimaryButton>
-            <p className="text-sm opacity-50">Un jeu de Hugo Mahasith</p>
+            <p className="max-w-sm opacity-80">{t.intro}</p>
+            <PrimaryButton onClick={onStart}>{t.start}</PrimaryButton>
+            <p className="text-sm opacity-50">{t.credit}</p>
         </div>
     );
 }
 
-function NamePicker({ onPick }: { onPick: (name: string) => void }) {
+function NamePicker({ t, onPick }: { t: Texts; onPick: (name: string) => void }) {
     const [custom, setCustom] = useState("");
 
     return (
         <div className="flex flex-1 flex-col justify-center gap-6">
             <h2 className="text-center text-3xl" style={TITLE_FONT}>
-                Avec qui as-tu rendez-vous ?
+                {t.who}
             </h2>
             <form
                 onSubmit={(e) => {
@@ -137,7 +196,7 @@ function NamePicker({ onPick }: { onPick: (name: string) => void }) {
                     value={custom}
                     onChange={(e) => setCustom(e.target.value)}
                     autoFocus
-                    placeholder="Son prénom"
+                    placeholder={t.namePlaceholder}
                     maxLength={30}
                     className="min-w-0 flex-1 rounded-full border border-cream/20 bg-transparent px-4 py-2 outline-none placeholder:text-cream/40 focus:border-cream/60"
                 />
@@ -154,12 +213,14 @@ function NamePicker({ onPick }: { onPick: (name: string) => void }) {
 }
 
 function DateScreen({
+    t,
     name,
     flags,
     exhausted,
     onContinue,
     onStop,
 }: {
+    t: Texts;
     name: string;
     flags: string[];
     exhausted: boolean;
@@ -172,7 +233,7 @@ function DateScreen({
     return (
         <div className="flex flex-1 flex-col gap-5">
             <div className="text-center">
-                <p className="text-sm uppercase tracking-widest opacity-60">Date avec</p>
+                <p className="text-sm uppercase tracking-widest opacity-60">{t.dateWith}</p>
                 <h2 className="text-3xl" style={TITLE_FONT}>
                     {name}
                 </h2>
@@ -185,7 +246,7 @@ function DateScreen({
                 style={{ backgroundColor: "#f3ecdc" }}
             >
                 <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest opacity-60">
-                    <Flag className="h-4 w-4" /> Red flag n°{flags.length}
+                    <Flag className="h-4 w-4" /> {t.flagNumber(flags.length)}
                 </p>
                 <p className="text-xl leading-snug">{current}</p>
             </div>
@@ -196,21 +257,21 @@ function DateScreen({
                     onClick={onStop}
                     className="flex-1 rounded-full border border-cream/40 px-4 py-3 font-semibold transition hover:bg-cream/5 active:scale-95"
                 >
-                    Mettre fin au date
+                    {t.stop}
                 </button>
                 <button
                     onClick={onContinue}
                     className="flex-1 rounded-full px-4 py-3 font-semibold text-white transition active:scale-95"
                     style={{ backgroundColor: RED }}
                 >
-                    {exhausted ? "Plus aucun red flag…" : "Continuer"}
+                    {exhausted ? t.noMore : t.continue}
                 </button>
             </div>
 
             {previous.length > 0 && (
                 <section>
                     <h3 className="mb-2 text-sm uppercase tracking-widest opacity-60">
-                        Déjà accepté{previous.length > 1 ? "s" : ""} ({previous.length})
+                        {t.alreadyAccepted(previous.length)}
                     </h3>
                     <FlagList flags={previous} startAt={previous.length} descending />
                 </section>
@@ -223,7 +284,7 @@ function FlagList({ flags, startAt, descending = false }: { flags: string[]; sta
     return (
         <ol className="space-y-2">
             {flags.map((f, i) => (
-                <li key={f} className="flex gap-3 rounded-xl bg-cream/5 px-4 py-2.5">
+                <li key={i} className="flex gap-3 rounded-xl bg-cream/5 px-4 py-2.5">
                     <span className="w-6 shrink-0 text-right text-sm tabular-nums opacity-50">
                         {descending ? startAt - i : startAt + i}
                     </span>
@@ -235,11 +296,15 @@ function FlagList({ flags, startAt, descending = false }: { flags: string[]; sta
 }
 
 function Summary({
+    t,
+    lang,
     name,
     flags,
     exhausted,
     onReplay,
 }: {
+    t: Texts;
+    lang: Lang;
     name: string;
     flags: string[];
     exhausted: boolean;
@@ -248,12 +313,13 @@ function Summary({
     // Le dernier red flag est celui qui a fait arrêter le date (sauf si la liste est épuisée)
     const accepted = exhausted ? flags : flags.slice(0, -1);
     const last = exhausted ? null : flags[flags.length - 1];
-    const { title, text } = verdict(accepted.length, exhausted);
+    const { title, text } = verdict(accepted.length, exhausted, lang);
+    const [acceptedBefore, acceptedAfter] = t.accepted(accepted.length);
 
     return (
         <div className="flex flex-col gap-6">
             <div className="text-center">
-                <p className="text-sm uppercase tracking-widest opacity-60">Fin du date avec {name}</p>
+                <p className="text-sm uppercase tracking-widest opacity-60">{t.endOfDate(name)}</p>
                 <h2 className="mt-1 text-4xl" style={{ ...TITLE_FONT, color: RED }}>
                     {title}
                 </h2>
@@ -261,13 +327,15 @@ function Summary({
             </div>
 
             <p className="text-center text-lg">
-                Tu as accepté <strong>{accepted.length}</strong> red flag{accepted.length > 1 ? "s" : ""}.
+                {acceptedBefore}
+                <strong>{accepted.length}</strong>
+                {acceptedAfter}
             </p>
 
             {last && (
                 <div className="rounded-2xl p-5 text-ink shadow-xl" style={{ backgroundColor: "#f3ecdc" }}>
                     <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest opacity-60">
-                        <Flag className="h-4 w-4" /> Le red flag de trop
+                        <Flag className="h-4 w-4" /> {t.lastStraw}
                     </p>
                     <p className="text-xl leading-snug">{last}</p>
                 </div>
@@ -275,13 +343,13 @@ function Summary({
 
             {accepted.length > 0 && (
                 <section>
-                    <h3 className="mb-2 text-sm uppercase tracking-widest opacity-60">Ce que tu as laissé passer</h3>
+                    <h3 className="mb-2 text-sm uppercase tracking-widest opacity-60">{t.letSlide}</h3>
                     <FlagList flags={accepted} startAt={1} />
                 </section>
             )}
 
             <div className="flex justify-center pt-2">
-                <PrimaryButton onClick={onReplay}>Nouveau date</PrimaryButton>
+                <PrimaryButton onClick={onReplay}>{t.newDate}</PrimaryButton>
             </div>
         </div>
     );
