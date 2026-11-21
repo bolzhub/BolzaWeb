@@ -153,6 +153,7 @@ export default function MainHeader() {
             {burgerMode && (
                 <>
                     <div className="flex-1" aria-hidden="true" />
+                    <LanguageSwitch className="self-center" />
                     <div className="relative self-center">
                         <button
                             type="button"
@@ -180,7 +181,6 @@ export default function MainHeader() {
                             </div>
                         )}
                     </div>
-                    <LanguageSwitch className="self-center" />
                 </>
             )}
 
