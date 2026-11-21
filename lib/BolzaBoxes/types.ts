@@ -1,4 +1,4 @@
-export type ObjectType = "box" | "drawer" | "container";
+export type ObjectType = "box" | "drawer" | "container" | "holder";
 export type ViewModeType = "image" | "video" | "mesh" | "link";
 export type Glass = "glass" | "no-glass";
 
@@ -15,12 +15,14 @@ export type Faction = {
     icon: string;
     description: string;
     buyUrl?: string;
+    objects: ObjectType[];
 };
 
 export const OBJECT_TYPES: { id: ObjectType; label: string }[] = [
     { id: "container", label: "Container" },
     { id: "box", label: "Box" },
     { id: "drawer", label: "Drawer" },
+    { id: "holder", label: "Holder" },
 ];
 
 // 🎛️ Ajustez cette liste si vous ajoutez/retirez des modes de vue

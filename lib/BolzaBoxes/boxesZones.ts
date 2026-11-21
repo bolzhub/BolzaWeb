@@ -15,138 +15,134 @@ export type BoxesLayout = {
     zones: BoxZone[];
 };
 
+// Coordonnées mesurées sur les rectangles de couleur de l'image (séparateurs exclus)
 const INTERNATIONAL_ZONES: BoxZone[] = [
     // --- Rangée 1 ---
-    { id: "col1-orange", label: "Colonne orange", faction: "cats", rect: { x: 0, y: 0, width: 274, height: 935 } },
-    { id: "col2-bleu", label: "Colonne bleue", faction: "eyries", rect: { x: 274, y: 0, width: 256, height: 935 } },
-    { id: "col3-vert", label: "Colonne verte", faction: "alliance", rect: { x: 530, y: 0, width: 165, height: 935 } },
-    { id: "col4-jaune", label: "Colonne jaune", faction: "lizards", rect: { x: 695, y: 0, width: 252, height: 935 } },
+    { id: "cats", label: "Colonne orange", faction: "cats", rect: { x: 3, y: 5, width: 271, height: 928 } },
+    { id: "eyries", label: "Colonne bleue", faction: "eyries", rect: { x: 275, y: 5, width: 255, height: 928 } },
+    { id: "alliance", label: "Colonne verte", faction: "alliance", rect: { x: 531, y: 5, width: 165, height: 928 } },
+    { id: "lizards", label: "Colonne jaune", faction: "lizards", rect: { x: 697, y: 5, width: 250, height: 928 } },
+    { id: "otters", label: "Colonne turquoise", faction: "otters", rect: { x: 948, y: 5, width: 215, height: 928 } },
+    { id: "corvids", label: "Colonne violette", faction: "corvids", rect: { x: 1164, y: 5, width: 223, height: 928 } },
     {
-        id: "col5-turquoise",
-        label: "Colonne turquoise",
-        faction: "otters",
-        rect: { x: 947, y: 0, width: 216, height: 935 },
-    },
-    {
-        id: "col6-violet",
-        label: "Colonne violette",
-        faction: "corvids",
-        rect: { x: 1163, y: 0, width: 223, height: 935 },
-    },
-    {
-        id: "col7-blanc",
+        id: "vagabond",
         label: "Colonne blanche/grise",
         faction: "vagabond",
-        rect: { x: 1386, y: 0, width: 446, height: 935 },
+        rect: { x: 1388, y: 5, width: 444, height: 928 },
     },
-    { id: "col8-noir", label: "Colonne noire", faction: "skunks", rect: { x: 1832, y: 0, width: 318, height: 935 } },
+    { id: "skunks", label: "Colonne noire", faction: "skunks", rect: { x: 1833, y: 5, width: 315, height: 928 } },
 
     // --- Rangée 2 ---
-    { id: "col9-peche", label: "Colonne pêche", faction: "moles", rect: { x: 0, y: 940, width: 300, height: 925 } },
-    { id: "col10-rouge", label: "Colonne rouge", faction: "rats", rect: { x: 300, y: 940, width: 360, height: 925 } },
-    { id: "col11-gris", label: "Colonne grise", faction: "keepers", rect: { x: 660, y: 940, width: 295, height: 925 } },
-    { id: "col12-olive", label: "Colonne olive", faction: "frogs", rect: { x: 955, y: 940, width: 350, height: 925 } },
+    { id: "moles", label: "Colonne pêche", faction: "moles", rect: { x: 2, y: 937, width: 325, height: 928 } },
+    { id: "rats", label: "Colonne rouge", faction: "rats", rect: { x: 328, y: 937, width: 340, height: 928 } },
+    { id: "badgers", label: "Colonne grise", faction: "badgers", rect: { x: 669, y: 937, width: 297, height: 928 } },
+    { id: "frogs", label: "Colonne olive", faction: "frogs", rect: { x: 967, y: 937, width: 334, height: 928 } },
+    { id: "bats", label: "Colonne brun-roux", faction: "bats", rect: { x: 1302, y: 937, width: 250, height: 928 } },
     {
-        id: "col13-brunroux",
-        label: "Colonne brun-roux",
-        faction: "bats",
-        rect: { x: 1305, y: 940, width: 250, height: 925 },
-    },
-    {
-        id: "col14-brunfonce",
+        id: "landmarks",
         label: "Colonne brun foncé (temple)",
         faction: "landmarks",
-        rect: { x: 1555, y: 940, width: 270, height: 925 },
+        rect: { x: 1553, y: 937, width: 270, height: 928 },
     },
     {
-        id: "col15-brunfonce",
+        id: "extra",
         label: "Colonne brun foncé (+)",
         faction: "extra",
-        rect: { x: 1825, y: 940, width: 300, height: 925 },
+        rect: { x: 1824, y: 937, width: 326, height: 928 },
     },
 
     // --- Rangée 3 ---
     {
-        id: "col16-brunfonce",
+        id: "setup",
         label: "Colonne brun foncé (setup)",
         faction: "setup",
-        rect: { x: 0, y: 1865, width: 270, height: 925 },
+        rect: { x: 3, y: 1867, width: 265, height: 929 },
     },
     {
-        id: "col17-brunfonce",
-        label: "Colonne brun foncé (cards)",
+        id: "cards",
+        label: "Panneau gris (cartes)",
         faction: "cards",
-        rect: { x: 270, y: 1865, width: 1500, height: 925 },
+        rect: { x: 269, y: 1867, width: 1612, height: 929 },
     },
     {
-        id: "col18-brunfonce",
+        id: "setup2",
         label: "Colonne brun foncé (setup2)",
         faction: "setup2",
-        rect: { x: 1900, y: 1865, width: 270, height: 925 },
+        rect: { x: 1883, y: 1867, width: 265, height: 929 },
     },
 ];
 
 const FRENCH_ZONES: BoxZone[] = [
     // --- Rangée 1 ---
-    { id: "fr-orange", label: "Colonne orange", faction: "cats", rect: { x: 8, y: 7, width: 293, height: 929 } },
-    { id: "fr-bleu", label: "Colonne bleue", faction: "eyries", rect: { x: 313, y: 7, width: 265, height: 929 } },
-    { id: "fr-vert", label: "Colonne verte", faction: "alliance", rect: { x: 590, y: 7, width: 175, height: 929 } },
+    { id: "fr-cats", label: "Colonne orange", faction: "cats", rect: { x: 8, y: 7, width: 293, height: 929 } },
+    { id: "fr-eyries", label: "Colonne bleue", faction: "eyries", rect: { x: 313, y: 7, width: 265, height: 929 } },
+    { id: "fr-alliance", label: "Colonne verte", faction: "alliance", rect: { x: 590, y: 7, width: 175, height: 929 } },
     {
-        id: "fr-blanc",
+        id: "fr-vagabond",
         label: "Colonne blanche/grise",
         faction: "vagabond",
         rect: { x: 777, y: 7, width: 454, height: 929 },
     },
-    { id: "fr-jaune", label: "Colonne jaune", faction: "lizards", rect: { x: 1243, y: 7, width: 260, height: 929 } },
+    { id: "fr-lizards", label: "Colonne jaune", faction: "lizards", rect: { x: 1243, y: 7, width: 260, height: 929 } },
     {
-        id: "fr-turquoise",
+        id: "fr-otters",
         label: "Colonne turquoise",
         faction: "otters",
         rect: { x: 1512, y: 7, width: 215, height: 929 },
     },
-    { id: "fr-peche", label: "Colonne pêche", faction: "moles", rect: { x: 1735, y: 7, width: 323, height: 929 } },
+    { id: "fr-moles", label: "Colonne pêche", faction: "moles", rect: { x: 1735, y: 7, width: 325, height: 929 } },
     {
-        id: "fr-violet",
+        id: "fr-corvids",
         label: "Colonne violette",
         faction: "corvids",
         rect: { x: 2069, y: 7, width: 199, height: 929 },
     },
 
     // --- Rangée 2 ---
-    { id: "fr-rouge", label: "Colonne rouge", faction: "rats", rect: { x: 7, y: 940, width: 346, height: 928 } },
-    { id: "fr-gris", label: "Colonne grise", faction: "keepers", rect: { x: 359, y: 940, width: 287, height: 928 } },
-    { id: "fr-bois", label: "Panneau bois", faction: null, rect: { x: 654, y: 940, width: 1614, height: 928 } },
+    { id: "fr-rats", label: "Colonne rouge", faction: "rats", rect: { x: 7, y: 940, width: 346, height: 928 } },
+    { id: "fr-badgers", label: "Colonne grise", faction: "badgers", rect: { x: 359, y: 940, width: 287, height: 928 } },
+    {
+        id: "fr-cartes",
+        label: "Panneau gris (cartes)",
+        faction: null,
+        rect: { x: 654, y: 940, width: 1614, height: 928 },
+    },
 
     // --- Rangée 3 ---
-    { id: "fr-rose", label: "Colonne rose", faction: null, rect: { x: 8, y: 1871, width: 266, height: 930 } },
     {
-        id: "fr-rose-clair",
+        id: "fr-hirelings-unique",
+        label: "Colonne rose foncé",
+        faction: "hirelings-unique",
+        rect: { x: 8, y: 1871, width: 266, height: 930 },
+    },
+    {
+        id: "fr-hirelings-factions",
         label: "Grand panneau rose clair",
-        faction: null,
+        faction: "hirelings-factions",
         rect: { x: 280, y: 1871, width: 1031, height: 930 },
     },
     {
-        id: "fr-sac",
+        id: "fr-hirelings-setup",
         label: "Colonne brun foncé (sac)",
-        faction: null,
+        faction: "hirelings-setup",
         rect: { x: 1315, y: 1871, width: 211, height: 930 },
     },
     {
-        id: "fr-de",
-        label: "Colonne brun foncé (setup)",
+        id: "fr-setup",
+        label: "Colonne brun foncé (dé)",
         faction: "setup",
         rect: { x: 1531, y: 1871, width: 265, height: 930 },
     },
     {
-        id: "fr-temple",
+        id: "fr-landmarks",
         label: "Colonne brun foncé (temple)",
         faction: "landmarks",
         rect: { x: 1802, y: 1871, width: 155, height: 930 },
     },
     {
-        id: "fr-loupe",
+        id: "fr-extra",
         label: "Colonne brun foncé (loupe)",
-        faction: null,
+        faction: "extra",
         rect: { x: 1963, y: 1871, width: 305, height: 930 },
     },
 ];

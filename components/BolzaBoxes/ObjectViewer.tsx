@@ -13,7 +13,7 @@ import { FRAME_BG, TAB_RADIUS } from "@/lib/BolzaBoxes/style";
 import MeshViewer from "./MeshViewer";
 
 export default function ObjectViewer({ faction, textColor }: { faction: Faction; textColor: string }) {
-    const [objectType, setObjectType] = useState<ObjectType>("box");
+    const [objectType, setObjectType] = useState<ObjectType>(faction.objects.includes("box") ? "box" : faction.objects[0]);
     const [viewModeId, setViewModeId] = useState("full");
     const [glass, setGlass] = useState<Glass>("glass");
 
@@ -45,7 +45,7 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
             <div className="flex flex-row-reverse lg:flex-row flex-1 min-h-0 min-w-0 gap-2">
                 {/* Colonne de gauche : type d'objet */}
                 <div className="flex flex-col shrink-0">
-                    {OBJECT_TYPES.map((o) => {
+                    {OBJECT_TYPES.filter((o) => faction.objects.includes(o.id)).map((o) => {
                         const isActive = o.id === objectType;
                         return (
                             <div key={o.id} className="flex-1 flex items-center justify-center px-1">

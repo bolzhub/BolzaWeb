@@ -1,4 +1,5 @@
-import { FACTION_ASSETS_URL, type Faction } from "./types";
+import { FACTION_ASSETS_URL, type Faction, type ObjectType } from "./types";
+import type { Version } from "./VersionContext";
 
 // Teintes adoucies utilisées pour le fond des pages de faction
 const PAGE_COLORS = {
@@ -16,6 +17,8 @@ const PAGE_COLORS = {
     olive: "#6b6b2e",
     rust: "#8a4b2e",
     darkbrown: "#4a3222",
+    pink: "#d9809e",
+    lightpink: "#f2c4cd",
 } as const;
 
 type FactionData = {
@@ -23,14 +26,16 @@ type FactionData = {
     name?: string; // par défaut : le slug avec une majuscule
     description?: string; // par défaut : « Description coming soon. »
     buyUrl?: string;
+    objects?: ObjectType[]; // par défaut : container, box, drawer
 };
 
-// L'ordre de cette liste est celui de la barre latérale.
 // Chaque entrée ajoutée ici crée la page /BolzaBoxes/boxes/<slug>.
+// L'ordre de la barre latérale est défini plus bas, par version (SIDEBAR_ORDER).
 const FACTION_DATA = {
     cats: { color: "orange" },
     eyries: { color: "blue" },
     alliance: { color: "green" },
+    vagabond: { color: "greywhite" },
     lizards: {
         color: "yellow",
         name: "The Lizard Cult",
@@ -38,22 +43,71 @@ const FACTION_DATA = {
         buyUrl: "#",
     },
     otters: { color: "teal" },
-    corvids: { color: "purple" },
-    vagabond: { color: "greywhite" },
-    skunks: { color: "black" },
     moles: { color: "peach" },
+    corvids: { color: "purple" },
     rats: { color: "red" },
-    keepers: { color: "gray" },
+    badgers: { color: "gray" },
     frogs: { color: "olive" },
     bats: { color: "rust" },
-    landmarks: { color: "darkbrown" },
-    extra: { color: "darkbrown" },
+    skunks: { color: "black" },
     setup: { color: "darkbrown" },
-    cards: { color: "darkbrown" },
     setup2: { color: "darkbrown" },
+    landmarks: { color: "darkbrown" },
+    cards: { color: "darkbrown", objects: ["holder"] },
+    "hirelings-setup": { color: "darkbrown", name: "Hirelings Setup" },
+    "hirelings-unique": { color: "pink", name: "Hirelings Unique" },
+    "hirelings-factions": { color: "lightpink", name: "Hirelings Factions" },
+    extra: { color: "darkbrown", objects: ["holder"] },
 } satisfies Record<string, FactionData>;
 
 export type FactionSlug = keyof typeof FACTION_DATA;
+
+// Ordre des icônes de la barre latérale, propre à chaque version
+export const SIDEBAR_ORDER: Record<Version, FactionSlug[]> = {
+    international: [
+        "cats",
+        "eyries",
+        "alliance",
+        "vagabond",
+        "lizards",
+        "otters",
+        "moles",
+        "corvids",
+        "rats",
+        "badgers",
+        "frogs",
+        "bats",
+        "skunks",
+        "setup",
+        "setup2",
+        "landmarks",
+        "cards",
+        "extra",
+    ],
+    french: [
+        "cats",
+        "eyries",
+        "alliance",
+        "vagabond",
+        "lizards",
+        "otters",
+        "moles",
+        "corvids",
+        "rats",
+        "badgers",
+        "setup",
+        "hirelings-setup",
+        "hirelings-unique",
+        "hirelings-factions",
+        "landmarks",
+        "extra",
+    ],
+};
+
+// Anciens slugs encore accessibles (redirigés vers le nouveau)
+export const SLUG_ALIASES: Record<string, FactionSlug> = {
+    keepers: "badgers",
+};
 
 export const factionPath = (slug: string) => `/BolzaBoxes/boxes/${slug}`;
 
@@ -70,6 +124,7 @@ export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).
         icon: `${FACTION_ASSETS_URL}/${slug}/icon.svg`,
         description: data.description ?? "Description coming soon.",
         buyUrl: data.buyUrl,
+        objects: data.objects ?? ["container", "box", "drawer"],
     };
 });
 

@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
-import { getFactionBySlug } from "@/lib/BolzaBoxes/factions";
+import { notFound, redirect } from "next/navigation";
+import { SLUG_ALIASES, factionPath, getFactionBySlug } from "@/lib/BolzaBoxes/factions";
 import { readableTextOn } from "@/lib/colors";
 import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
 import FactionSidebar from "@/components/BolzaBoxes/FactionSidebar";
@@ -10,6 +10,7 @@ import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
 
 export default async function FactionPage({ params }: { params: Promise<{ faction: string }> }) {
     const { faction: slug } = await params;
+    if (SLUG_ALIASES[slug]) redirect(factionPath(SLUG_ALIASES[slug]));
     const faction = getFactionBySlug(slug);
 
     if (!faction) notFound();
@@ -31,7 +32,7 @@ export default async function FactionPage({ params }: { params: Promise<{ factio
 
                     <div className="flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
                         <div className="lg:flex-[2] min-w-0 h-[55vh] lg:h-[65vh]">
-                            <ObjectViewer faction={faction} textColor={textColor} />
+                            <ObjectViewer key={faction.slug} faction={faction} textColor={textColor} />
                         </div>
 
                         <div className="lg:flex-1 min-w-0 lg:pt-4">

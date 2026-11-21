@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import { FACTIONS, factionPath } from "@/lib/BolzaBoxes/factions";
+import { SIDEBAR_ORDER, factionPath, getFactionBySlug } from "@/lib/BolzaBoxes/factions";
+import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
 import type { Faction } from "@/lib/BolzaBoxes/types";
 
 export default function FactionSidebar({ active }: { active: Faction }) {
+    const { version } = useVersion();
+    const factions = SIDEBAR_ORDER[version].map((slug) => getFactionBySlug(slug)!);
+
     return (
         <div
             className="flex flex-col items-center gap-1.5 lg:gap-2.5 py-3 lg:py-5 px-1.5 lg:px-2 w-10 lg:w-14 shrink-0 relative rounded-tr-3xl rounded-br-3xl overscroll-contain"
@@ -14,7 +20,7 @@ export default function FactionSidebar({ active }: { active: Faction }) {
                 overflowX: "hidden",
             }}
         >
-            {FACTIONS.map((f) => {
+            {factions.map((f) => {
                 const isActive = f.slug === active.slug;
                 return (
                     <Link
