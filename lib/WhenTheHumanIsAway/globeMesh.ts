@@ -1,4 +1,5 @@
-// Géométrie et couleurs du globe, portage de godot/scripts/globe.gd (vue « Biomes »,
+// Géométrie et couleurs du globe, portage de godot/scripts/globe.gd (vue « Biomes », couleurs
+// adoucies en pastel pour le site, voir pastel() ;
 // When the Human's Away, état du 21 novembre 2026, commit a0b47c2).
 // Chaque case est un prisme : dessus (centre + anneau intérieur à la couleur de la case,
 // anneau extérieur plus sombre pour la bordure) et parois vers les voisins plus bas.
@@ -44,6 +45,18 @@ function tileColor(w: World, t: number): Rgb {
     else if (w.biome[t] === BIOME.MOUNTAIN && w.temperature[t] < 0.42) col = lerp(col, WHITE, 0.6);
     const s = 1 + w.shade[t];
     return [col[0] * s, col[1] * s, col[2] * s];
+}
+
+// 🎛️ Version pastel du site (le jeu, lui, garde ses couleurs d'origine) :
+// chaque couleur est désaturée vers son gris, puis éclaircie vers le blanc.
+// PASTEL_DESATURATE = 0 et PASTEL_LIGHTEN = 0 rendent exactement les couleurs du jeu.
+const PASTEL_DESATURATE = 0.12;
+const PASTEL_LIGHTEN = 0.14;
+
+function pastel(c: Rgb): Rgb {
+    const grey = 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2];
+    const d = lerp(c, [grey, grey, grey], PASTEL_DESATURATE);
+    return lerp(d, WHITE, PASTEL_LIGHTEN);
 }
 
 function tileHeight(w: World, t: number): number {
@@ -93,7 +106,7 @@ export function buildGlobeSurfaces(w: World): [SurfaceArrays, SurfaceArrays] {
             const h = heights[t];
             const cs = g.corners[t];
             const k = cs.length;
-            const fill = tileColor(w, t);
+            const fill = pastel(tileColor(w, t));
             const border = darkened(fill, 0.22);
             const wall = darkened(fill, 0.45);
             const base = P.length / 3;
