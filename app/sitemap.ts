@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/BolzaBoxes/gallery",
         "/Recommendations",
         "/RootBrainTeasers",
+        "/RootBrainTeasers/assets",
         ...PUZZLES.map((p) => `/RootBrainTeasers/${p.number}`),
         "/herodotus",
         "/LifeDrawing",

@@ -34,6 +34,8 @@ const PAGES = ONLY ?? [
     "/RedFlags",
     "/RootBrainTeasers",
     "/RootBrainTeasers/1",
+    "/RootBrainTeasers/assets",
+    "/RootBrainTeasers/assets/Factions/Cats",
     "/herodotus",
     "/HumanAway",
     "/BolzaBoxes",

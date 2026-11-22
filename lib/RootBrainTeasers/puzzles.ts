@@ -36,7 +36,7 @@ export type Puzzle = {
 
 // Lien de l'icône placée au début de la liste (assets pour créer ses propres puzzles)
 export const ASSETS_LINK = {
-    href: "#", // TODO : adresse réelle (page interne ou lien externe)
+    href: "/RootBrainTeasers/assets", // explorateur des fichiers de Crafts/Root_Brain_Teasers/Assets
     label: { en: "Make your own", fr: "Crée les tiens" } as Localized,
     description: {
         en: "Download the assets and build your own puzzles.",

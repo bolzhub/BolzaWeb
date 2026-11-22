@@ -89,7 +89,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
 
     // Image réduite et convertie en WebP : beaucoup plus légère que les PNG d'origine
     const requestedWidth = Number(req.nextUrl.searchParams.get("w"));
-    if (RESIZABLE.has(ext) && Number.isInteger(requestedWidth) && requestedWidth > 0) {
+    const wantsDownload = req.nextUrl.searchParams.has("download");
+    if (!wantsDownload && RESIZABLE.has(ext) && Number.isInteger(requestedWidth) && requestedWidth > 0) {
         const width = Math.min(requestedWidth, MAX_WIDTH);
         try {
             const file = await resizedFile(resolved, relativePath, stat.mtimeMs, width);
@@ -120,6 +121,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
         ETag: etag,
         "Accept-Ranges": "bytes",
     };
+
+    // ?download=<nom> : force le téléchargement (au lieu de l'affichage) sous ce nom de fichier
+    const downloadName = req.nextUrl.searchParams.get("download");
+    if (downloadName !== null) {
+        const name = path.basename(downloadName || resolved).replace(/[\u0000-\u001f"\\]/g, "_");
+        const ascii = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\x20-\x7e]/g, "_");
+        headers["Content-Disposition"] = `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
+    }
 
     const ifNoneMatch = req.headers.get("if-none-match");
     const ifModifiedSince = req.headers.get("if-modified-since");
