@@ -13,7 +13,7 @@ export default function HeroLinks() {
 
     return (
         <div
-            className="flex items-stretch overflow-hidden rounded-full bg-cream/95 shadow-lg"
+            className="flex items-stretch overflow-hidden rounded-full border-2 border-gold bg-cream/95 shadow-lg"
             style={{ fontFamily: "var(--font-playfair)" }}
         >
             {links.map((link, i) => (
