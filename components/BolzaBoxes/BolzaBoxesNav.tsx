@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import HomeBunny from "@/components/site/HomeBunny";
+import { LOGO_SOURCES } from "@/components/site/Logo";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Localized } from "@/lib/i18n/lang";
@@ -76,13 +77,7 @@ export type NavBackground =
     | { type: "fade"; color: string } // couleur unie qui apparaît au défilement
     | { type: "transparent" }; // laisse voir le fond de la page
 
-export default function BolzaBoxesNav({
-    background = { type: "transparent" },
-    onBurgerOpenChange,
-}: {
-    background?: NavBackground;
-    onBurgerOpenChange?: (open: boolean) => void;
-}) {
+export default function BolzaBoxesNav({ background = { type: "transparent" } }: { background?: NavBackground }) {
     const imageSrc = background.type === "image" ? background.src : null;
     const fadeColor = background.type === "fade" ? background.color : null;
     const pathname = usePathname();
@@ -93,10 +88,6 @@ export default function BolzaBoxesNav({
 
     const isActive = (href: string) =>
         href === "/BolzaBoxes/boxes" ? pathname === href || pathname.startsWith(href + "/") : pathname === href;
-
-    useEffect(() => {
-        onBurgerOpenChange?.(open);
-    }, [open, onBurgerOpenChange]);
 
     useEffect(() => {
         if (!fadeColor) return;
@@ -143,9 +134,16 @@ export default function BolzaBoxesNav({
                     className="relative flex items-center gap-3 px-4 py-3 md:gap-4 md:px-10 md:py-4"
                 >
                     {/* Chaque élément porte sa propre bulle crème : lisible sur toutes les photos et couleurs de faction */}
-                    <div className={`${PILL} px-2.5 py-1.5`}>
-                        <HomeBunny body="#2b2200" tail="#e9ddaf" className="[&_svg]:h-7 md:[&_svg]:h-8" />
-                    </div>
+                    {/* Accueil BolzaBoxes : lapin seul, sur la photo. Ailleurs : dans une bulle crème */}
+                    {pathname === "/BolzaBoxes" ? (
+                        <Link href="/" className="flex shrink-0">
+                            <img src={LOGO_SOURCES.small} alt="Bolzano Crafts" className="h-10 md:h-12" />
+                        </Link>
+                    ) : (
+                        <div className={`${PILL} px-2.5 py-1.5`}>
+                            <HomeBunny body="#2b2200" tail="#e9ddaf" className="[&_svg]:h-7 md:[&_svg]:h-8" />
+                        </div>
+                    )}
 
                     <div className="flex-1" aria-hidden="true" />
 
@@ -198,7 +196,7 @@ export default function BolzaBoxesNav({
 
             {/* Menu portable : posé sous la barre, sans changer sa hauteur */}
             {open && (
-                <nav className="absolute right-4 top-full md:hidden flex flex-col items-end gap-4 rounded-2xl bg-cream/95 px-5 py-4 shadow-lg">
+                <nav className="absolute right-4 top-full z-10 md:hidden flex flex-col items-end gap-4 rounded-2xl bg-cream/95 px-5 py-4 shadow-lg">
                     {ALL_LINKS.map((link) => (
                         <NavLink
                             key={link.href}

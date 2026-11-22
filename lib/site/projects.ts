@@ -85,11 +85,4 @@ const PROJECTS: ProjectData[] = [
         href: "#",
         color: "#4a4a3d",
     },
-    {
-        id: "red-flags",
-        title: { en: "Red Flags Game", fr: "Jeu des Red Flags" },
-        href: "/RedFlags",
-        color: "#2a0b11",
-        previewImage: "/projects/red-flags/cover.svg",
-    },
 ];

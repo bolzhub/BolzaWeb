@@ -3,9 +3,33 @@ import fs from "fs/promises";
 import { createReadStream } from "fs";
 import { Readable } from "stream";
 import path from "path";
+import os from "os";
 import { PUBLIC_FOLDERS, PUBLIC_FILES } from "@/lib/media/publicFolders";
+import { DISK_ROOT } from "@/lib/media/config";
 
-const DISK_ROOT = "/mnt/Bolzananas";
+// Versions réduites (?w=) des images, gardées sur disque pour n'être calculées qu'une fois
+const CACHE_DIR = process.env.MEDIA_CACHE_DIR ?? path.join(os.homedir(), "media-cache", "bolzaweb");
+const RESIZABLE = new Set([".png", ".jpg", ".jpeg", ".webp"]);
+const MAX_WIDTH = 3200;
+
+// Renvoie le chemin d'une version WebP de l'image, à la largeur demandée (sans l'agrandir).
+// Le nom inclut la date de modification : une image remplacée sur le disque produit un nouveau fichier.
+async function resizedFile(source: string, relativePath: string, mtimeMs: number, width: number): Promise<string> {
+    const name = `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}__w${width}.webp`;
+    const target = path.join(CACHE_DIR, name);
+    try {
+        await fs.access(target);
+        return target;
+    } catch {
+        // pas encore en cache
+    }
+    const sharp = (await import("sharp")).default;
+    await fs.mkdir(CACHE_DIR, { recursive: true });
+    const tmp = `${target}.${process.pid}.tmp`;
+    await sharp(source).rotate().resize({ width, withoutEnlargement: true }).webp({ quality: 82 }).toFile(tmp);
+    await fs.rename(tmp, target);
+    return target;
+}
 
 const MIME: Record<string, string> = {
     ".png": "image/png",
@@ -32,10 +56,7 @@ function decodeSegment(s: string): string | null {
     }
 }
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: Promise<{ path: string[] }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
     const { path: segments } = await params;
 
     const decoded = segments.map(decodeSegment);
@@ -50,7 +71,7 @@ export async function GET(
     const relativePath = path.relative(root, resolved).split(path.sep).join("/");
 
     const isInAllowedFolder = PUBLIC_FOLDERS.some(
-        (folder) => relativePath === folder || relativePath.startsWith(folder + "/")
+        (folder) => relativePath === folder || relativePath.startsWith(folder + "/"),
     );
     const isAllowedFile = PUBLIC_FILES.includes(relativePath);
 
@@ -65,6 +86,29 @@ export async function GET(
     if (!stat.isFile()) return notFound();
 
     const ext = path.extname(resolved).toLowerCase();
+
+    // Image réduite et convertie en WebP : beaucoup plus légère que les PNG d'origine
+    const requestedWidth = Number(req.nextUrl.searchParams.get("w"));
+    if (RESIZABLE.has(ext) && Number.isInteger(requestedWidth) && requestedWidth > 0) {
+        const width = Math.min(requestedWidth, MAX_WIDTH);
+        try {
+            const file = await resizedFile(resolved, relativePath, stat.mtimeMs, width);
+            const fileStat = await fs.stat(file);
+            const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}-w${width}"`;
+            const headers = {
+                "Content-Type": "image/webp",
+                "Cache-Control": "public, max-age=3600, must-revalidate",
+                "Last-Modified": new Date(Math.floor(stat.mtimeMs / 1000) * 1000).toUTCString(),
+                ETag: etag,
+            };
+            if (req.headers.get("if-none-match") === etag) return new NextResponse(null, { status: 304, headers });
+            const stream = Readable.toWeb(createReadStream(file)) as ReadableStream;
+            return new NextResponse(stream, { headers: { ...headers, "Content-Length": String(fileStat.size) } });
+        } catch (e) {
+            // en cas d'échec de la conversion, on sert l'original
+            console.error("Redimensionnement impossible :", resolved, e);
+        }
+    }
     const lastModified = new Date(Math.floor(stat.mtimeMs / 1000) * 1000);
     const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
     const headers: Record<string, string> = {

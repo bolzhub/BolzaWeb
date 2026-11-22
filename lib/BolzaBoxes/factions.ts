@@ -100,10 +100,11 @@ export const SIDEBAR_ORDER: Record<Version, FactionSlug[]> = {
         "rats",
         "badgers",
         "setup",
+        "landmarks",
         "hirelings-setup",
         "hirelings-unique",
         "hirelings-factions",
-        "landmarks",
+        "cards",
         "extra",
     ],
 };

@@ -14,7 +14,7 @@ const ENTRY = `${URL_PREFIX}/www/monsitetintinmaven/index.htm`;
 const WRAPPERS = new Set(["www", "monsitetintinmaven"]);
 const MAX_STRIP = 3;
 
-// 🎛️ Bandeau "Bolzano Crafts / Accueil Tintin" ajouté en haut de chaque ancienne page
+// 🎛️ Bulle "Bolzano Crafts" (logo étendu, retour à l'accueil) ajoutée en haut de chaque ancienne page
 const INJECT_NAV = true;
 
 // 🎛️ Jamais servis (chemins relatifs à la racine du site, insensibles à la casse)
@@ -46,8 +46,7 @@ const TYPES: Record<string, string> = {
 
 const OVERLAY =
   '<div style="position:fixed;top:8px;left:8px;z-index:99999;display:flex;align-items:center;gap:10px;padding:4px 10px;background:rgba(255,255,255,.92);border:1px solid #ccc;border-radius:10px;font:13px/1.2 sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.2)">' +
-  '<a href="/" title="Bolzano Crafts" style="display:flex"><img src="/logo/logo-icon.svg" alt="Bolzano Crafts" style="height:26px;width:auto;border:0"></a>' +
-  `<a href="${ENTRY}" style="color:#3a352c;text-decoration:none">Accueil Tintin</a>` +
+  '<a href="/" title="Bolzano Crafts" style="display:flex"><img src="/logo/logo-full.svg" alt="Bolzano Crafts" style="height:26px;width:auto;border:0"></a>' +
   "</div>";
 
 function notFound() {

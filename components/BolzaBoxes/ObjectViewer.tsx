@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     OBJECT_TYPES,
     VIEW_MODES,
@@ -11,6 +11,8 @@ import {
 } from "@/lib/BolzaBoxes/types";
 import { FRAME_BG, TAB_RADIUS } from "@/lib/BolzaBoxes/style";
 import MeshViewer from "./MeshViewer";
+import MeshDownload from "./MeshDownload";
+import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
 import { useLang } from "@/lib/i18n/LanguageContext";
 
 export default function ObjectViewer({ faction, textColor }: { faction: Faction; textColor: string }) {
@@ -22,29 +24,40 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
     const [viewModeId, setViewModeId] = useState("full");
     const [glass, setGlass] = useState<Glass>("glass");
 
+    const { version } = useVersion();
     const viewMode = VIEW_MODES.find((v) => v.id === viewModeId)!;
+
+    // Précharge l'image de l'autre version : le passage Int/Fr est alors instantané
+    useEffect(() => {
+        if (viewMode.type !== "image") return;
+        const other = version === "french" ? "international" : "french";
+        new Image().src = getAssetPath(faction.slug, other, objectType, viewMode, glass);
+    }, [faction.slug, version, objectType, viewMode, glass]);
 
     return (
         <div className="flex flex-col w-full h-full max-w-full min-w-0" style={{ color: textColor }}>
-            {/* Rangée du haut */}
-            <div className="flex gap-2 overflow-x-auto pb-2 min-w-0">
-                {VIEW_MODES.map((v) => {
-                    const isActive = v.id === viewModeId;
-                    return (
-                        <button
-                            key={v.id}
-                            onClick={() => setViewModeId(v.id)}
-                            className="whitespace-nowrap text-sm tracking-wide px-3 py-1.5 rounded-lg shrink-0 transition-opacity"
-                            style={{
-                                fontFamily: "var(--font-playfair)",
-                                backgroundColor: isActive ? FRAME_BG : "transparent",
-                                opacity: isActive ? 1 : 0.6,
-                            }}
-                        >
-                            {v.label[lang]}
-                        </button>
-                    );
-                })}
+            {/* Rangée du haut : modes de vue (défilables) et téléchargement d'un mesh */}
+            <div className="flex items-start gap-2 min-w-0">
+                <div className="flex flex-1 gap-2 overflow-x-auto pb-2 min-w-0">
+                    {VIEW_MODES.map((v) => {
+                        const isActive = v.id === viewModeId;
+                        return (
+                            <button
+                                key={v.id}
+                                onClick={() => setViewModeId(v.id)}
+                                className="whitespace-nowrap text-sm tracking-wide px-3 py-1.5 rounded-lg shrink-0 transition-opacity"
+                                style={{
+                                    fontFamily: "var(--font-playfair)",
+                                    backgroundColor: isActive ? FRAME_BG : "transparent",
+                                    opacity: isActive ? 1 : 0.6,
+                                }}
+                            >
+                                {v.label[lang]}
+                            </button>
+                        );
+                    })}
+                </div>
+                <MeshDownload faction={faction} version={version} />
             </div>
 
             {/* Grille : le cadre et la colonne des types d'objet partagent la même ligne, donc la même hauteur ;
@@ -75,27 +88,30 @@ export default function ObjectViewer({ faction, textColor }: { faction: Faction;
                     })}
                 </div>
 
+                {/* Portable : hauteur calculée pour que cadre et Avec vitre / Sans vitre tiennent au-dessus du sélecteur
+                    de version. En svh (petit viewport) : la barre du navigateur en bas de l'écran, visible à l'arrivée,
+                    est prise en compte. Les 12rem couvrent la barre de titre, les modes de vue, les boutons de vitre et une marge. */}
                 <div
-                    className="relative col-start-1 row-start-1 h-[50vh] min-h-[280px] min-w-0 overflow-hidden lg:col-start-2 lg:h-auto"
+                    className="relative col-start-1 row-start-1 h-[calc(100svh-var(--bolzaboxes-nav-height)-var(--bolzaboxes-switch-zone)-12rem)] min-h-[240px] min-w-0 overflow-hidden lg:col-start-2 lg:h-auto"
                     style={{ backgroundColor: FRAME_BG, borderRadius: TAB_RADIUS }}
                 >
                     {viewMode.type === "image" && (
                         <img
-                            src={getAssetPath(faction.slug, objectType, viewMode, glass)}
+                            src={getAssetPath(faction.slug, version, objectType, viewMode, glass)}
                             alt={`${name} — ${OBJECT_TYPES.find((o) => o.id === objectType)!.label[lang]} — ${viewMode.label[lang]}`}
                             className="absolute inset-0 w-full h-full object-contain"
                         />
                     )}
                     {viewMode.type === "video" && (
                         <video
-                            key={getAssetPath(faction.slug, objectType, viewMode, glass)}
-                            src={getAssetPath(faction.slug, objectType, viewMode, glass)}
+                            key={getAssetPath(faction.slug, version, objectType, viewMode, glass)}
+                            src={getAssetPath(faction.slug, version, objectType, viewMode, glass)}
                             controls
                             className="absolute inset-0 w-full h-full object-contain"
                         />
                     )}
                     {viewMode.type === "mesh" && (
-                        <MeshViewer src={getAssetPath(faction.slug, objectType, viewMode, glass)} />
+                        <MeshViewer src={getAssetPath(faction.slug, version, objectType, viewMode, glass)} />
                     )}
                     {viewMode.type === "link" && (
                         <div className="absolute inset-0 flex items-center justify-center">

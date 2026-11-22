@@ -1,4 +1,5 @@
 import type { Localized } from "@/lib/i18n/lang";
+import type { Version } from "./VersionContext";
 
 export type ObjectType = "box" | "drawer" | "container" | "holder";
 export type ViewModeType = "image" | "video" | "mesh" | "link";
@@ -46,11 +47,28 @@ const EXT_BY_TYPE: Record<ViewModeType, string> = {
     link: "",
 };
 
-// Dossier des fichiers de chaque boîte sur le disque de la Pi :
-// /mnt/Bolzananas/Projets/Root_Organiser/Extra/Presentation/Website/Boxes/<slug>/
-export const FACTION_ASSETS_URL = "/api/media/Projets/Root_Organiser/Extra/Presentation/Website/Boxes";
+// Dossier des fichiers de chaque boîte sur le disque de la Pi, avec un sous-dossier par version :
+// /mnt/Bolzananas/Projets/Root_Organiser/Extra/Presentation/Website/Boxes/<slug>/<international|french>/
+// (l'icône, commune aux deux versions, reste dans <slug>/icon.svg)
+export const FACTION_ASSETS_RELATIVE = "Projets/Root_Organiser/Extra/Presentation/Website/Boxes";
+export const FACTION_ASSETS_URL = `/api/media/${FACTION_ASSETS_RELATIVE}`;
 
-export function getAssetPath(factionSlug: string, objectType: ObjectType, viewMode: ViewMode, glass: Glass): string {
-    const ext = EXT_BY_TYPE[viewMode.type];
-    return `${FACTION_ASSETS_URL}/${factionSlug}/${objectType}-${viewMode.id}-${glass}.${ext}`;
+// Nom du fichier d'une vue, identique dans les deux dossiers de version
+export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass: Glass): string {
+    return `${objectType}-${viewMode.id}-${glass}.${EXT_BY_TYPE[viewMode.type]}`;
 }
+
+export function getAssetPath(
+    factionSlug: string,
+    version: Version,
+    objectType: ObjectType,
+    viewMode: ViewMode,
+    glass: Glass,
+): string {
+    return `${FACTION_ASSETS_URL}/${factionSlug}/${version}/${assetFileName(objectType, viewMode, glass)}`;
+}
+
+export const MESH_VIEW = VIEW_MODES.find((v) => v.type === "mesh")!;
+
+// Les meshs de remplacement générés portent cette signature dans leur en-tête glTF ("generator")
+export const PLACEHOLDER_MESH_SIGNATURE = "BolzaBoxes placeholder";

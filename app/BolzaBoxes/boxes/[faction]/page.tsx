@@ -1,13 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import { SLUG_ALIASES, factionPath, getFactionBySlug } from "@/lib/BolzaBoxes/factions";
 import { readableTextOn } from "@/lib/colors";
-import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
-import FactionSidebar from "@/components/BolzaBoxes/FactionSidebar";
 import FactionInfo from "@/components/BolzaBoxes/FactionInfo";
-import MobileTopBar from "@/components/BolzaBoxes/MobileTopBar";
 import ObjectViewer from "@/components/BolzaBoxes/ObjectViewer";
-import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
 
+// Contenu propre à une faction ; la barre de navigation, la barre d'icônes et le sélecteur
+// de version sont dans le layout (BoxesFrame) pour ne pas être recréés à chaque changement de faction
 export default async function FactionPage({ params }: { params: Promise<{ faction: string }> }) {
     const { faction: slug } = await params;
     if (SLUG_ALIASES[slug]) redirect(factionPath(SLUG_ALIASES[slug]));
@@ -18,32 +16,15 @@ export default async function FactionPage({ params }: { params: Promise<{ factio
     const textColor = readableTextOn(faction.color);
 
     return (
-        <main className="min-h-screen min-h-dvh overflow-x-hidden" style={{ backgroundColor: faction.color }}>
-            <BolzaBoxesNav background={{ type: "fade", color: faction.color }} />
-
-            <div
-                style={{ paddingTop: "var(--bolzaboxes-nav-height)", paddingBottom: "var(--bolzaboxes-switch-zone)" }}
-                className="min-w-0"
-            >
-                <MobileTopBar title={faction.name} icon={faction.icon} textColor={textColor} />
-
-                <div className="flex min-w-0">
-                    <FactionSidebar active={faction} />
-
-                    <div className="flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
-                        {/* Portable : pas de hauteur imposée, le cadre fixe la sienne et la description suit en dessous */}
-                        <div className="lg:flex-[2] min-w-0 lg:h-[65vh]">
-                            <ObjectViewer key={faction.slug} faction={faction} textColor={textColor} />
-                        </div>
-
-                        <div className="lg:flex-1 min-w-0 lg:pt-4">
-                            <FactionInfo faction={faction} textColor={textColor} />
-                        </div>
-                    </div>
-                </div>
+        <div className="flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
+            {/* Portable : pas de hauteur imposée, le cadre fixe la sienne et la description suit en dessous */}
+            <div className="lg:flex-[2] min-w-0 lg:h-[65vh]">
+                <ObjectViewer key={faction.slug} faction={faction} textColor={textColor} />
             </div>
 
-            <VersionSwitch />
-        </main>
+            <div className="lg:flex-1 min-w-0 lg:pt-4">
+                <FactionInfo faction={faction} textColor={textColor} />
+            </div>
+        </div>
     );
 }

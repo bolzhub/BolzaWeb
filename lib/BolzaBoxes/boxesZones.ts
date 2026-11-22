@@ -104,7 +104,7 @@ const FRENCH_ZONES: BoxZone[] = [
     {
         id: "fr-cartes",
         label: "Panneau gris (cartes)",
-        faction: null,
+        faction: "cards",
         rect: { x: 654, y: 940, width: 1614, height: 928 },
     },
 

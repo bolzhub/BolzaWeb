@@ -1,6 +1,8 @@
+// ?w= : version WebP réduite servie par /api/media (main.png pèse près de 8 Mo)
 const home = {
-    international: "/api/media/Projets/Root_Organiser/Extra/Presentation/Newsletter/signal-2026-05-10-161743_005.jpeg",
-    french: "/api/media/Projets/Root_Organiser/Extra/Presentation/Website/Home/main.png",
+    international:
+        "/api/media/Projets/Root_Organiser/Extra/Presentation/Newsletter/signal-2026-05-10-161743_005.jpeg?w=2400",
+    french: "/api/media/Projets/Root_Organiser/Extra/Presentation/Website/Home/main.png?w=2400",
 };
 
 export const HERO_IMAGES = {

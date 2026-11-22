@@ -28,6 +28,8 @@ const ONLY = process.env.PAGES?.split(",");
 const PAGES = ONLY ?? [
     "/",
     "/ADR",
+    "/ADR/gallery/32%20Laurent%20-%2022%20octobre%202026",
+    "/ADR/gallery/06%20Diana%20et%20%C3%89tienne%20-%20janvier%202026",
     "/Recommendations",
     "/RedFlags",
     "/RootBrainTeasers",
@@ -53,23 +55,31 @@ const MEASURE = `(() => {
         return (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") ||
             parseFloat(cs.borderTopWidth) > 0 || cs.boxShadow !== "none" || cs.backgroundImage !== "none";
     };
+    // Centre visuel d'un texte : entre le haut des majuscules de la première ligne
+    // et la ligne de base de la dernière (sur une seule ligne : le milieu des majuscules)
     const capCenter = (el) => {
-        const cs = getComputedStyle(el);
-        const probe = document.createElement("span");
-        probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
-        // la ligne de base est celle de la première ligne de texte de l'élément
+        const texts = [];
         const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
         let node;
-        while ((node = walker.nextNode()) && !node.textContent.trim());
-        if (!node) return null;
-        node.parentNode.insertBefore(probe, node);
-        const baseline = probe.getBoundingClientRect().top;
-        const ncs = getComputedStyle(node.parentNode);
-        probe.remove();
+        while ((node = walker.nextNode())) if (node.textContent.trim()) texts.push(node);
+        if (!texts.length) return null;
+        const baselineAt = (textNode, atEnd) => {
+            const probe = document.createElement("span");
+            probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+            if (atEnd) textNode.parentNode.insertBefore(probe, textNode.nextSibling);
+            else textNode.parentNode.insertBefore(probe, textNode);
+            const y = probe.getBoundingClientRect().top;
+            probe.remove();
+            return y;
+        };
+        const first = texts[0];
+        const firstBaseline = baselineAt(first, false);
+        const lastBaseline = baselineAt(texts[texts.length - 1], true);
+        const ncs = getComputedStyle(first.parentNode);
         const ctx = document.createElement("canvas").getContext("2d");
         ctx.font = ncs.fontStyle + " " + ncs.fontWeight + " " + ncs.fontSize + " " + ncs.fontFamily;
         const cap = ctx.measureText("H").actualBoundingBoxAscent;
-        return baseline - cap / 2;
+        return (firstBaseline - cap + lastBaseline) / 2;
     };
     const label = (el) => {
         const t = (el.getAttribute("aria-label") || el.getAttribute("alt") || el.textContent || "").trim().replace(/\\s+/g, " ");
@@ -86,10 +96,10 @@ const MEASURE = `(() => {
             const tag = child.tagName.toLowerCase();
             const r = child.getBoundingClientRect();
             if (tag === "img" || tag === "svg" || tag === "picture" || tag === "button" && !child.textContent.trim() || hasOwnBox(child)) {
-                out.push({ what: label(child), y: r.top + r.height / 2, kind: "boîte" });
+                out.push({ what: label(child), y: r.top + r.height / 2, kind: "boîte", rect: [r.left, r.top, r.right, r.bottom] });
             } else if (child.children.length === 0 || [...child.children].every((c) => ["SPAN", "B", "I", "EM", "STRONG"].includes(c.tagName) && !hasOwnBox(c))) {
                 const y = capCenter(child);
-                if (y !== null) out.push({ what: label(child), y, kind: "texte" });
+                if (y !== null) out.push({ what: label(child), y, kind: "texte", rect: [r.left, r.top, r.right, r.bottom] });
             } else {
                 collect(child, out);
             }
@@ -208,6 +218,17 @@ async function main() {
                                 `[${row}] ${it.what} décalé de ${d > 0 ? "+" : ""}${d.toFixed(1)} px (${it.kind}) par rapport à ${items[0].what}`,
                             );
                     }
+                    // chevauchements : deux éléments d'une même barre ne doivent jamais se recouvrir
+                    for (let i = 0; i < items.length; i++)
+                        for (let j = i + 1; j < items.length; j++) {
+                            const [a, b] = [items[i].rect, items[j].rect];
+                            const w = Math.min(a[2], b[2]) - Math.max(a[0], b[0]);
+                            const h = Math.min(a[3], b[3]) - Math.max(a[1], b[1]);
+                            if (w > 0.5 && h > 0.5)
+                                problems.push(
+                                    `[${row}] ${items[i].what} chevauche ${items[j].what} (${w.toFixed(1)} px)`,
+                                );
+                        }
                     if (VERBOSE)
                         console.log(
                             `  ${page} @${width} ${lang} [${row}] ` +
