@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PuzzleViewer, { type SectionContent } from "@/components/RootBrainTeasers/PuzzleViewer";
-import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
+import PuzzleViewer, { type LocalizedContent, type SectionContent } from "@/components/RootBrainTeasers/PuzzleViewer";
+import { PUZZLES, type PuzzleFile } from "@/lib/RootBrainTeasers/puzzles";
 import { resolveImageSrc } from "@/lib/media/url";
 import { getLang } from "@/lib/i18n/server";
 
@@ -13,9 +13,18 @@ function findPuzzle(raw: string) {
 }
 
 // Un chemin en .pdf ouvre le lecteur PDF, tout le reste ouvre la vue image zoomable
-function toContent(path?: string): SectionContent | undefined {
-    if (!path) return undefined;
+function toContent(path: string): SectionContent {
     return { url: resolveImageSrc(path), kind: /\.pdf$/i.test(path) ? "pdf" : "image" };
+}
+
+// Une version par langue (le même fichier pour les deux s'il n'y a pas de traduction)
+function toLocalized(file?: PuzzleFile): LocalizedContent | undefined {
+    if (!file) return undefined;
+    if (typeof file === "string") {
+        const content = toContent(file);
+        return { en: content, fr: content };
+    }
+    return { en: toContent(file.en), fr: toContent(file.fr) };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -36,9 +45,9 @@ export default async function PuzzlePage({ params }: Props) {
 
     const files = puzzle.files ?? {};
     const contents = {
-        rules: toContent(files.rules),
-        teaser: toContent(files.teaser),
-        solution: toContent(files.solution),
+        rules: toLocalized(files.rules),
+        teaser: toLocalized(files.teaser),
+        solution: toLocalized(files.solution),
     };
 
     return <PuzzleViewer puzzleNumber={puzzle.number} contents={contents} />;

@@ -8,11 +8,12 @@ import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
 import { LOGO_SOURCES } from "@/components/site/Logo";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { useLang } from "@/lib/i18n/LanguageContext";
-import type { Localized } from "@/lib/i18n/lang";
+import type { Lang, Localized } from "@/lib/i18n/lang";
 
 export type SectionId = "rules" | "teaser" | "solution";
 export type SectionContent = { url: string; kind: "pdf" | "image" };
-export type PuzzleContents = Partial<Record<SectionId, SectionContent>>;
+export type LocalizedContent = Record<Lang, SectionContent>;
+export type PuzzleContents = Partial<Record<SectionId, LocalizedContent>>;
 
 const SECTIONS: { id: SectionId; label: Localized }[] = [
     { id: "rules", label: { en: "Rules", fr: "Règles" } },
@@ -45,7 +46,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
         setVisited((v) => (v.includes(id) ? v : [...v, id]));
     };
 
-    const hintVisible = contents[section]?.kind === "image" && !hintGone;
+    const hintVisible = contents[section]?.[lang].kind === "image" && !hintGone;
 
     return (
         <div className="fixed inset-0 overflow-hidden" style={{ background: VIEWER_BG }}>
@@ -53,7 +54,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
             <div className="absolute left-0 right-0" style={{ top: TOP_BAR, bottom: BOTTOM_BAR }}>
                 {SECTIONS.map(({ id, label }) => {
                     if (!visited.includes(id)) return null;
-                    const content = contents[id];
+                    const content = contents[id]?.[lang];
                     const active = section === id;
 
                     if (!content) {
@@ -69,10 +70,10 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                     }
 
                     return content.kind === "pdf" ? (
-                        <PdfViewer key={id} src={content.url} active={active} />
+                        <PdfViewer key={`${id}-${content.url}`} src={content.url} active={active} />
                     ) : (
                         <ZoomImage
-                            key={id}
+                            key={`${id}-${content.url}`}
                             src={content.url}
                             alt={`Puzzle ${puzzleNumber} — ${label[lang]}`}
                             active={active}

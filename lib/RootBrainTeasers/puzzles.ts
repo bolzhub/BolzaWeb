@@ -16,10 +16,14 @@ export const PUZZLE_COLORS = {
 
 export type PuzzleColor = keyof typeof PUZZLE_COLORS;
 
+// Un chemin seul sert pour les deux langues ; { en, fr } donne une version par langue
+// (le sélecteur de langue en haut à droite affiche alors l'une ou l'autre)
+export type PuzzleFile = string | Localized;
+
 export type PuzzleFiles = {
-    rules?: string; // PDF
-    teaser?: string; // image (jpg, png…)
-    solution?: string; // PDF
+    rules?: PuzzleFile; // PDF
+    teaser?: PuzzleFile; // image (jpg, png…)
+    solution?: PuzzleFile; // PDF
 };
 
 export type Puzzle = {
@@ -49,9 +53,15 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle proposé lors du Championnat de France 2025. Gagne avec les Corvidés.",
         },
         files: {
-            rules: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules.pdf",
+            rules: {
+                en: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules-English.pdf",
+                fr: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules.pdf",
+            },
             teaser: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle.png",
-            solution: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution.pdf",
+            solution: {
+                en: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution-English.pdf",
+                fr: "/api/media/Crafts/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution.pdf",
+            },
         },
     },
     {
@@ -62,7 +72,10 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle A proposé lors du Championnat de France 2026. Question de culture Root.",
         },
         files: {
-            rules: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_A/puzzle_rules.pdf",
+            rules: {
+                en: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_A/puzzle_rules-English.pdf",
+                fr: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_A/puzzle_rules.pdf",
+            },
         },
     },
     {
@@ -73,9 +86,15 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle B proposé lors du Championnat de France 2026. Gagne avec le Vagabond dès le tout premier tour de la partie.",
         },
         files: {
-            rules: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_rules.pdf",
+            rules: {
+                en: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_rules-English.pdf",
+                fr: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_rules.pdf",
+            },
             teaser: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle.png",
-            solution: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_solution.pdf",
+            solution: {
+                en: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_solution-English.pdf",
+                fr: "/api/media/Crafts/Root_Brain_Teasers/CdF_2026/Puzzle_B/Rendu/puzzle_solution.pdf",
+            },
         },
     },
 ];
