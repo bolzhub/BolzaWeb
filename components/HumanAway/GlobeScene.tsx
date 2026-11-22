@@ -34,10 +34,10 @@ export default function GlobeScene({
             const { EffectComposer } = await import("three/examples/jsm/postprocessing/EffectComposer.js");
             const { RenderPass } = await import("three/examples/jsm/postprocessing/RenderPass.js");
             const { OutputPass } = await import("three/examples/jsm/postprocessing/OutputPass.js");
-            const { buildGoldberg } = await import("@/lib/WhenTheHumanIsAway/goldberg");
-            const { generateWorld } = await import("@/lib/WhenTheHumanIsAway/world");
-            const { buildGlobeSurfaces } = await import("@/lib/WhenTheHumanIsAway/globeMesh");
-            const { GodotRng } = await import("@/lib/WhenTheHumanIsAway/rng");
+            const { buildGoldberg } = await import("@/lib/HumanAway/goldberg");
+            const { generateWorld } = await import("@/lib/HumanAway/world");
+            const { buildGlobeSurfaces } = await import("@/lib/HumanAway/globeMesh");
+            const { GodotRng } = await import("@/lib/HumanAway/rng");
             if (disposed) return;
 
             const t0 = performance.now();
@@ -72,7 +72,8 @@ export default function GlobeScene({
                 const angle = capture ? Math.min(halfV, halfH) * 0.94 : Math.min(halfV * 0.74, halfH * 0.86);
                 return 1.09 / Math.sin(angle);
             };
-            const distance = fitDistance();
+            let fit = fitDistance();
+            const distance = fit;
             camera.position.set(0, Math.sin(pitch) * distance, Math.cos(pitch) * distance);
             camera.lookAt(0, 0, 0);
             scene.add(camera);
@@ -203,9 +204,14 @@ export default function GlobeScene({
             });
             scene.add(new THREE.Points(starGeo, starMat));
 
-            // Rotation : lente au repos, libre au doigt ou à la souris ; ni zoom ni déplacement
+            // Rotation lente au repos, libre au doigt ou à la souris ; zoom à la molette ou au pincement
+            // (bornes du jeu : de 1,13 au plus près, camera_rig.gd), sans déplacement latéral
+            const MIN_DISTANCE = 1.13; // MIN_DIST du jeu
             const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false;
+            controls.enableZoom = !capture;
+            controls.zoomSpeed = 0.8;
+            controls.minDistance = MIN_DISTANCE;
+            controls.maxDistance = Math.max(5, fit * 1.5);
             controls.enablePan = false;
             controls.enableDamping = true;
             controls.dampingFactor = 0.08;
@@ -232,13 +238,21 @@ export default function GlobeScene({
                 composer.setSize(w, h);
                 camera.aspect = w / h;
                 camera.updateProjectionMatrix();
-                camera.position.setLength(fitDistance());
+                // garde le niveau de zoom choisi, relativement au cadrage de l'écran
+                const newFit = fitDistance();
+                camera.position.setLength(camera.position.length() * (newFit / fit));
+                fit = newFit;
+                controls.maxDistance = Math.max(5, fit * 1.5);
             };
             const observer = new ResizeObserver(resize);
             observer.observe(mount);
 
             let frame = 0;
             const tick = () => {
+                // comme dans le jeu, la rotation ralentit près de la surface (vitesse ∝ distance - 0,98)
+                const closeness = (camera.position.length() - 0.98) / (fit - 0.98);
+                controls.rotateSpeed = 0.6 * closeness;
+                controls.autoRotateSpeed = AUTO_ROTATE_SPEED * closeness;
                 controls.update();
                 composer.render();
                 frame = requestAnimationFrame(tick);

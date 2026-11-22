@@ -47,12 +47,12 @@ const PROJECTS: ProjectData[] = [
         },
     },
     {
-        id: "when-the-human-is-away",
-        title: { en: "When the human is away", fr: "When the human is away" },
-        href: "/WhenTheHumanIsAway",
+        id: "human-away",
+        title: { en: "Human Away", fr: "Human Away" },
+        href: "/HumanAway",
         color: "#05060b",
         // moitié gauche du globe, coupée par le bord droit du rectangle
-        previewImage: "/projects/when-the-human-is-away/cover.webp",
+        previewImage: "/projects/human-away/cover.webp",
         imagePositionX: "right",
     },
     {

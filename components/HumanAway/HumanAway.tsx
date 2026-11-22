@@ -12,7 +12,7 @@ const SWITCH_THEME = { track: BACKGROUND, active: CREAM, activeText: BACKGROUND,
 
 // Page de présentation : le globe tel que le jeu le génère aujourd'hui, un nouveau terrain à chaque visite.
 // ?seed=<n> fixe le terrain ; ?capture affiche le globe seul (aperçu de la page principale).
-export default function WhenTheHumanIsAway() {
+export default function HumanAway() {
     const fr = useLang() === "fr";
     // paramètres de l'URL, lus côté client (vides pendant le rendu serveur)
     const search = useSyncExternalStore(
@@ -38,11 +38,11 @@ export default function WhenTheHumanIsAway() {
                     {/* La barre laisse passer les gestes vers le globe, sauf sur ses boutons */}
                     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
                         <CenteredTitleRow
-                            navRow="when-the-human-is-away"
+                            navRow="human-away"
                             className="gap-4 px-6 py-5 md:px-10"
                             left={<HomeBunny body={CREAM} tail={BACKGROUND} />}
                             right={<LanguageSwitch theme={SWITCH_THEME} />}
-                            title="When the human is away"
+                            title="Human Away"
                             titleClassName="text-2xl md:text-4xl tracking-wide leading-tight"
                             titleStyle={{ fontFamily: "var(--font-playfair)", fontWeight: 700, color: CREAM }}
                         />
