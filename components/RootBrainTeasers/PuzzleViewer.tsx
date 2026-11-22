@@ -31,8 +31,12 @@ const TAB = "whitespace-nowrap rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm
 export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber: number; contents: PuzzleContents }) {
     const lang = useLang();
     const fr = lang === "fr";
-    const [section, setSection] = useState<SectionId>("rules");
-    const [visited, setVisited] = useState<SectionId[]>(["rules"]);
+    // Onglets des seules sections qui ont un fichier ; avec une seule section, pas d'onglets du tout
+    const available = SECTIONS.filter(({ id }) => contents[id]);
+    const showTabs = available.length > 1;
+    const first = available[0]?.id ?? "rules";
+    const [section, setSection] = useState<SectionId>(first);
+    const [visited, setVisited] = useState<SectionId[]>([first]);
     const [mistakeOpen, setMistakeOpen] = useState(false);
     const [hintGone, setHintGone] = useState(false);
 
@@ -113,19 +117,20 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
                 className="absolute left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-1 overflow-x-auto rounded-full bg-cream/95 p-1 shadow-lg"
                 style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
             >
-                {SECTIONS.map(({ id, label }) => (
-                    <button
-                        key={id}
-                        type="button"
-                        aria-pressed={section === id}
-                        onClick={() => select(id)}
-                        className={`${TAB} ${section === id ? "bg-ink text-cream" : "text-ink hover:bg-ink/10"}`}
-                    >
-                        {label[lang]}
-                    </button>
-                ))}
+                {showTabs &&
+                    available.map(({ id, label }) => (
+                        <button
+                            key={id}
+                            type="button"
+                            aria-pressed={section === id}
+                            onClick={() => select(id)}
+                            className={`${TAB} ${section === id ? "bg-ink text-cream" : "text-ink hover:bg-ink/10"}`}
+                        >
+                            {label[lang]}
+                        </button>
+                    ))}
 
-                <span className="mx-1 h-5 w-px shrink-0 bg-ink/20" aria-hidden="true" />
+                {showTabs && <span className="mx-1 h-5 w-px shrink-0 bg-ink/20" aria-hidden="true" />}
 
                 <button
                     type="button"
