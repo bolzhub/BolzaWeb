@@ -47,6 +47,15 @@ const PROJECTS: ProjectData[] = [
         },
     },
     {
+        id: "when-the-human-is-away",
+        title: { en: "When the human is away", fr: "When the human is away" },
+        href: "/WhenTheHumanIsAway",
+        color: "#05060b",
+        // moitié gauche du globe, coupée par le bord droit du rectangle
+        previewImage: "/projects/when-the-human-is-away/cover.webp",
+        imagePositionX: "right",
+    },
+    {
         id: "herodotus",
         title: { en: "Herodotus The Owl", fr: "La Chouette Hérodote" },
         href: "/herodotus",

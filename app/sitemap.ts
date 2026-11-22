@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/herodotus",
         "/ADR",
         "/RedFlags",
+        "/WhenTheHumanIsAway",
     ];
     return paths.map((path) => ({ url: `${BASE}${path}` }));
 }
