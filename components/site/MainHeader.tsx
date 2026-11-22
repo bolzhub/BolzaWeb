@@ -146,7 +146,7 @@ export default function MainHeader() {
                     <Link
                         href={HELP.href}
                         // texte brun foncé du lapin du logo
-                        className="shrink-0 rounded-full border-2 border-gold bg-aqua px-4 py-1.5 font-semibold text-[#2b2200] hover:brightness-110 transition-[filter]"
+                        className="shrink-0 rounded-full border-2 border-aqua bg-gold px-4 py-1.5 font-semibold text-[#2b2200] hover:brightness-110 transition-[filter]"
                         style={{ fontSize: NAV_FONT_SIZE }}
                     >
                         {HELP.label}
