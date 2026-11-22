@@ -1,9 +1,10 @@
 // Dossiers entiers rendus publics : tout fichier à l'intérieur (et dans
 // leurs sous-dossiers) devient accessible.
 export const PUBLIC_FOLDERS: string[] = [
-    "Projets/ADR",
+    "Projets/Life_Drawing",
+    "Crafts/Life_Drawing", // dessins archivés (hors synchronisation)
     "Projets/Root_BolzaBoxes",
-    "Projets/Root_Brain_Teasers",
+    "Crafts/Root_Brain_Teasers", // puzzles (hors synchronisation)
     // "Projets/herodotus",
     // Ajoute ici chaque nouveau dossier que tu veux rendre public
 ];
