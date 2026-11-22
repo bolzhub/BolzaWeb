@@ -154,7 +154,8 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                     setActiveId(project.id);
                                 }
                             }}
-                            className={`absolute inset-0 overflow-hidden rounded-2xl ${activeId === project.id ? "ring-2 ring-gold" : ""}`}
+                            // ombre portée douce, teintée de l'encre du site (s'ajoute au contour doré du rectangle actif)
+                            className={`absolute inset-0 overflow-hidden rounded-2xl shadow-[0_12px_28px_-10px_rgba(58,53,44,0.55)] ${activeId === project.id ? "ring-2 ring-gold" : ""}`}
                             style={{
                                 backgroundColor: project.color,
                                 containerType: "inline-size",
