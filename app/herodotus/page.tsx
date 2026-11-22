@@ -17,10 +17,11 @@ export default async function HerodotusPage() {
     const t = TEXT[await getLang()];
     return (
         <main className="min-h-screen min-h-dvh bg-black">
-            <div className="absolute top-5 left-6 md:left-10 z-10">
+            <div
+                data-nav-row="herodote"
+                className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10"
+            >
                 <HomeBunny body="#f3ecdc" tail="#000000" />
-            </div>
-            <div className="absolute top-5 right-6 md:right-10 z-10">
                 <LanguageSwitch />
             </div>
 

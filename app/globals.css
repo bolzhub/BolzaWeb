@@ -6,7 +6,13 @@
     /* Repli : la nav le remplace par sa hauteur réelle mesurée (BolzaBoxesNav) */
     --bolzaboxes-nav-height: 5rem;
     /* Espace réservé en bas des pages BolzaBoxes pour le sélecteur de version */
-    --bolzaboxes-switch-zone: 6rem;
+    --bolzaboxes-switch-zone: 4.5rem;
+}
+
+@media (min-width: 48rem) {
+    :root {
+        --bolzaboxes-switch-zone: 6rem;
+    }
 }
 
 @theme inline {
@@ -115,4 +121,11 @@ body {
         opacity: 1;
         transform: none;
     }
+}
+
+/* Réduit la boîte d'un texte à ses majuscules (de la ligne de base à la hauteur de capitale) :
+   centrer cette boîte centre alors visuellement le texte, sans dépendre de l'interlignage de la police.
+   À mettre sur les titres et liens texte des barres de navigation (vérifié par scripts/check-nav-alignment.mjs). */
+@utility trim-cap {
+    text-box: trim-both cap alphabetic;
 }

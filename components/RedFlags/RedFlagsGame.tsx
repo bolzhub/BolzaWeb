@@ -94,7 +94,10 @@ export default function RedFlagsGame() {
             style={{ backgroundColor: BG, fontFamily: "var(--font-manrope)" }}
         >
             {/* En-tête superposé : l'accueil et le choix du prénom se centrent sur tout l'écran */}
-            <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10">
+            <header
+                data-nav-row="red-flags"
+                className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10"
+            >
                 <HomeBunny body={CREAM} tail={RED} />
                 <div className="flex items-center gap-4">
                     {phase !== "intro" && (

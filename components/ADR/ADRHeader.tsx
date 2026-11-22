@@ -8,10 +8,14 @@ const SWITCH_THEME = { track: ADR_BG, active: "#ffffff", activeText: ADR_BG, tex
 
 export default function ADRHeader({ left, title }: { left?: ReactNode; title: string }) {
     return (
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 pt-5 pb-2 px-6 md:px-10">
-            <div className="justify-self-start self-start">{left ?? <HomeBunny body="#ffffff" tail={ADR_BG} />}</div>
+        <div
+            data-nav-row="life-drawing"
+            className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 pt-5 pb-2 px-6 md:px-10"
+        >
+            <div className="justify-self-start">{left ?? <HomeBunny body="#ffffff" tail={ADR_BG} />}</div>
             <h1
-                className="text-center text-white m-0 text-4xl md:text-5xl tracking-wide"
+                data-nav-center
+                className="trim-cap text-center text-white m-0 text-3xl sm:text-4xl md:text-5xl tracking-wide"
                 style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
             >
                 {title}

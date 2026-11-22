@@ -8,15 +8,19 @@ export default async function RecommendationsPage() {
     const fr = (await getLang()) === "fr";
     return (
         <main className="min-h-screen" style={{ backgroundColor: BG }}>
-            <header className="flex items-center justify-between gap-4 px-6 md:px-10 py-5">
-                <HomeBunny body={BLUE} tail={BG} />
+            <header
+                data-nav-row="recommendations"
+                className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 px-6 md:px-10 py-5"
+            >
+                <HomeBunny body={BLUE} tail={BG} className="justify-self-start" />
                 <h1
-                    className="text-xl md:text-2xl"
+                    data-nav-center
+                    className="trim-cap text-xl md:text-2xl"
                     style={{ fontFamily: "var(--font-playfair)", fontWeight: 700, color: FG }}
                 >
                     {fr ? "Recommandations" : "Recommendations"}
                 </h1>
-                <LanguageSwitch theme={SWITCH_THEME} />
+                <LanguageSwitch theme={SWITCH_THEME} className="justify-self-end" />
             </header>
 
             <nav

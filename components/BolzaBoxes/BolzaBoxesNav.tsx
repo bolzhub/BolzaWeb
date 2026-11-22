@@ -21,26 +21,37 @@ const SIDE_LINKS: { label: Localized; href: string }[] = [
     { label: { en: "Contact", fr: "Contact" }, href: "mailto:contact@bolzanocrafts.com" },
 ];
 
+const ALL_LINKS = [...NAV_LINKS, ...SIDE_LINKS];
+
+const PILL = "shrink-0 rounded-full bg-cream/95 shadow-md";
+
+// Mêmes couleurs que le sélecteur de version en bas des pages (VersionSwitch)
+const SWITCH_THEME = {
+    track: "#ece5d8",
+    active: "#3a352c",
+    activeText: "#ece5d8",
+    text: "#3a352c",
+    inactiveOpacity: 0.4,
+};
+
 function NavLink({
     href,
     label,
     active,
     onClick,
-    small,
 }: {
     href: string;
     label: string;
     active: boolean;
     onClick?: () => void;
-    small?: boolean;
 }) {
     return (
         <Link
             href={href}
             onClick={onClick}
-            className={`whitespace-nowrap tracking-wide text-ink hover:opacity-60 transition-opacity ${
-                small ? "text-xs sm:text-sm" : "text-sm md:text-base"
-            } ${active ? "underline underline-offset-4" : ""}`}
+            className={`trim-cap whitespace-nowrap text-sm tracking-wide text-ink hover:opacity-60 transition-opacity ${
+                active ? "underline underline-offset-4" : ""
+            }`}
             style={{ fontFamily: "var(--font-playfair)" }}
         >
             {label}
@@ -127,42 +138,41 @@ export default function BolzaBoxesNav({
                 )}
                 {imageSrc && <BackgroundLayer src={imageSrc} />}
 
-                <div className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 md:px-10 pt-5 pb-3">
-                    <HomeBunny body="#2b2200" tail="#e9ddaf" />
+                <div
+                    data-nav-row="bolzaboxes"
+                    className="relative flex items-center gap-3 px-4 py-3 md:gap-4 md:px-10 md:py-4"
+                >
+                    {/* Chaque élément porte sa propre bulle crème : lisible sur toutes les photos et couleurs de faction */}
+                    <div className={`${PILL} px-2.5 py-1.5`}>
+                        <HomeBunny body="#2b2200" tail="#e9ddaf" className="[&_svg]:h-7 md:[&_svg]:h-8" />
+                    </div>
 
-                    <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center flex-1 min-w-0">
-                        {NAV_LINKS.map((link) => (
+                    <div className="flex-1" aria-hidden="true" />
+
+                    <nav className={`${PILL} hidden md:flex items-center gap-5 px-5 py-2.5`}>
+                        {ALL_LINKS.map((link) => (
                             <NavLink
                                 key={link.href}
                                 href={link.href}
                                 label={link.label[lang]}
                                 active={isActive(link.href)}
-                                small
                             />
                         ))}
                     </nav>
 
-                    <div className="hidden lg:flex items-center gap-6 shrink-0">
-                        {SIDE_LINKS.map((link) => (
-                            <NavLink
-                                key={link.href}
-                                href={link.href}
-                                label={link.label[lang]}
-                                active={isActive(link.href)}
-                            />
-                        ))}
-                    </div>
+                    <div className="flex-1" aria-hidden="true" />
 
-                    <LanguageSwitch />
+                    <LanguageSwitch theme={SWITCH_THEME} />
 
                     <button
-                        className="lg:hidden shrink-0 text-ink"
+                        className={`${PILL} md:hidden flex h-10 w-10 items-center justify-center text-ink`}
                         aria-label="Menu"
+                        aria-expanded={open}
                         onClick={() => setOpen((v) => !v)}
                     >
                         <svg
-                            width="26"
-                            height="26"
+                            width="20"
+                            height="20"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -184,21 +194,22 @@ export default function BolzaBoxesNav({
                         </svg>
                     </button>
                 </div>
-
-                {open && (
-                    <nav className="relative lg:hidden flex flex-col items-center gap-4 pb-5">
-                        {SIDE_LINKS.map((link) => (
-                            <NavLink
-                                key={link.href}
-                                href={link.href}
-                                label={link.label[lang]}
-                                active={isActive(link.href)}
-                                onClick={() => setOpen(false)}
-                            />
-                        ))}
-                    </nav>
-                )}
             </div>
+
+            {/* Menu portable : posé sous la barre, sans changer sa hauteur */}
+            {open && (
+                <nav className="absolute right-4 top-full md:hidden flex flex-col items-end gap-4 rounded-2xl bg-cream/95 px-5 py-4 shadow-lg">
+                    {ALL_LINKS.map((link) => (
+                        <NavLink
+                            key={link.href}
+                            href={link.href}
+                            label={link.label[lang]}
+                            active={isActive(link.href)}
+                            onClick={() => setOpen(false)}
+                        />
+                    ))}
+                </nav>
+            )}
 
             {imageSrc && (
                 <div

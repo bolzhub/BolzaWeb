@@ -5,7 +5,15 @@ import { useLang, useSetLang } from "@/lib/i18n/LanguageContext";
 
 // Couleurs du sélecteur : fond de la pastille, bulle de la langue active et son texte, texte inactif
 // `ring` : contour de la pastille, utile quand son fond se confond avec celui de la page
-export type SwitchTheme = { track: string; active: string; activeText: string; text: string; ring?: string };
+// `inactiveOpacity` : opacité de la langue non choisie (0.6 par défaut)
+export type SwitchTheme = {
+    track: string;
+    active: string;
+    activeText: string;
+    text: string;
+    ring?: string;
+    inactiveOpacity?: number;
+};
 
 // Thème par défaut : crème et encre, comme la page principale
 const DEFAULT_THEME: SwitchTheme = { track: "#ece5d8f2", active: "#3a352c", activeText: "#ece5d8", text: "#3a352c" };
@@ -51,10 +59,15 @@ export default function LanguageSwitch({
                         aria-label={l === "fr" ? "Français" : "English"}
                         onClick={() => setLang(l)}
                         className={`rounded-full px-2.5 py-1 text-center text-xs font-bold tracking-wide transition-[color,background-color,opacity] ${
-                            active ? "" : "opacity-60 hover:opacity-100"
+                            active ? "" : "opacity-(--inactive) hover:opacity-100"
                         }`}
                         style={
-                            active ? { backgroundColor: theme.active, color: theme.activeText } : { color: theme.text }
+                            active
+                                ? { backgroundColor: theme.active, color: theme.activeText }
+                                : ({
+                                      color: theme.text,
+                                      "--inactive": theme.inactiveOpacity ?? 0.6,
+                                  } as React.CSSProperties)
                         }
                     >
                         {l.toUpperCase()}

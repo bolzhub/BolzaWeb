@@ -120,7 +120,11 @@ export default function MainHeader() {
     }, [recompute]);
 
     return (
-        <header ref={containerRef} className="flex items-baseline gap-6 px-6 md:px-10 py-2 md:py-5">
+        <header
+            ref={containerRef}
+            data-nav-row="accueil"
+            className="flex items-center gap-6 px-6 md:px-10 py-2 md:py-5"
+        >
             <Logo size={logoSize} height={LOGO_HEIGHT} className="[&_img]:h-8! md:[&_img]:h-10!" />
 
             {!burgerMode && (
@@ -131,7 +135,7 @@ export default function MainHeader() {
                             <Link
                                 key={item.label}
                                 href={item.href}
-                                className="whitespace-nowrap text-ink/80 hover:text-ink transition-colors"
+                                className="trim-cap whitespace-nowrap text-ink/80 hover:text-ink transition-colors"
                                 style={{ fontSize: NAV_FONT_SIZE }}
                             >
                                 {item.label}
@@ -141,12 +145,12 @@ export default function MainHeader() {
                     <div className="flex-1" aria-hidden="true" />
                     <Link
                         href={HELP.href}
-                        className="shrink-0 rounded-full bg-aqua px-4 py-1.5 font-semibold text-ink hover:brightness-110 transition-[filter]"
+                        className="shrink-0 rounded-full bg-aqua px-4 py-1.5 font-semibold text-gold hover:brightness-110 transition-[filter]"
                         style={{ fontSize: NAV_FONT_SIZE }}
                     >
                         {HELP.label}
                     </Link>
-                    <LanguageSwitch className="self-center" />
+                    <LanguageSwitch />
                 </>
             )}
 

@@ -31,7 +31,8 @@ export default async function FactionPage({ params }: { params: Promise<{ factio
                     <FactionSidebar active={faction} />
 
                     <div className="flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
-                        <div className="lg:flex-[2] min-w-0 h-[55vh] lg:h-[65vh]">
+                        {/* Portable : pas de hauteur imposée, le cadre fixe la sienne et la description suit en dessous */}
+                        <div className="lg:flex-[2] min-w-0 lg:h-[65vh]">
                             <ObjectViewer key={faction.slug} faction={faction} textColor={textColor} />
                         </div>
 

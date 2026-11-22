@@ -5,7 +5,7 @@ import Link from "next/link";
 import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
 import ZoomImage from "@/components/RootBrainTeasers/ZoomImage";
 import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
-import HomeBunny from "@/components/site/HomeBunny";
+import { LOGO_SOURCES } from "@/components/site/Logo";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Localized } from "@/lib/i18n/lang";
@@ -80,10 +80,13 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
 
             {/* Barre du haut : retour à la page principale, retour à la liste, numéro */}
             <div
-                className="absolute left-0 right-0 top-0 z-50 flex items-start gap-2 px-6 pt-5 md:px-10"
+                data-nav-row="puzzle"
+                className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3"
                 style={{ height: TOP_BAR }}
             >
-                <HomeBunny body="#f3ecdc" tail={VIEWER_BG} className="mr-2" />
+                <Link href="/" aria-label={fr ? "Accueil" : "Home"} className={`${PILL} p-2`}>
+                    <img src={LOGO_SOURCES.small} alt="Bolzano" className="h-7 w-auto" />
+                </Link>
                 <Link href="/RootBrainTeasers" className={`${PILL} px-3 py-2 text-sm`}>
                     ← Puzzles
                 </Link>

@@ -3,7 +3,8 @@ import ForestBackground from "@/components/RootBrainTeasers/ForestBackground";
 import PuzzlePiece from "@/components/RootBrainTeasers/PuzzlePiece";
 import AssetsEntry from "@/components/RootBrainTeasers/AssetsEntry";
 import { PUZZLES } from "@/lib/RootBrainTeasers/puzzles";
-import HomeBunny from "@/components/site/HomeBunny";
+import Link from "next/link";
+import { ResponsiveLogo } from "@/components/site/Logo";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { getLang } from "@/lib/i18n/server";
 
@@ -25,8 +26,10 @@ export default async function RootBrainTeasersPage() {
         <main className="relative min-h-screen flex flex-col">
             <ForestBackground />
 
-            <header className="flex items-center justify-between gap-4 px-6 md:px-10 py-5">
-                <HomeBunny body="#f3ecdc" tail="#142c20" />
+            <header data-nav-row="root" className="flex items-center justify-between gap-4 px-6 md:px-10 py-6">
+                <Link href="/" className="inline-block rounded-full bg-cream/95 px-4 py-2 shadow-md">
+                    <ResponsiveLogo />
+                </Link>
                 <LanguageSwitch />
             </header>
 

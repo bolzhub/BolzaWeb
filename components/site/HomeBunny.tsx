@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function HomeBunny({ body, tail, className = "" }: { body: string; tail: string; className?: string }) {
     return (
-        <Link href="/" aria-label="Bolzano Crafts" className={`inline-block shrink-0 ${className}`}>
+        <Link href="/" aria-label="Bolzano Crafts" className={`flex shrink-0 ${className}`}>
             <svg viewBox="0 0 203.53375 287.99042" className="block h-8 w-auto md:h-10" role="img" aria-hidden="true">
                 <g transform="translate(-126.98484,-65.06181)">
                     <path
