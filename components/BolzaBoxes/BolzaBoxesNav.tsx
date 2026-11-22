@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { LOGO_SOURCES } from "@/components/site/Logo";
+import HomeBunny from "@/components/site/HomeBunny";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Localized } from "@/lib/i18n/lang";
@@ -127,10 +127,8 @@ export default function BolzaBoxesNav({
                 )}
                 {imageSrc && <BackgroundLayer src={imageSrc} />}
 
-                <div className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 md:px-8 py-3">
-                    <Link href="/" className="shrink-0 flex items-center gap-2">
-                        <img src={LOGO_SOURCES.small} alt="Bolzano Crafts" className="h-10 md:h-12" />
-                    </Link>
+                <div className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 md:px-10 pt-5 pb-3">
+                    <HomeBunny body="#2b2200" tail="#e9ddaf" />
 
                     <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 justify-center flex-1 min-w-0">
                         {NAV_LINKS.map((link) => (

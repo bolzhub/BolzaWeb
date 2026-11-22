@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ResponsiveLogo } from "@/components/site/Logo";
+import HomeBunny from "@/components/site/HomeBunny";
 import { RED_FLAGS } from "@/lib/RedFlags/redFlags";
 import { shuffle, verdict } from "@/lib/RedFlags/game";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
@@ -56,6 +55,8 @@ type Texts = (typeof T)["fr"];
 
 const BG = "#2a0b11";
 const RED = "#e0313f";
+const CREAM = "#f3ecdc";
+const SWITCH_THEME = { track: BG, active: RED, activeText: CREAM, text: CREAM, ring: `${RED}80` };
 
 type Phase = "intro" | "name" | "date" | "summary";
 
@@ -94,9 +95,7 @@ export default function RedFlagsGame() {
         >
             {/* En-tête superposé : l'accueil et le choix du prénom se centrent sur tout l'écran */}
             <header className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 md:px-10">
-                <Link href="/" className="shrink-0">
-                    <ResponsiveLogo className="h-8 brightness-0 invert md:h-10" />
-                </Link>
+                <HomeBunny body={CREAM} tail={RED} />
                 <div className="flex items-center gap-4">
                     {phase !== "intro" && (
                         <button
@@ -106,7 +105,7 @@ export default function RedFlagsGame() {
                             {t.restart}
                         </button>
                     )}
-                    <LanguageSwitch />
+                    <LanguageSwitch theme={SWITCH_THEME} />
                 </div>
             </header>
 

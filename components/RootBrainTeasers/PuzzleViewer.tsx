@@ -5,7 +5,7 @@ import Link from "next/link";
 import PdfViewer from "@/components/RootBrainTeasers/PdfViewer";
 import ZoomImage from "@/components/RootBrainTeasers/ZoomImage";
 import MistakeBox from "@/components/RootBrainTeasers/MistakeBox";
-import { LOGO_SOURCES } from "@/components/site/Logo";
+import HomeBunny from "@/components/site/HomeBunny";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Localized } from "@/lib/i18n/lang";
@@ -22,6 +22,7 @@ const SECTIONS: { id: SectionId; label: Localized }[] = [
 
 // Le contenu occupe la zone entre ces deux barres, pour que rien ne le recouvre
 const TOP_BAR = "4rem";
+const VIEWER_BG = "#2b1d12";
 const BOTTOM_BAR = "calc(4.75rem + env(safe-area-inset-bottom, 0px))";
 
 const PILL = "rounded-full bg-cream/95 shadow-md text-ink";
@@ -43,7 +44,7 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
     const hintVisible = contents[section]?.kind === "image" && !hintGone;
 
     return (
-        <div className="fixed inset-0 overflow-hidden" style={{ background: "#2b1d12" }}>
+        <div className="fixed inset-0 overflow-hidden" style={{ background: VIEWER_BG }}>
             {/* Les sections déjà visitées restent montées : changement instantané, position conservée */}
             <div className="absolute left-0 right-0" style={{ top: TOP_BAR, bottom: BOTTOM_BAR }}>
                 {SECTIONS.map(({ id, label }) => {
@@ -79,12 +80,10 @@ export default function PuzzleViewer({ puzzleNumber, contents }: { puzzleNumber:
 
             {/* Barre du haut : retour à la page principale, retour à la liste, numéro */}
             <div
-                className="absolute left-0 right-0 top-0 z-50 flex items-center gap-2 px-3"
+                className="absolute left-0 right-0 top-0 z-50 flex items-start gap-2 px-6 pt-5 md:px-10"
                 style={{ height: TOP_BAR }}
             >
-                <Link href="/" aria-label={fr ? "Accueil" : "Home"} className={`${PILL} p-2`}>
-                    <img src={LOGO_SOURCES.small} alt="Bolzano" className="h-7 w-auto" />
-                </Link>
+                <HomeBunny body="#f3ecdc" tail={VIEWER_BG} className="mr-2" />
                 <Link href="/RootBrainTeasers" className={`${PILL} px-3 py-2 text-sm`}>
                     ← Puzzles
                 </Link>

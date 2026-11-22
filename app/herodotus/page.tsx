@@ -1,4 +1,4 @@
-import Logo from "@/components/site/Logo";
+import HomeBunny from "@/components/site/HomeBunny";
 import LanguageSwitch from "@/components/i18n/LanguageSwitch";
 import { getLang } from "@/lib/i18n/server";
 
@@ -17,10 +17,10 @@ export default async function HerodotusPage() {
     const t = TEXT[await getLang()];
     return (
         <main className="min-h-screen min-h-dvh bg-black">
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10">
-                <Logo size="small" height={32} />
+            <div className="absolute top-5 left-6 md:left-10 z-10">
+                <HomeBunny body="#f3ecdc" tail="#000000" />
             </div>
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
+            <div className="absolute top-5 right-6 md:right-10 z-10">
                 <LanguageSwitch />
             </div>
 

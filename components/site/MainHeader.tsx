@@ -141,7 +141,7 @@ export default function MainHeader() {
                     <div className="flex-1" aria-hidden="true" />
                     <Link
                         href={HELP.href}
-                        className="shrink-0 rounded-full border-2 border-aqua px-4 py-1.5 text-ink hover:bg-aqua/20 transition-colors"
+                        className="shrink-0 rounded-full bg-aqua px-4 py-1.5 font-semibold text-ink hover:brightness-110 transition-[filter]"
                         style={{ fontSize: NAV_FONT_SIZE }}
                     >
                         {HELP.label}
@@ -198,7 +198,7 @@ export default function MainHeader() {
             <a
                 ref={helpProbeRef}
                 aria-hidden="true"
-                className="absolute -z-10 opacity-0 pointer-events-none rounded-full border-2 px-4 py-1.5 whitespace-nowrap"
+                className="absolute -z-10 opacity-0 pointer-events-none rounded-full px-4 py-1.5 font-semibold whitespace-nowrap"
                 style={{ fontSize: NAV_FONT_SIZE, top: -9999, left: -9999 }}
             >
                 {HELP.label}
