@@ -49,9 +49,9 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle proposé lors du Championnat de France 2025. Gagne avec les Corvidés.",
         },
         files: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
+            rules: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules.pdf",
+            teaser: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle.png",
+            solution: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
     {
@@ -62,9 +62,9 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle A proposé lors du Championnat de France 2026. Question de culture Root.",
         },
         files: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
+            rules: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules.pdf",
+            teaser: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle.png",
+            solution: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
     {
@@ -75,9 +75,9 @@ export const PUZZLES: Puzzle[] = [
             fr: "Puzzle B proposé lors du Championnat de France 2026. Gagne avec le Vagabond dès le tout premier tour de la partie.",
         },
         files: {
-            rules: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_rules.pdf",
-            teaser: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle.png",
-            solution: "/api/media/Projets/Root_Puzzles/CdF_2025/Rendu/puzzle_solution.pdf",
+            rules: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_rules.pdf",
+            teaser: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle.png",
+            solution: "/api/media/Projets/Root_Brain_Teasers/CdF_2025/Rendu/puzzle_solution.pdf",
         },
     },
 ];

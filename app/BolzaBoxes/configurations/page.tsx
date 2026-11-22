@@ -13,8 +13,8 @@ import { BOXES_LAYOUTS } from "@/lib/BolzaBoxes/boxesZones";
 
 // Versions WebP réduites (les PNG d'origine pèsent 3 Mo chacun)
 const BOXES_IMAGES = {
-    international: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-English.png", 1600),
-    french: mediaUrl("Projets/Root_Organiser/Extra/Presentation/Website/Boxes/side_designs-French.png", 1600),
+    international: mediaUrl("Projets/Root_BolzaBoxes/Extra/Presentation/Website/Boxes/side_designs-English.png", 1600),
+    french: mediaUrl("Projets/Root_BolzaBoxes/Extra/Presentation/Website/Boxes/side_designs-French.png", 1600),
 };
 
 export default function BoxesPage() {

@@ -10,8 +10,8 @@ export type Section = {
 
 export const SECTIONS: Section[] = [
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 1", fr: "Photo 1" },
         title: { en: "Horizontal and Vertical Storage", fr: "Rangement horizontal et vertical" },
         text: {
@@ -20,8 +20,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 2", fr: "Photo 2" },
         title: { en: "Sleeve compatible", fr: "Compatible avec les protège-cartes" },
         text: {
@@ -30,8 +30,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 3", fr: "Photo 3" },
         title: { en: "Boxes rearrangeable", fr: "Boîtes réorganisables" },
         text: {
@@ -40,8 +40,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 4", fr: "Photo 4" },
         title: { en: "Stickers compatible", fr: "Compatible avec les autocollants" },
         text: {
@@ -50,8 +50,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 5", fr: "Photo 5" },
         title: { en: "Everything in one box", fr: "Tout dans une boîte" },
         text: {
@@ -60,8 +60,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 6", fr: "Photo 6" },
         title: { en: "Extremely dense storage", fr: "Rangement ultra compact" },
         text: {
@@ -70,8 +70,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 7", fr: "Photo 7" },
         title: { en: "Neat little designs on the sides", fr: "De jolis motifs sur les côtés" },
         text: {
@@ -80,8 +80,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 8", fr: "Photo 8" },
         title: { en: "They clip!", fr: "Ça se clipse !" },
         text: {
@@ -90,8 +90,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 9", fr: "Photo 9" },
         title: { en: "30 unique colors", fr: "30 couleurs uniques" },
         text: {
@@ -100,8 +100,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {
@@ -110,8 +110,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Ergonomic insertion", fr: "Rangement ergonomique" },
         text: {
@@ -120,8 +120,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Many boxes", fr: "De nombreuses boîtes" },
         text: {
@@ -130,8 +130,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Holes for easy extraction", fr: "Des encoches pour sortir facilement" },
         text: {
@@ -140,8 +140,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Paint them!", fr: "Peins-les !" },
         text: {
@@ -150,8 +150,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Future proof", fr: "Prêt pour l'avenir" },
         text: {
@@ -160,8 +160,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Made by a Root connoisseur", fr: "Conçu par un connaisseur de Root" },
         text: {
@@ -170,8 +170,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Super fast setup", fr: "Mise en place ultra rapide" },
         text: {
@@ -180,8 +180,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Website for help", fr: "Un site pour t'aider" },
         text: {
@@ -190,8 +190,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {
@@ -200,8 +200,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {
@@ -210,8 +210,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {
@@ -220,8 +220,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {
@@ -230,8 +230,8 @@ export const SECTIONS: Section[] = [
         },
     },
     {
-        imageInternational: "/api/media/Projets/Root_Organiser/Extra/Presentation/English_prototypes.jpg?w=1000",
-        imageFrench: "/api/media/Projets/Root_Organiser/Extra/Presentation/photo2.jpg?w=1000",
+        imageInternational: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/English_prototypes.jpg?w=1000",
+        imageFrench: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg?w=1000",
         imageAlt: { en: "Photo 10", fr: "Photo 10" },
         title: { en: "Glass", fr: "Vitre" },
         text: {

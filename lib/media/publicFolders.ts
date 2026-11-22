@@ -2,8 +2,8 @@
 // leurs sous-dossiers) devient accessible.
 export const PUBLIC_FOLDERS: string[] = [
     "Projets/ADR",
-    "Projets/Root_Organiser",
-    "Projets/Root_Puzzles",
+    "Projets/Root_BolzaBoxes",
+    "Projets/Root_Brain_Teasers",
     // "Projets/herodotus",
     // Ajoute ici chaque nouveau dossier que tu veux rendre public
 ];
@@ -11,7 +11,7 @@ export const PUBLIC_FOLDERS: string[] = [
 // Fichiers isolés rendus publics, un par un, même s'ils se trouvent
 // dans un dossier par ailleurs privé. Chemin exact, pas de préfixe.
 export const PUBLIC_FILES: string[] = [
-    // "Projets/Root_Organiser/Extra/Presentation/photo2.jpg",
-    // "Projets/Root_Organiser/Extra/Presentation/side_designs-English.png",
+    // "Projets/Root_BolzaBoxes/Extra/Presentation/photo2.jpg",
+    // "Projets/Root_BolzaBoxes/Extra/Presentation/side_designs-English.png",
     // Ajoute ici chaque nouveau fichier isolé que tu veux rendre public
 ];
