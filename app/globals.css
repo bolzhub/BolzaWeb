@@ -25,7 +25,7 @@
     --color-cream: #ece5d8;
     --color-parchment: #f3ecdc;
     --color-gold: #d8a31a; /* bordure active Hyprland */
-    --color-aqua: #38eee2; /* accent Waybar / Kitty / Mako */
+    --color-aqua: #4cc9a6; /* accent Waybar / Kitty / Mako */
 }
 
 @media (prefers-color-scheme: dark) {
