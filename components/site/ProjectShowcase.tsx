@@ -154,8 +154,10 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                     setActiveId(project.id);
                                 }
                             }}
-                            // ombre portée douce, teintée de l'encre du site (s'ajoute au contour doré du rectangle actif)
-                            className={`absolute inset-0 overflow-hidden rounded-2xl shadow-[0_12px_28px_-10px_rgba(58,53,44,0.55)] ${activeId === project.id ? "ring-2 ring-gold" : ""}`}
+                            // Ombre portée douce + contour sombre (encre) pour détacher les rectangles du fond.
+                            // Rectangle actif : liseré doré contre le rectangle (ring-offset), bordé à l'extérieur
+                            // par le contour sombre qui déborde un peu, pour faire ressortir le doré.
+                            className={`absolute inset-0 overflow-hidden rounded-2xl shadow-[0_12px_28px_-10px_rgba(58,53,44,0.55)] ring-2 ring-ink ${activeId === project.id ? "ring-offset-2 ring-offset-gold" : ""}`}
                             style={{
                                 backgroundColor: project.color,
                                 containerType: "inline-size",
