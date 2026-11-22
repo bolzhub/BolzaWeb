@@ -154,7 +154,7 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                     setActiveId(project.id);
                                 }
                             }}
-                            className="absolute inset-0 overflow-hidden rounded-2xl hover:ring-2 hover:ring-white"
+                            className={`absolute inset-0 overflow-hidden rounded-2xl ${activeId === project.id ? "ring-2 ring-gold" : ""}`}
                             style={{
                                 backgroundColor: project.color,
                                 containerType: "inline-size",
