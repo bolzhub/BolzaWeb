@@ -29,7 +29,7 @@ const WORDS: [RegExp, string][] = [
     [/(?<![\p{L}])Divers(?![\p{L}])/gu, "Miscellaneous"],
 ];
 
-export function localizeAdrName(name: string, lang: Lang): string {
+export function localizeLifeDrawingName(name: string, lang: Lang): string {
     if (lang === "fr") return name;
     const translated = WORDS.reduce((acc, [re, en]) => acc.replace(re, en), name);
     return translated.replace(DATE, (_, day: string | undefined, month: string, year: string) => {

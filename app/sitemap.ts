@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/RootBrainTeasers",
         ...PUZZLES.map((p) => `/RootBrainTeasers/${p.number}`),
         "/herodotus",
-        "/ADR",
+        "/LifeDrawing",
         "/RedFlags",
         "/HumanAway",
     ];

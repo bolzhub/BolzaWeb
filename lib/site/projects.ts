@@ -1,4 +1,4 @@
-// import { getLatestADRCover } from "@/lib/ADR/galleries";
+// import { getLatestLifeDrawingCover } from "@/lib/LifeDrawing/galleries";
 import type { Lang, Localized } from "@/lib/i18n/lang";
 
 export type ProjectBadge = {
@@ -64,11 +64,11 @@ const PROJECTS: ProjectData[] = [
         imagePosition: "top",
     },
     {
-        id: "adr",
+        id: "life-drawing",
         title: { en: "Life Drawing", fr: "Modèle vivant" },
-        href: "/ADR",
+        href: "/LifeDrawing",
         color: "#8a7862",
-        previewImage: "/projects/ADR/cover.png", //getLatestADRCover(),
+        previewImage: "/projects/life-drawing/cover.png", //getLatestLifeDrawingCover(),
     },
     {
         id: "tintin",

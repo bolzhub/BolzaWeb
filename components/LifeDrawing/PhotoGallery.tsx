@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ADRHeader from "./ADRHeader";
+import LifeDrawingHeader from "./LifeDrawingHeader";
 import ImageTile from "./ImageTile";
 import Lightbox from "./Lightbox";
 import { useLang } from "@/lib/i18n/LanguageContext";
-import { localizeAdrName } from "@/lib/ADR/names";
+import { localizeLifeDrawingName } from "@/lib/LifeDrawing/names";
 
 export default function PhotoGallery({ title, images }: { title: string; images: string[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -14,11 +14,11 @@ export default function PhotoGallery({ title, images }: { title: string; images:
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-            <ADRHeader
-                title={localizeAdrName(title, lang)}
+            <LifeDrawingHeader
+                title={localizeLifeDrawingName(title, lang)}
                 left={
                     <Link
-                        href="/ADR"
+                        href="/LifeDrawing"
                         aria-label={
                             lang === "fr" ? "Retour à l'Atelier Double Raisin" : "Back to Atelier Double Raisin"
                         }

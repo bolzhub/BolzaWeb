@@ -115,7 +115,7 @@ export function getGalleryBySlug(slug: string): Gallery | undefined {
     };
 }
 
-export function getLatestADRCover(): string | undefined {
+export function getLatestLifeDrawingCover(): string | undefined {
     const items = getHomeItems(); // déjà triés décroissant, le plus récent en premier
     const latestGallery = items.find((i) => i.type === "gallery");
     return latestGallery?.type === "gallery" ? latestGallery.cover : undefined;

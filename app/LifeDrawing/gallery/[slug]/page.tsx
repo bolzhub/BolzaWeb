@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getGalleryBySlug } from "@/lib/ADR/galleries";
-import PhotoGallery from "@/components/ADR/PhotoGallery";
+import { getGalleryBySlug } from "@/lib/LifeDrawing/galleries";
+import PhotoGallery from "@/components/LifeDrawing/PhotoGallery";
 
 export default async function GalleryPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;

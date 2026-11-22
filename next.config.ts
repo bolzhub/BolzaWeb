@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
         return [
             // ancien nom du sous-site (When the human is away)
             { source: "/WhenTheHumanIsAway", destination: "/HumanAway", permanent: true },
+            // ancien nom du sous-site (Life Drawing, ex-ADR)
+            { source: "/ADR", destination: "/LifeDrawing", permanent: true },
+            { source: "/ADR/:path*", destination: "/LifeDrawing/:path*", permanent: true },
         ];
     },
 };

@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ADRHeader from "./ADRHeader";
+import LifeDrawingHeader from "./LifeDrawingHeader";
 import ImageTile from "./ImageTile";
 import Lightbox from "./Lightbox";
-import type { HomeItem } from "@/lib/ADR/galleries";
+import type { HomeItem } from "@/lib/LifeDrawing/galleries";
 import { useLang } from "@/lib/i18n/LanguageContext";
-import { localizeAdrName } from "@/lib/ADR/names";
+import { localizeLifeDrawingName } from "@/lib/LifeDrawing/names";
 
 export default function HomeGallery({ items }: { items: HomeItem[] }) {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -15,12 +15,12 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
 
     return (
         <main className="min-h-screen min-h-dvh m-0 bg-[#1a1a1a]">
-            <ADRHeader title={lang === "fr" ? "Modèle vivant" : "Life Drawing"} />
+            <LifeDrawingHeader title={lang === "fr" ? "Modèle vivant" : "Life Drawing"} />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-10 gap-y-14 md:gap-y-16 p-8 md:p-16">
                 {items.map((item, i) => {
                     const imageUrl = item.type === "image" ? item.url : undefined;
-                    const name = localizeAdrName(item.name, lang);
+                    const name = localizeLifeDrawingName(item.name, lang);
                     const tile = (
                         <>
                             <ImageTile
@@ -33,7 +33,7 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
                     );
 
                     return item.type === "gallery" ? (
-                        <Link key={i} href={`/ADR/gallery/${item.slug}`} className="block">
+                        <Link key={i} href={`/LifeDrawing/gallery/${item.slug}`} className="block">
                             {tile}
                         </Link>
                     ) : (

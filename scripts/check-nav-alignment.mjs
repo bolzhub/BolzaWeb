@@ -27,9 +27,9 @@ const TOLERANCE = 0.75; // px : en dessous, l'écart est invisible
 const ONLY = process.env.PAGES?.split(",");
 const PAGES = ONLY ?? [
     "/",
-    "/ADR",
-    "/ADR/gallery/32%20Laurent%20-%2022%20octobre%202026",
-    "/ADR/gallery/06%20Diana%20et%20%C3%89tienne%20-%20janvier%202026",
+    "/LifeDrawing",
+    "/LifeDrawing/gallery/32%20Laurent%20-%2022%20octobre%202026",
+    "/LifeDrawing/gallery/06%20Diana%20et%20%C3%89tienne%20-%20janvier%202026",
     "/Recommendations",
     "/RedFlags",
     "/RootBrainTeasers",
