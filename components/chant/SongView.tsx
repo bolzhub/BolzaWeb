@@ -369,7 +369,9 @@ export default function SongView({
                                                 {KIND_LABEL[f.kind]}
                                             </span>
                                             <span className="min-w-0">
-                                                <span className="block truncate text-sm">{f.name}</span>
+                                                <span className="block text-sm leading-snug wrap-anywhere">
+                                                    {f.name}
+                                                </span>
                                                 <span className="block text-xs opacity-60">{formatSize(f.size)}</span>
                                             </span>
                                         </button>
