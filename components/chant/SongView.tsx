@@ -14,12 +14,12 @@ import RenameSongButton, { RenameButton } from "./RenameSongButton";
 
 // Souris : icônes révélées au survol de leur zone « group ». Tactile (pas de survol) : toujours visibles.
 // HOVER_REVEAL (crayon du titre) : transparentes, leur place reste réservée.
-// HOVER_SHOW (renommer, télécharger, supprimer d'une ligne de fichier) : retirées de la mise en page,
-// le nom du fichier occupe toute la largeur tant qu'on ne survole pas la ligne.
 const HOVER_REVEAL =
     "flex shrink-0 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-within:opacity-100";
-const HOVER_SHOW =
-    "flex shrink-0 [@media(hover:hover)]:hidden [@media(hover:hover)]:group-hover:flex [@media(hover:hover)]:group-focus-within:flex";
+// ROW_ACTIONS (renommer, télécharger, supprimer d'une ligne de fichier) : posées par-dessus la fin du nom,
+// sur le fond de la ligne (--row-bg) avec un fondu, sans décaler le texte. Tactile : dans le flux, à droite.
+const ROW_ACTIONS =
+    "flex shrink-0 items-center gap-3 [@media(hover:hover)]:absolute [@media(hover:hover)]:inset-y-0 [@media(hover:hover)]:right-0 [@media(hover:hover)]:hidden [@media(hover:hover)]:bg-[linear-gradient(to_right,transparent,var(--row-bg)_2rem)] [@media(hover:hover)]:pr-3 [@media(hover:hover)]:pl-8 [@media(hover:hover)]:group-focus-within:flex [@media(hover:hover)]:group-hover:flex";
 
 const KIND_LABEL = { pdf: "PDF", image: "Image", audio: "Audio", video: "Vidéo", other: "Fichier" } as const;
 
@@ -359,7 +359,7 @@ export default function SongView({
                                 return (
                                     <li
                                         key={f.name}
-                                        className={`group flex items-center gap-3 px-3 py-2.5 ${active ? "bg-[#2b2926]/5" : ""}`}
+                                        className={`group relative flex items-center gap-3 bg-(--row-bg) px-3 py-2.5 ${active ? "[--row-bg:#f4f4f4]" : "[--row-bg:#fff]"}`}
                                     >
                                         <button
                                             onClick={() => open(f)}
@@ -375,7 +375,7 @@ export default function SongView({
                                                 <span className="block text-xs opacity-60">{formatSize(f.size)}</span>
                                             </span>
                                         </button>
-                                        <span className={HOVER_SHOW}>
+                                        <span className={ROW_ACTIONS}>
                                             <RenameButton
                                                 title={`Renommer ${f.name}`}
                                                 value={splitName(f.name).stem}
@@ -383,8 +383,6 @@ export default function SongView({
                                                 size="md"
                                                 onRename={(stem) => renameFile(f, stem)}
                                             />
-                                        </span>
-                                        <span className={HOVER_SHOW}>
                                             <a
                                                 href={fileUrl(f.name, true)}
                                                 download={f.name}
@@ -405,8 +403,6 @@ export default function SongView({
                                                     />
                                                 </svg>
                                             </a>
-                                        </span>
-                                        <span className={HOVER_SHOW}>
                                             <button
                                                 onClick={() => removeFile(f)}
                                                 disabled={deleting === f.name}
