@@ -387,7 +387,8 @@ export default function SongView({
                                                 href={fileUrl(f.name, true)}
                                                 download={f.name}
                                                 aria-label={`Télécharger ${f.name}`}
-                                                className="shrink-0 rounded-full p-1.5 hover:bg-black/5"
+                                                className="shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:opacity-100"
+                                                title="Télécharger"
                                             >
                                                 <svg
                                                     viewBox="0 0 24 24"
