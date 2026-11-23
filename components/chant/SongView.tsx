@@ -12,7 +12,7 @@ import TagChip from "./TagChip";
 import DeleteSongButton, { XIcon } from "./DeleteSongButton";
 import RenameSongButton, { RenameButton } from "./RenameSongButton";
 
-// Souris : icônes d'une ligne de fichier révélées au survol de la ligne (« group »).
+// Souris : icônes d'une ligne de fichier (renommer, télécharger, supprimer) révélées au survol de la ligne (« group »).
 // Tactile (pas de survol) : toujours visibles.
 const HOVER_REVEAL =
     "flex shrink-0 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-within:opacity-100";
@@ -376,26 +376,28 @@ export default function SongView({
                                                 onRename={(stem) => renameFile(f, stem)}
                                             />
                                         </span>
-                                        <a
-                                            href={fileUrl(f.name, true)}
-                                            download={f.name}
-                                            aria-label={`Télécharger ${f.name}`}
-                                            className="shrink-0 rounded-full p-1.5 hover:bg-black/5"
-                                        >
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                className="h-5 w-5"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth={2}
+                                        <span className={HOVER_REVEAL}>
+                                            <a
+                                                href={fileUrl(f.name, true)}
+                                                download={f.name}
+                                                aria-label={`Télécharger ${f.name}`}
+                                                className="shrink-0 rounded-full p-1.5 hover:bg-black/5"
                                             >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"
-                                                />
-                                            </svg>
-                                        </a>
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    className="h-5 w-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth={2}
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"
+                                                    />
+                                                </svg>
+                                            </a>
+                                        </span>
                                         <span className={HOVER_REVEAL}>
                                             <button
                                                 onClick={() => removeFile(f)}
