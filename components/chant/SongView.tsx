@@ -12,6 +12,11 @@ import TagChip from "./TagChip";
 import DeleteSongButton, { XIcon } from "./DeleteSongButton";
 import RenameSongButton, { RenameButton } from "./RenameSongButton";
 
+// Souris : icônes d'une ligne de fichier révélées au survol de la ligne (« group »).
+// Tactile (pas de survol) : toujours visibles.
+const HOVER_REVEAL =
+    "flex shrink-0 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-within:opacity-100";
+
 const KIND_LABEL = { pdf: "PDF", image: "Image", audio: "Audio", video: "Vidéo", other: "Fichier" } as const;
 
 function formatSize(bytes: number): string {
@@ -348,7 +353,7 @@ export default function SongView({
                                 return (
                                     <li
                                         key={f.name}
-                                        className={`flex items-center gap-3 px-3 py-2.5 ${active ? "bg-[#2b2926]/5" : ""}`}
+                                        className={`group flex items-center gap-3 px-3 py-2.5 ${active ? "bg-[#2b2926]/5" : ""}`}
                                     >
                                         <button
                                             onClick={() => open(f)}
@@ -362,13 +367,15 @@ export default function SongView({
                                                 <span className="block text-xs opacity-60">{formatSize(f.size)}</span>
                                             </span>
                                         </button>
-                                        <RenameButton
-                                            title={`Renommer ${f.name}`}
-                                            value={splitName(f.name).stem}
-                                            suffix={splitName(f.name).ext}
-                                            size="md"
-                                            onRename={(stem) => renameFile(f, stem)}
-                                        />
+                                        <span className={HOVER_REVEAL}>
+                                            <RenameButton
+                                                title={`Renommer ${f.name}`}
+                                                value={splitName(f.name).stem}
+                                                suffix={splitName(f.name).ext}
+                                                size="md"
+                                                onRename={(stem) => renameFile(f, stem)}
+                                            />
+                                        </span>
                                         <a
                                             href={fileUrl(f.name, true)}
                                             download={f.name}
@@ -389,15 +396,17 @@ export default function SongView({
                                                 />
                                             </svg>
                                         </a>
-                                        <button
-                                            onClick={() => removeFile(f)}
-                                            disabled={deleting === f.name}
-                                            aria-label={`Supprimer ${f.name}`}
-                                            title="Supprimer"
-                                            className="shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:text-red-700 hover:opacity-100 disabled:opacity-20"
-                                        >
-                                            <XIcon className="h-5 w-5" />
-                                        </button>
+                                        <span className={HOVER_REVEAL}>
+                                            <button
+                                                onClick={() => removeFile(f)}
+                                                disabled={deleting === f.name}
+                                                aria-label={`Supprimer ${f.name}`}
+                                                title="Supprimer"
+                                                className="shrink-0 rounded-full p-1.5 opacity-50 hover:bg-black/5 hover:text-red-700 hover:opacity-100 disabled:opacity-20"
+                                            >
+                                                <XIcon className="h-5 w-5" />
+                                            </button>
+                                        </span>
                                     </li>
                                 );
                             })}
