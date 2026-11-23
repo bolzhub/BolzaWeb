@@ -26,7 +26,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-BOXES = Path("/mnt/Bolzananas/Projets/Root_BolzaBoxes/Extra/Presentation/Website/Boxes")
+BOXES = Path("/mnt/Bolzananas/Projets/Root_BolzaBoxes/Media/Website/Boxes")
 ARCHIVE = BOXES / "_anciens_placeholders"
 
 VERSIONS = {

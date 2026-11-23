@@ -48,9 +48,9 @@ const EXT_BY_TYPE: Record<ViewModeType, string> = {
 };
 
 // Dossier des fichiers de chaque boîte sur le disque de la Pi, avec un sous-dossier par version :
-// /mnt/Bolzananas/Projets/Root_BolzaBoxes/Extra/Presentation/Website/Boxes/<slug>/<international|french>/
+// /mnt/Bolzananas/Projets/Root_BolzaBoxes/Media/Website/Boxes/<slug>/<international|french>/
 // (l'icône, commune aux deux versions, reste dans <slug>/icon.svg)
-export const FACTION_ASSETS_RELATIVE = "Projets/Root_BolzaBoxes/Extra/Presentation/Website/Boxes";
+export const FACTION_ASSETS_RELATIVE = "Projets/Root_BolzaBoxes/Media/Website/Boxes";
 export const FACTION_ASSETS_URL = `/api/media/${FACTION_ASSETS_RELATIVE}`;
 
 // Nom du fichier d'une vue, identique dans les deux dossiers de version

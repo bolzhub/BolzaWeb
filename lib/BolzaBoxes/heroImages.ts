@@ -1,8 +1,7 @@
 // ?w= : version WebP réduite servie par /api/media (main.png pèse près de 8 Mo)
 const home = {
-    international:
-        "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/Newsletter/signal-2026-05-10-161743_005.jpeg?w=2400",
-    french: "/api/media/Projets/Root_BolzaBoxes/Extra/Presentation/Website/Home/main.png?w=2400",
+    international: "/api/media/Projets/Root_BolzaBoxes/Media/Newsletter/signal-2026-05-10-161743_005.jpeg?w=2400",
+    french: "/api/media/Projets/Root_BolzaBoxes/Media/Website/Home/main.png?w=2400",
 };
 
 export const HERO_IMAGES = {
