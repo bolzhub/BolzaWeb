@@ -12,7 +12,7 @@ import TagChip from "./TagChip";
 import DeleteSongButton, { XIcon } from "./DeleteSongButton";
 import RenameSongButton, { RenameButton } from "./RenameSongButton";
 
-// Souris : icônes d'une ligne de fichier (renommer, télécharger, supprimer) révélées au survol de la ligne (« group »).
+// Souris : icônes révélées au survol de leur zone « group » (crayon du titre ; renommer, télécharger, supprimer d'une ligne de fichier).
 // Tactile (pas de survol) : toujours visibles.
 const HOVER_REVEAL =
     "flex shrink-0 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-focus-within:opacity-100";
@@ -225,14 +225,16 @@ export default function SongView({
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                             </svg>
                         </Link>
-                        <h1 className="flex min-w-0 flex-1 items-center gap-1 text-xl font-semibold md:text-2xl">
+                        <h1 className="group flex min-w-0 flex-1 items-center gap-1 text-xl font-semibold md:text-2xl">
                             <span className="min-w-0 break-words">{name}</span>
-                            <RenameSongButton
-                                diskName={diskName}
-                                name={name}
-                                size="md"
-                                onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
-                            />
+                            <span className={HOVER_REVEAL}>
+                                <RenameSongButton
+                                    diskName={diskName}
+                                    name={name}
+                                    size="md"
+                                    onRenamed={(slug) => router.replace(`/chant/${slug}${tagQuery}`)}
+                                />
+                            </span>
                         </h1>
                     </div>
                     <div className="flex flex-wrap items-center gap-3 pl-1 md:shrink-0 md:pl-0">
