@@ -139,6 +139,14 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 url: "https://www.youtube.com/@elliotisacoolguyTV",
                 description: { en: "Cool guy.", fr: "Un type sympa." },
             },
+            {
+                title: "why Dropout looks so good - elliotisacoolguy",
+                url: "https://www.youtube.com/watch?v=a-eU0BFLyO4",
+                description: {
+                    en: "Intersection of two of my favorite things on the internet.",
+                    fr: "À la croisée de deux de mes choses préférées sur Internet.",
+                },
+            },
         ],
     },
     {
@@ -264,6 +272,11 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                     fr: "Ce type est vraiment un excellent youtubeur tech",
                 },
             },
+            {
+                title: "Linux user Tries MacOS™ - diinki",
+                url: "https://www.youtube.com/watch?v=ij4MfN6H_3U",
+                description: { en: "How to Linux within MacOS.", fr: "Comment faire du Linux dans macOS." },
+            },
         ],
     },
     {
@@ -328,6 +341,14 @@ export const YOUTUBE_SECTIONS: YoutubeSection[] = [
                 description: {
                     en: "Careful: 2 videos! More on the history of Computer Graphics rather than Computer Graphics directly.",
                     fr: "Attention : 2 vidéos ! Plutôt sur l'histoire de l'informatique graphique que sur l'informatique graphique elle-même.",
+                },
+            },
+            {
+                title: "How I made a 3D Level in a 2D Game - Spu7Nix",
+                url: "https://www.youtube.com/watch?v=Qvlb-Yo6Rqo",
+                description: {
+                    en: "Fascinated by the monstrous investment for such a niche task.",
+                    fr: "Passionné par l'investissement monstrueux pour une tâche aussi niche.",
                 },
             },
         ],

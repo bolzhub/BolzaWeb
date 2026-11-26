@@ -30,13 +30,22 @@ function readEntries(): Entry[] {
     return out;
 }
 
-function galleryImages(entry: Entry): string[] {
+function galleryFiles(entry: Entry): string[] {
     const files = fs.readdirSync(path.join(DISK_ROOT, entry.root, entry.name));
-    return sortImages(files).map((f) => mediaUrl(`${entry.root}/${entry.name}/${f}`));
+    return sortImages(files).map((f) => `${entry.root}/${entry.name}/${f}`);
 }
 
+function galleryImages(entry: Entry): string[] {
+    return galleryFiles(entry).map((f) => mediaUrl(f));
+}
+
+// Dessins posés derrière la couverture dans la pile de l'accueil (versions réduites).
+const STACK_DEPTH = 2;
+const STACK_WIDTH = 800;
+
 export type HomeItem =
-    { type: "gallery"; slug: string; name: string; cover: string } | { type: "image"; url: string; name: string };
+    | { type: "gallery"; slug: string; name: string; cover: string; behind: string[]; count: number }
+    | { type: "image"; url: string; name: string };
 
 export type Gallery = {
     slug: string;
@@ -87,11 +96,14 @@ export function getHomeItems(): HomeItem[] {
 
     return combined.map(({ entry, kind }) => {
         if (kind === "folder") {
+            const files = galleryFiles(entry);
             return {
                 type: "gallery",
                 slug: encodeURIComponent(entry.name),
                 name: stripOrderPrefix(entry.name),
-                cover: galleryImages(entry)[0],
+                cover: mediaUrl(files[0]),
+                behind: files.slice(1, 1 + STACK_DEPTH).map((f) => mediaUrl(f, STACK_WIDTH)),
+                count: files.length,
             };
         }
         return {
