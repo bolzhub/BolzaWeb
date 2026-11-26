@@ -33,9 +33,11 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
                             ) : (
                                 <ImageTile src={item.url} alt={name} onClick={() => setSelectedImage(item.url)} />
                             )}
-                            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic">{name}</p>
+                            <p className="text-center text-white/70 mt-5 text-sm md:text-base italic pointer-events-auto">
+                                {name}
+                            </p>
                             {item.type === "gallery" && (
-                                <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-white/40 transition-colors group-hover/tile:text-white/70">
+                                <p className="pointer-events-auto flex items-center justify-center gap-1.5 mt-1.5 text-xs text-white/40 transition-colors group-hover/tile:text-white/70">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
@@ -58,7 +60,11 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
                     );
 
                     return item.type === "gallery" ? (
-                        <Link key={i} href={`/LifeDrawing/gallery/${item.slug}`} className="group/tile block">
+                        <Link
+                            key={i}
+                            href={`/LifeDrawing/gallery/${item.slug}`}
+                            className="group/tile block pointer-events-none"
+                        >
                             {tile}
                         </Link>
                     ) : (

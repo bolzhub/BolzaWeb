@@ -54,7 +54,7 @@ export default function GalleryStack({
         <div
             data-fan={fan}
             onClickCapture={onClickCapture}
-            className="group relative w-full cursor-pointer"
+            className="group pointer-events-none relative w-full"
             style={{ paddingTop: "100%" }}
         >
             {behind
@@ -70,7 +70,7 @@ export default function GalleryStack({
                     </div>
                 ))}
             <div className="absolute inset-0 flex items-center justify-center">
-                <img src={cover} alt={alt} className={`${CARD} ${FRONT}`} />
+                <img src={cover} alt={alt} className={`${CARD} ${FRONT} pointer-events-auto cursor-pointer`} />
             </div>
         </div>
     );
