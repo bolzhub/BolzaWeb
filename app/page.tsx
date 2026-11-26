@@ -40,8 +40,7 @@ export default async function Home() {
                         display: "inline-block",
                     }}
                 >
-                    <span style={{ color: "red" }}>{t.iAm.split(" ")[0]}</span>
-                    {t.iAm.slice(t.iAm.indexOf(" "))}
+                    {t.iAm}
                 </span>
                 <img
                     src="/logo/bolzano-word.svg"
