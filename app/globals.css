@@ -55,6 +55,21 @@ body {
     animation: boxes-bg-scroll 60s linear infinite;
 }
 
+/* Accueil : fond de lapins qui glissent le long des diagonales (une sur deux dans chaque sens) */
+@keyframes bunny-slide {
+    to {
+        transform: translateX(var(--bunny-shift));
+    }
+}
+.bunny-layer {
+    animation: bunny-slide var(--bunny-duration) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .bunny-layer {
+        animation: none;
+    }
+}
+
 /* Taille des pièces : 2 par ligne sur mobile, 4 sur grand écran avec 4 éléments */
 .rbt-grid {
     --rbt-size: clamp(8rem, 38vw, 13rem);

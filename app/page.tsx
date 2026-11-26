@@ -1,3 +1,4 @@
+import BunnyBackground from "@/components/site/BunnyBackground";
 import MainHeader from "@/components/site/MainHeader";
 import ProjectShowcase from "@/components/site/ProjectShowcase";
 import SocialLinks from "@/components/site/SocialLinks";
@@ -25,7 +26,8 @@ export default async function Home() {
     const t = TEXT[lang];
 
     return (
-        <main className="flex min-h-dvh flex-col bg-cream md:block">
+        <main className="relative isolate flex min-h-dvh flex-col bg-cream md:block">
+            <BunnyBackground />
             <MainHeader />
 
             <h1
