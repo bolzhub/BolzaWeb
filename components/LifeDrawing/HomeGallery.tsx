@@ -24,7 +24,12 @@ export default function HomeGallery({ items }: { items: HomeItem[] }) {
                     const tile = (
                         <>
                             {item.type === "gallery" ? (
-                                <GalleryStack cover={item.cover} behind={item.behind} alt={name} />
+                                <GalleryStack
+                                    cover={item.cover}
+                                    behind={item.behind}
+                                    alt={name}
+                                    href={`/LifeDrawing/gallery/${item.slug}`}
+                                />
                             ) : (
                                 <ImageTile src={item.url} alt={name} onClick={() => setSelectedImage(item.url)} />
                             )}
