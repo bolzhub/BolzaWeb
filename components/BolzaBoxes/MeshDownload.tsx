@@ -7,6 +7,7 @@ import {
     MESH_VIEW,
     OBJECT_TYPES,
     getDownloadPath,
+    factionObjects,
     isDrawer,
     objectLabel,
     type Faction,
@@ -68,7 +69,7 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
     }, [open]);
 
     // choix proposés : chaque objet téléchargeable de la boîte, plus « les deux » (ou « tout ») s'il y a tiroir et conteneur
-    const objects = faction.objects.filter((o) => o !== "box");
+    const objects = factionObjects(faction, version).filter((o) => o !== "box");
 
     // un tiroir n'a pas de variante avec / sans vitre : il compte pour les deux
     const has = (object: ObjectType, g: Glass) =>

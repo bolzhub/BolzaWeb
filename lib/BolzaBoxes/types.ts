@@ -21,13 +21,16 @@ export type Faction = {
     description?: Localized;
     buyUrl?: string;
     objects: ObjectType[];
+    // Second tiroir (objet drawer2) : « numbered » = Drawer 1 / Drawer 2, « sub » = Drawer / Sub-drawer ;
+    // présent seulement dans les versions listées
+    drawer2?: { kind: "numbered" | "sub"; versions: Version[] };
 };
 
 export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
     { id: "container", label: { en: "Container", fr: "Conteneur" } },
     { id: "box", label: { en: "Box", fr: "Boîte" } },
     { id: "drawer", label: { en: "Drawer", fr: "Tiroir" } },
-    { id: "drawer2", label: { en: "Drawer 2", fr: "Tiroir 2" } }, // second tiroir (Vagabond)
+    { id: "drawer2", label: { en: "Drawer 2", fr: "Tiroir 2" } }, // second tiroir (voir Faction.drawer2)
     { id: "holder", label: { en: "Holder", fr: "Support" } },
 ];
 
@@ -61,9 +64,18 @@ export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass:
 
 export const isDrawer = (o: ObjectType) => o === "drawer" || o === "drawer2";
 
-// Nom affiché d'un objet : « Drawer » devient « Drawer 1 » quand la faction a un second tiroir
+// Objets d'une faction dans une version : ceux de la faction, plus le second tiroir s'il existe dans cette version
+export function factionObjects(faction: Faction, version: Version): ObjectType[] {
+    const objects = [...faction.objects];
+    if (faction.drawer2?.versions.includes(version)) objects.splice(objects.indexOf("drawer") + 1, 0, "drawer2");
+    return objects;
+}
+
+// Nom affiché d'un objet : Drawer 1 / Drawer 2 (deux tiroirs équivalents) ou Drawer / Sub-drawer
 export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr"): string {
-    if (id === "drawer" && faction.objects.includes("drawer2")) return lang === "fr" ? "Tiroir 1" : "Drawer 1";
+    const kind = faction.drawer2?.kind;
+    if (id === "drawer" && kind === "numbered") return lang === "fr" ? "Tiroir 1" : "Drawer 1";
+    if (id === "drawer2" && kind === "sub") return lang === "fr" ? "Sous-tiroir" : "Sub-drawer";
     return OBJECT_TYPES.find((o) => o.id === id)!.label[lang];
 }
 

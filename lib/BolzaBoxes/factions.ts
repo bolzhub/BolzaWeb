@@ -28,21 +28,27 @@ type FactionData = {
     description?: Localized; // facultative : rien ne s'affiche sans description
     buyUrl?: string;
     objects?: ObjectType[]; // par défaut : container, box, drawer
+    drawer2?: Faction["drawer2"]; // second tiroir (Drawer 2 ou Sub-drawer), par version
 };
 
 // Chaque entrée ajoutée ici crée la page /BolzaBoxes/boxes/<slug>.
 // L'ordre de la barre latérale est défini plus bas, par version (SIDEBAR_ORDER).
 const FACTION_DATA = {
-    cats: { name: { en: "Marquise de Cat", fr: "Marquise de Chat" }, color: "orange" },
+    cats: {
+        name: { en: "Marquise de Cat", fr: "Marquise de Chat" },
+        color: "orange",
+        drawer2: { kind: "sub", versions: ["french"] }, // sous-tiroir en version française seulement
+    },
     eyries: { name: { en: "Eyrie Dynasties", fr: "Dynasties de la Canopée" }, color: "blue" },
     alliance: { name: { en: "Woodland Alliance", fr: "Alliance de la Forêt" }, color: "green" },
     vagabond: {
         name: { en: "Vagabond", fr: "Vagabond" },
         color: "greywhite",
-        objects: ["container", "box", "drawer", "drawer2"], // deux tiroirs : 9 meeples et cartonnage
+        drawer2: { kind: "numbered", versions: ["international", "french"] }, // 9 meeples et cartonnage
     },
     lizards: {
         color: "yellow",
+        drawer2: { kind: "sub", versions: ["international", "french"] },
         name: { en: "The Lizard Cult", fr: "Culte des Lézards" },
         description: {
             en: "25 warriors, 1 stone patron. Lizard head with tongue on the side.",
@@ -130,6 +136,7 @@ export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).
         description: data.description,
         buyUrl: data.buyUrl,
         objects: data.objects ?? ["container", "box", "drawer"],
+        drawer2: data.drawer2,
     };
 });
 

@@ -5,6 +5,7 @@ import {
     OBJECT_TYPES,
     VIEW_MODES,
     getAssetPath,
+    factionObjects,
     isDrawer,
     objectLabel,
     type Faction,
@@ -60,7 +61,7 @@ export default function ObjectViewer({
     // Objets proposés : pas de boîte en vue 3D (conteneur et tiroir ne s'affichent pas ensemble).
     // L'objet choisi est gardé s'il existe pour cette faction, sinon on prend le plus proche.
     const objects = OBJECT_TYPES.filter(
-        (o) => faction.objects.includes(o.id) && !(viewMode.type === "mesh" && o.id === "box"),
+        (o) => factionObjects(faction, version).includes(o.id) && !(viewMode.type === "mesh" && o.id === "box"),
     );
     const objectIds = objects.map((o) => o.id);
     // La vidéo montre l'ensemble : toujours la boîte (ou l'objet unique de la faction), sans choix d'objet
@@ -68,11 +69,13 @@ export default function ObjectViewer({
     const objectType: ObjectType =
         !isVideo && choice.objectType && objectIds.includes(choice.objectType)
             ? choice.objectType
-            : objectIds.includes("box")
-              ? "box"
-              : objectIds.includes("container")
-                ? "container"
-                : objectIds[0];
+            : !isVideo && choice.objectType === "drawer2" && objectIds.includes("drawer")
+              ? "drawer" // pas de second tiroir ici : le tiroir principal
+              : objectIds.includes("box")
+                ? "box"
+                : objectIds.includes("container")
+                  ? "container"
+                  : objectIds[0];
     const src = getAssetPath(faction.slug, version, objectType, viewMode, glass);
 
     // Forme du cadre : carré pour les photos (et le lien d'achat), proportions de la vidéo,

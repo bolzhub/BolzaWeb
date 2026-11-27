@@ -65,10 +65,17 @@ const DRAWERS: Record<"international" | "french", Record<string, string>> = {
         "hirelings-factions": "French/Drawers/Snap_fit/Final/FrDc.1.1-hirelings.cats_eyries.stl",
     },
 };
-// Second tiroir (objet drawer2, « Drawer 2 » sur le site)
+// Second tiroir (objet drawer2 : « Drawer 2 » ou « Sub-drawer » sur le site, voir drawer2 dans factions.ts)
 const DRAWERS_2: Record<"international" | "french", Record<string, string>> = {
-    international: { vagabond: "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl" },
-    french: { vagabond: "French/Drawers/Snap_fit/Final/FrD04.2-vagabond.cardboard.stl" },
+    international: {
+        vagabond: "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl",
+        lizards: "International/Drawers/Snap_fit/Final/EnD05.2-lizards.sub.stl",
+    },
+    french: {
+        vagabond: "French/Drawers/Snap_fit/Final/FrD04.2-vagabond.cardboard.stl",
+        cats: "French/Drawers/Snap_fit/Final/FrD01.2-cats.sub.stl",
+        lizards: "French/Drawers/Snap_fit/Final/FrD05.2-lizards.sub.stl",
+    },
 };
 const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
     international: {

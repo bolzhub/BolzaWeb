@@ -8,6 +8,7 @@ import {
     MESH_VIEW,
     PLACEHOLDER_MESH_SIGNATURE,
     assetRelativePath,
+    factionObjects,
     isDrawer,
     type Glass,
     type ObjectType,
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Paramètres invalides" }, { status: 400 });
     }
 
-    const candidates = faction.objects
+    const candidates = factionObjects(faction, version)
         .filter((o) => DOWNLOADABLE.includes(o))
         .flatMap((object) =>
             // un tiroir n'a pas de variante avec / sans vitre
