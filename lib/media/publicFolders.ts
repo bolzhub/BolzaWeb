@@ -12,7 +12,6 @@ export const PUBLIC_FOLDERS: string[] = [
 // Fichiers isolés rendus publics, un par un, même s'ils se trouvent
 // dans un dossier par ailleurs privé. Chemin exact, pas de préfixe.
 export const PUBLIC_FILES: string[] = [
-    // "Projets/Root_BolzaBoxes/Media/Presentation/photo2.jpg",
-    // "Projets/Root_BolzaBoxes/Media/Presentation/side_designs-English.png",
+    // "Projets/Root_BolzaBoxes/Workshop/9-Photoshoot/Scenes/photo2.jpg",
     // Ajoute ici chaque nouveau fichier isolé que tu veux rendre public
 ];

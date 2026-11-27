@@ -8,13 +8,13 @@ import BoxesImageMap from "@/components/BolzaBoxes/BoxesImageMap";
 import BoxesScrollingBackground from "@/components/BolzaBoxes/BoxesScrollingBackground";
 import BoxesTapHint from "@/components/BolzaBoxes/BoxesTapHint";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
-import { mediaUrl } from "@/lib/media/url";
+import { MEDIA, projectMediaUrl } from "@/lib/BolzaBoxes/media";
 import { BOXES_LAYOUTS } from "@/lib/BolzaBoxes/boxesZones";
 
 // Versions WebP réduites (les PNG d'origine pèsent 3 Mo chacun)
 const BOXES_IMAGES = {
-    international: mediaUrl("Projets/Root_BolzaBoxes/Media/Website/Boxes/side_designs-English.png", 1600),
-    french: mediaUrl("Projets/Root_BolzaBoxes/Media/Website/Boxes/side_designs-French.png", 1600),
+    international: projectMediaUrl(MEDIA.boxesMap.international, 1600),
+    french: projectMediaUrl(MEDIA.boxesMap.french, 1600),
 };
 
 export default function BoxesPage() {

@@ -1,5 +1,6 @@
 import type { Localized } from "@/lib/i18n/lang";
 import type { Version } from "./VersionContext";
+import { FACTION_FILES, MEDIA, PROJECT_ROOT, projectMediaUrl } from "./media";
 
 export type ObjectType = "box" | "drawer" | "container" | "holder";
 export type ViewModeType = "image" | "video" | "mesh" | "link";
@@ -47,15 +48,26 @@ const EXT_BY_TYPE: Record<ViewModeType, string> = {
     link: "",
 };
 
-// Dossier des fichiers de chaque boîte sur le disque de la Pi, avec un sous-dossier par version :
-// /mnt/Bolzananas/Projets/Root_BolzaBoxes/Media/Website/Boxes/<slug>/<international|french>/
-// (l'icône, commune aux deux versions, reste dans <slug>/icon.svg)
-export const FACTION_ASSETS_RELATIVE = "Projets/Root_BolzaBoxes/Media/Website/Boxes";
+// Fichiers de chaque boîte : voir lib/BolzaBoxes/media.ts (dossier par défaut et fichiers pris ailleurs)
+export const FACTION_ASSETS_RELATIVE = `${PROJECT_ROOT}/${MEDIA.factions}`;
 export const FACTION_ASSETS_URL = `/api/media/${FACTION_ASSETS_RELATIVE}`;
 
-// Nom du fichier d'une vue, identique dans les deux dossiers de version
+// Nom du fichier d'une vue dans le dossier par défaut, identique dans les deux dossiers de version
 export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass: Glass): string {
     return `${objectType}-${viewMode.id}-${glass}.${EXT_BY_TYPE[viewMode.type]}`;
+}
+
+// Chemin d'une vue relatif au dossier du projet : fichier désigné dans FACTION_FILES, sinon dossier par défaut
+export function assetRelativePath(
+    factionSlug: string,
+    version: Version,
+    objectType: ObjectType,
+    viewMode: ViewMode,
+    glass: Glass,
+): string {
+    const name = `${objectType}-${viewMode.id}-${glass}`;
+    const chosen = FACTION_FILES[`${factionSlug}/${version}/${name}`] ?? FACTION_FILES[`${factionSlug}/*/${name}`];
+    return chosen ?? `${MEDIA.factions}/${factionSlug}/${version}/${assetFileName(objectType, viewMode, glass)}`;
 }
 
 export function getAssetPath(
@@ -65,7 +77,7 @@ export function getAssetPath(
     viewMode: ViewMode,
     glass: Glass,
 ): string {
-    return `${FACTION_ASSETS_URL}/${factionSlug}/${version}/${assetFileName(objectType, viewMode, glass)}`;
+    return projectMediaUrl(assetRelativePath(factionSlug, version, objectType, viewMode, glass));
 }
 
 export const MESH_VIEW = VIEW_MODES.find((v) => v.type === "mesh")!;

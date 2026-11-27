@@ -3,11 +3,11 @@ import fs from "fs/promises";
 import path from "path";
 import { DISK_ROOT } from "@/lib/media/config";
 import { getFactionBySlug } from "@/lib/BolzaBoxes/factions";
+import { PROJECT_ROOT } from "@/lib/BolzaBoxes/media";
 import {
-    FACTION_ASSETS_RELATIVE,
     MESH_VIEW,
     PLACEHOLDER_MESH_SIGNATURE,
-    assetFileName,
+    assetRelativePath,
     type Glass,
     type ObjectType,
 } from "@/lib/BolzaBoxes/types";
@@ -39,14 +39,20 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Paramètres invalides" }, { status: 400 });
     }
 
-    const folder = path.join(DISK_ROOT, FACTION_ASSETS_RELATIVE, faction.slug, version);
     const candidates = faction.objects
         .filter((o) => DOWNLOADABLE.includes(o))
         .flatMap((object) => GLASSES.map((glass) => ({ object, glass })));
 
     const checks = await Promise.all(
         candidates.map(
-            async (c) => (await isRealMesh(path.join(folder, assetFileName(c.object, MESH_VIEW, c.glass)))) && c,
+            async (c) =>
+                (await isRealMesh(
+                    path.join(
+                        DISK_ROOT,
+                        PROJECT_ROOT,
+                        assetRelativePath(faction.slug, version, c.object, MESH_VIEW, c.glass),
+                    ),
+                )) && c,
         ),
     );
 

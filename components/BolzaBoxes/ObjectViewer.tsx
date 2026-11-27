@@ -27,9 +27,8 @@ const MIN_FRAME = 240; // côté minimal du cadre, même si l'écran est très b
 const BOTTOM_MARGIN = 8; // marge entre les boutons de vitre et le sélecteur de version
 const ROW_GAP = 24; // gap-6 entre la visionneuse et la description (ordinateur)
 const MIN_INFO = 220; // largeur minimale laissée à la description (ordinateur)
-const STEP = 8; // pas de recherche de la largeur du cadre (ordinateur)
 
-type Size = { w: number; h: number; side?: number };
+type Size = { w: number; h: number; side?: number; info?: number };
 
 export default function ObjectViewer({
     faction,
@@ -133,30 +132,36 @@ export default function ObjectViewer({
         const infoMin = Math.max(MIN_INFO, ...hi);
         const wUniform = Math.max(MIN_FRAME, content - ROW_GAP - side - infoMin);
 
-        let best: Size = { w: wUniform, h: hMax };
+        // La description garde la largeur qu'elle a à côté du plus grand cadre ; si le cadre est plus étroit
+        // (photo, vidéo), l'ensemble est centré et l'espace en trop se partage de part et d'autre
+        const infoUniform = content - ROW_GAP - side - wUniform;
+        let best: Size = { w: wUniform, h: hMax, info: infoUniform };
         if (aspect !== null) {
-            // Photo ou vidéo : cadre aux proportions du média, borné par la largeur commune et la hauteur ;
-            // on le réduit encore si la description de cette faction dépasse les boutons de vitre, plus hauts
+            // Photo ou vidéo : cadre aux proportions du média, borné par la largeur commune et la hauteur
+            const w = Math.min(wUniform, hMax * aspect);
+            const h = w / aspect;
+            best = { w, h, info: infoUniform };
+            // Les boutons de vitre remontent avec un cadre moins haut : si la description de cette faction
+            // descend alors plus bas qu'eux, on l'élargit juste assez (dans la place libérée par le cadre)
             const current = items.find((it) => it.box.dataset.current === "1");
-            const wUpper = Math.min(wUniform, hMax * aspect);
-            const wLower = Math.min(wUpper, MIN_FRAME * Math.max(1, aspect));
-            best = { w: wUpper, h: wUpper / aspect };
             if (current) {
-                let bestOvershoot = Infinity;
-                for (let w = Math.floor(wUpper); w >= wLower; w -= STEP) {
-                    const h = w / aspect;
-                    current.box.style.width = `${content - ROW_GAP - side - w}px`;
-                    const overshoot = current.box.offsetHeight - (above + h + glassH);
-                    if (current.title && current.title.offsetHeight > current.oneLine * 2.2) continue;
-                    if (overshoot <= 0) {
-                        best = { w, h };
-                        break;
+                const ok = (infoW: number) => {
+                    current.box.style.width = `${infoW}px`;
+                    return (
+                        (!current.title || current.title.offsetHeight <= current.oneLine * 2.2) &&
+                        current.box.offsetHeight <= above + h + glassH
+                    );
+                };
+                let lo = infoUniform;
+                let hi = content - ROW_GAP - side - w;
+                if (!ok(lo)) {
+                    if (!ok(hi)) lo = hi;
+                    while (hi - lo > 2) {
+                        const mid = Math.floor((lo + hi) / 2);
+                        if (ok(mid)) hi = mid;
+                        else lo = mid;
                     }
-                    // Aucune taille ne convient (description très longue) : on garde la moins débordante
-                    if (overshoot < bestOvershoot) {
-                        bestOvershoot = overshoot;
-                        best = { w, h };
-                    }
+                    best.info = hi;
                 }
             }
         }
@@ -192,7 +197,10 @@ export default function ObjectViewer({
     }, [faction.slug, version, objectType, viewMode, glass]);
 
     return (
-        <div ref={rowRef} className="relative flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
+        <div
+            ref={rowRef}
+            className="relative flex-1 min-w-0 flex flex-col lg:flex-row lg:justify-center gap-6 p-4 md:p-8"
+        >
             {/* Repère invisible : bas autorisé pour Avec vitre / Sans vitre (au-dessus du sélecteur de version).
                 En svh : la barre du navigateur en bas de l'écran, visible à l'arrivée, est prise en compte. */}
             <div
@@ -209,7 +217,12 @@ export default function ObjectViewer({
                 style={{ color: textColor, width: desktop && size ? (size.side ?? 0) + size.w : undefined }}
             >
                 {/* Rangée du haut : modes de vue (défilables) et téléchargement d'un mesh */}
-                <div ref={modesRef} className="flex items-start gap-2 min-w-0">
+                {/* Ordinateur : la rangée commence au bord gauche du cadre, pas au-dessus des types d'objet */}
+                <div
+                    ref={modesRef}
+                    className="flex items-start gap-2 min-w-0"
+                    style={{ paddingLeft: desktop && size ? size.side : undefined }}
+                >
                     <div className="flex flex-1 gap-1 overflow-x-auto pb-1.5 min-w-0 lg:gap-2 lg:pb-2">
                         {VIEW_MODES.map((v) => {
                             const isActive = v.id === viewModeId;
@@ -333,7 +346,12 @@ export default function ObjectViewer({
                 </div>
             </div>
 
-            <div className="lg:flex-1 min-w-0 lg:pt-4">{info}</div>
+            <div
+                className={`min-w-0 lg:pt-4 ${size?.info ? "lg:shrink-0" : "lg:flex-1"}`}
+                style={{ width: desktop && size?.info ? size.info : undefined }}
+            >
+                {info}
+            </div>
 
             {/* Copies invisibles des descriptions de toutes les factions, dans les deux langues,
                 pour mesurer leur hauteur à différentes largeurs */}

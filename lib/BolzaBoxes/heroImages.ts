@@ -1,7 +1,9 @@
+import { MEDIA, projectMediaUrl } from "./media";
+
 // ?w= : version WebP réduite servie par /api/media (main.png pèse près de 8 Mo)
 const home = {
-    international: "/api/media/Projets/Root_BolzaBoxes/Media/Newsletter/signal-2026-05-10-161743_005.jpeg?w=2400",
-    french: "/api/media/Projets/Root_BolzaBoxes/Media/Website/Home/main.png?w=2400",
+    international: projectMediaUrl(MEDIA.hero.international, 2400),
+    french: projectMediaUrl(MEDIA.hero.french, 2400),
 };
 
 export const HERO_IMAGES = {
