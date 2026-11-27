@@ -32,6 +32,9 @@ const BOTTOM_MARGIN = 8; // marge entre les boutons de vitre et le sélecteur de
 const ROW_GAP = 24; // gap-6 entre la visionneuse et la description (ordinateur)
 const MIN_INFO = 220; // largeur minimale laissée à la description (ordinateur)
 
+// Cadre du maillage 3D : jamais plus large que 16:9
+const MESH_MAX_RATIO = 16 / 9;
+
 type Size = { w: number; h: number; side?: number; info?: number };
 
 export default function ObjectViewer({
@@ -112,7 +115,7 @@ export default function ObjectViewer({
         if (!isDesktop) {
             // Portable : toute la largeur, hauteur bornée par le sélecteur de version
             const wMax = grid.clientWidth;
-            if (aspect === null) setSize({ w: wMax, h: hMax });
+            if (aspect === null) setSize({ w: Math.min(wMax, hMax * MESH_MAX_RATIO), h: hMax });
             else {
                 const w = Math.min(wMax, hMax * aspect);
                 setSize({ w, h: w / aspect });
@@ -162,7 +165,8 @@ export default function ObjectViewer({
         // La description garde la largeur qu'elle a à côté du plus grand cadre ; si le cadre est plus étroit
         // (photo, vidéo), l'ensemble est centré et l'espace en trop se partage de part et d'autre
         const infoUniform = content - ROW_GAP - side - wUniform;
-        let best: Size = { w: wUniform, h: hMax, info: infoUniform };
+        // 3D : au plus 16:9 (le format des vidéos) ; plus étroit, l'ensemble est centré
+        let best: Size = { w: Math.min(wUniform, hMax * MESH_MAX_RATIO), h: hMax, info: infoUniform };
         if (aspect !== null) {
             // Photo ou vidéo : cadre aux proportions du média, borné par la largeur commune et la hauteur
             const w = Math.min(wUniform, hMax * aspect);
