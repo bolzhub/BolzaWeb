@@ -8,6 +8,7 @@ import BolzaBoxesNav from "./BolzaBoxesNav";
 import FactionSidebar from "./FactionSidebar";
 import MobileTopBar from "./MobileTopBar";
 import VersionSwitch from "./VersionSwitch";
+import FactionKeyboardNav from "./FactionKeyboardNav";
 import { ViewerChoiceProvider } from "@/lib/BolzaBoxes/ViewerChoiceContext";
 
 // Cadre commun des pages /BolzaBoxes/boxes/<faction>, rendu par le layout :
@@ -40,6 +41,7 @@ export default function BoxesFrame({ children }: { children: ReactNode }) {
             </div>
 
             <VersionSwitch />
+            <FactionKeyboardNav slug={faction.slug} />
         </main>
     );
 }
