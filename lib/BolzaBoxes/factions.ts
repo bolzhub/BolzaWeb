@@ -22,13 +22,21 @@ const PAGE_COLORS = {
     lightpink: "#f2c4cd",
 } as const;
 
+// Noms des tiroirs quand une boîte en a plusieurs
+const DRAWER_NAMES = {
+    main: { en: "Drawer", fr: "Tiroir" },
+    sub: { en: "Sub-drawer", fr: "Sous-tiroir" },
+};
+const numbered = (n: number, numbers?: number[]): Localized[] =>
+    (numbers ?? Array.from({ length: n }, (_, i) => i + 1)).map((k) => ({ en: `Drawer ${k}`, fr: `Tiroir ${k}` }));
+
 type FactionData = {
     color: keyof typeof PAGE_COLORS;
     name: Localized;
     description?: Localized; // facultative : rien ne s'affiche sans description
     buyUrl?: string;
     objects?: ObjectType[]; // par défaut : container, box, drawer
-    drawer2?: Faction["drawer2"]; // second tiroir (Drawer 2 ou Sub-drawer), par version
+    drawers?: Faction["drawers"]; // plusieurs tiroirs (noms par version), voir DRAWER_NAMES
 };
 
 // Chaque entrée ajoutée ici crée la page /BolzaBoxes/boxes/<slug>.
@@ -37,18 +45,22 @@ const FACTION_DATA = {
     cats: {
         name: { en: "Marquise de Cat", fr: "Marquise de Chat" },
         color: "orange",
-        drawer2: { kind: "sub", versions: ["french"] }, // sous-tiroir en version française seulement
+        drawers: { french: [DRAWER_NAMES.main, DRAWER_NAMES.sub] }, // sous-tiroir en version française seulement
     },
     eyries: { name: { en: "Eyrie Dynasties", fr: "Dynasties de la Canopée" }, color: "blue" },
     alliance: { name: { en: "Woodland Alliance", fr: "Alliance de la Forêt" }, color: "green" },
     vagabond: {
         name: { en: "Vagabond", fr: "Vagabond" },
         color: "greywhite",
-        drawer2: { kind: "numbered", versions: ["international", "french"] }, // 9 meeples et cartonnage
+        // 9 meeples et cartonnage
+        drawers: { international: numbered(2), french: numbered(2) },
     },
     lizards: {
         color: "yellow",
-        drawer2: { kind: "sub", versions: ["international", "french"] },
+        drawers: {
+            international: [DRAWER_NAMES.main, DRAWER_NAMES.sub],
+            french: [DRAWER_NAMES.main, DRAWER_NAMES.sub],
+        },
         name: { en: "The Lizard Cult", fr: "Culte des Lézards" },
         description: {
             en: "25 warriors, 1 stone patron. Lizard head with tongue on the side.",
@@ -69,8 +81,17 @@ const FACTION_DATA = {
     landmarks: { name: { en: "Landmarks", fr: "Repères" }, color: "darkbrown" },
     cards: { name: { en: "Cards", fr: "Cartes" }, color: "darkbrown", objects: ["holder"] },
     "hirelings-setup": { color: "darkbrown", name: { en: "Hirelings Setup", fr: "Mise en place des mercenaires" } },
-    "hirelings-unique": { color: "pink", name: { en: "Hirelings Unique", fr: "Mercenaires uniques" } },
-    "hirelings-factions": { color: "lightpink", name: { en: "Hirelings Factions", fr: "Mercenaires de faction" } },
+    "hirelings-unique": {
+        color: "pink",
+        name: { en: "Hirelings Unique", fr: "Mercenaires uniques" },
+        drawers: { international: numbered(2) }, // porc-épics / cerf / belettes, puis canards
+    },
+    "hirelings-factions": {
+        color: "lightpink",
+        name: { en: "Hirelings Factions", fr: "Mercenaires de faction" },
+        // tiroirs Dc.1.1 à Dc.1.4 ; en français seuls 1.1 et 1.3 sont finalisés
+        drawers: { international: numbered(4), french: numbered(2, [1, 3]) },
+    },
     extra: { name: { en: "Extra", fr: "Extra" }, color: "darkbrown", objects: ["holder"] },
 } satisfies Record<string, FactionData>;
 
@@ -95,6 +116,9 @@ export const SIDEBAR_ORDER: Record<Version, FactionSlug[]> = {
         "setup",
         "setup2",
         "landmarks",
+        "hirelings-setup",
+        "hirelings-unique",
+        "hirelings-factions",
         "cards",
         "extra",
     ],
@@ -136,7 +160,7 @@ export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).
         description: data.description,
         buyUrl: data.buyUrl,
         objects: data.objects ?? ["container", "box", "drawer"],
-        drawer2: data.drawer2,
+        drawers: data.drawers,
     };
 });
 

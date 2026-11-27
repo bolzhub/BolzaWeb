@@ -3,7 +3,8 @@ import type { Version } from "./VersionContext";
 import { GLB_VERSION } from "@/lib/media/glbVersion";
 import { FACTION_FILES, MEDIA, PROJECT_ROOT, projectMediaUrl } from "./media";
 
-export type ObjectType = "box" | "drawer" | "drawer2" | "container" | "holder";
+export type ObjectType = "box" | "drawer" | "drawer2" | "drawer3" | "drawer4" | "container" | "holder";
+export const DRAWER_IDS: ObjectType[] = ["drawer", "drawer2", "drawer3", "drawer4"];
 export type ViewModeType = "image" | "video" | "mesh" | "link";
 export type Glass = "glass" | "no-glass";
 
@@ -11,6 +12,7 @@ export type ViewMode = {
     id: string;
     label: Localized;
     type: ViewModeType;
+    hidden?: boolean; // vue masquée sur le site (fichiers et placeholders conservés)
 };
 
 export type Faction = {
@@ -21,16 +23,18 @@ export type Faction = {
     description?: Localized;
     buyUrl?: string;
     objects: ObjectType[];
-    // Second tiroir (objet drawer2) : « numbered » = Drawer 1 / Drawer 2, « sub » = Drawer / Sub-drawer ;
-    // présent seulement dans les versions listées
-    drawer2?: { kind: "numbered" | "sub"; versions: Version[] };
+    // Tiroirs par version, avec leur nom (un seul « Drawer » si la version n'est pas listée) ;
+    // sur le site ce sont les objets drawer, drawer2, drawer3, drawer4, dans cet ordre
+    drawers?: Partial<Record<Version, Localized[]>>;
 };
 
 export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
     { id: "container", label: { en: "Container", fr: "Conteneur" } },
     { id: "box", label: { en: "Box", fr: "Boîte" } },
     { id: "drawer", label: { en: "Drawer", fr: "Tiroir" } },
-    { id: "drawer2", label: { en: "Drawer 2", fr: "Tiroir 2" } }, // second tiroir (voir Faction.drawer2)
+    { id: "drawer2", label: { en: "Drawer 2", fr: "Tiroir 2" } }, // tiroirs supplémentaires (voir Faction.drawers)
+    { id: "drawer3", label: { en: "Drawer 3", fr: "Tiroir 3" } },
+    { id: "drawer4", label: { en: "Drawer 4", fr: "Tiroir 4" } },
     { id: "holder", label: { en: "Holder", fr: "Support" } },
 ];
 
@@ -38,11 +42,11 @@ export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
 export const VIEW_MODES: ViewMode[] = [
     { id: "full", label: { en: "Full", fr: "Pleine" }, type: "image" },
     { id: "empty", label: { en: "Empty", fr: "Vide" }, type: "image" },
-    { id: "logos", label: { en: "Logos", fr: "Logos" }, type: "image" },
+    { id: "logos", label: { en: "Logos", fr: "Logos" }, type: "image", hidden: true },
     { id: "mesh", label: { en: "Mesh", fr: "Maillage 3D" }, type: "mesh" },
     { id: "video", label: { en: "Video", fr: "Vidéo" }, type: "video" },
-    { id: "in-box", label: { en: "In Box", fr: "Dans la boîte" }, type: "image" },
-    { id: "stickers", label: { en: "Stickers", fr: "Autocollants" }, type: "image" },
+    { id: "in-box", label: { en: "In Box", fr: "Dans la boîte" }, type: "image", hidden: true },
+    { id: "stickers", label: { en: "Stickers", fr: "Autocollants" }, type: "image", hidden: true },
     { id: "buy", label: { en: "Buy", fr: "Acheter" }, type: "link" },
 ];
 
@@ -62,20 +66,19 @@ export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass:
     return `${objectType}-${viewMode.id}-${glass}.${EXT_BY_TYPE[viewMode.type]}`;
 }
 
-export const isDrawer = (o: ObjectType) => o === "drawer" || o === "drawer2";
+export const isDrawer = (o: ObjectType) => DRAWER_IDS.includes(o);
 
-// Objets d'une faction dans une version : ceux de la faction, plus le second tiroir s'il existe dans cette version
+// Objets d'une faction dans une version : « drawer » est remplacé par autant de tiroirs que la version en a
 export function factionObjects(faction: Faction, version: Version): ObjectType[] {
-    const objects = [...faction.objects];
-    if (faction.drawer2?.versions.includes(version)) objects.splice(objects.indexOf("drawer") + 1, 0, "drawer2");
-    return objects;
+    const count = faction.drawers?.[version]?.length ?? 1;
+    return faction.objects.flatMap((o) => (o === "drawer" ? DRAWER_IDS.slice(0, count) : [o]));
 }
 
-// Nom affiché d'un objet : Drawer 1 / Drawer 2 (deux tiroirs équivalents) ou Drawer / Sub-drawer
-export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr"): string {
-    const kind = faction.drawer2?.kind;
-    if (id === "drawer" && kind === "numbered") return lang === "fr" ? "Tiroir 1" : "Drawer 1";
-    if (id === "drawer2" && kind === "sub") return lang === "fr" ? "Sous-tiroir" : "Sub-drawer";
+// Nom affiché d'un objet (le nom propre d'un tiroir s'il en a un dans cette version)
+export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr", version: Version): string {
+    const names = faction.drawers?.[version];
+    const index = DRAWER_IDS.indexOf(id);
+    if (names && index !== -1 && names[index]) return names[index][lang];
     return OBJECT_TYPES.find((o) => o.id === id)!.label[lang];
 }
 
@@ -131,6 +134,9 @@ export function getDownloadPath(
         : `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
     return `${projectMediaUrl(relative)}?download=${encodeURIComponent(name)}`;
 }
+
+// Vues proposées sur le site (sans celles masquées pour l'instant)
+export const VISIBLE_VIEW_MODES = VIEW_MODES.filter((v) => !v.hidden);
 
 export const MESH_VIEW = VIEW_MODES.find((v) => v.type === "mesh")!;
 

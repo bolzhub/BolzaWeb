@@ -96,7 +96,7 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
                 : fr
                   ? "Les deux"
                   : "Both"
-            : objectLabel(faction, c, lang);
+            : objectLabel(faction, c, lang, version);
 
     const download = () => {
         if (!choice || !ready) return;

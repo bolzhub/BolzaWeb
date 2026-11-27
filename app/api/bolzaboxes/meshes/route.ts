@@ -17,7 +17,7 @@ import {
 // Meshs réellement téléchargeables d'une boîte : présents sur le disque et qui ne sont pas des placeholders.
 // GET /api/bolzaboxes/meshes?faction=cats&version=french → { available: [{ object, glass }] }
 const GLASSES: Glass[] = ["glass", "no-glass"];
-const DOWNLOADABLE: ObjectType[] = ["drawer", "drawer2", "container", "holder"];
+const DOWNLOADABLE = (o: ObjectType) => isDrawer(o) || o === "container" || o === "holder";
 const HEADER_BYTES = 4096; // l'en-tête JSON d'un .glb est au début du fichier
 
 async function isRealMesh(file: string): Promise<boolean> {
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     }
 
     const candidates = factionObjects(faction, version)
-        .filter((o) => DOWNLOADABLE.includes(o))
+        .filter(DOWNLOADABLE)
         .flatMap((object) =>
             // un tiroir n'a pas de variante avec / sans vitre
             (isDrawer(object) ? (["glass"] as Glass[]) : GLASSES).map((glass) => ({ object, glass })),

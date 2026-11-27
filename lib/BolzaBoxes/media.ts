@@ -31,13 +31,20 @@ export const MEDIA = {
 // Tiroirs : Drawers/Snap_fit/Final (un tiroir n'a pas de variante avec / sans vitre).
 // Conteneurs : Containers/With_window/Snap_fit (avec vitre seulement : pas encore de snap-fit sans vitre).
 const MODELS = "Models";
-const DRAWERS: Record<"international" | "french", Record<string, string>> = {
+// Une liste quand la boîte a plusieurs tiroirs : drawer, drawer2, drawer3, drawer4 (noms dans factions.ts)
+const DRAWERS: Record<"international" | "french", Record<string, string | string[]>> = {
     international: {
         cats: "International/Drawers/Snap_fit/Final/EnD01-cats.stl",
         eyries: "International/Drawers/Snap_fit/Final/EnD02-eyries.stl",
         alliance: "International/Drawers/Snap_fit/Final/EnD03-alliance.stl",
-        vagabond: "International/Drawers/Snap_fit/Final/EnD04.1Bis-vagabond.9_meeples.stl", // seul .1 de Final
-        lizards: "International/Drawers/Snap_fit/Final/EnD05.1-lizards.main.stl",
+        vagabond: [
+            "International/Drawers/Snap_fit/Final/EnD04.1Bis-vagabond.9_meeples.stl", // seul .1 de Final
+            "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl",
+        ],
+        lizards: [
+            "International/Drawers/Snap_fit/Final/EnD05.1-lizards.main.stl",
+            "International/Drawers/Snap_fit/Final/EnD05.2-lizards.sub.stl",
+        ],
         otters: "International/Drawers/Snap_fit/Final/EnD06-otters.stl",
         moles: "International/Drawers/Snap_fit/Final/EnD07-moles.stl",
         corvids: "International/Drawers/Snap_fit/Final/EnD08-corvids.stl",
@@ -46,13 +53,33 @@ const DRAWERS: Record<"international" | "french", Record<string, string>> = {
         setup: "International/Drawers/Snap_fit/Final/EnDa-setup.stl",
         setup2: "International/Drawers/Snap_fit/Final/EnDa.2-setup2.stl",
         landmarks: "International/Drawers/Snap_fit/Final/EnDb.1-landmarks.first.stl",
+        "hirelings-setup": "International/Drawers/Snap_fit/Final/EnDc.a-hireling.setup.stl",
+        "hirelings-unique": [
+            "International/Drawers/Snap_fit/Final/EnDc.0.1-hirelings.porcupines_stag_weasels.stl",
+            "International/Drawers/Snap_fit/Final/EnDc.0.2-hirelings.ducks.stl",
+        ],
+        "hirelings-factions": [
+            "International/Drawers/Snap_fit/Final/EnDc.1.1-hirelings.cats_eyries.stl",
+            "International/Drawers/Snap_fit/Final/EnDc.1.2-hirelings.alliance_vagabond_lizards_otters-OK.stl",
+            "International/Drawers/Snap_fit/Final/EnDc.1.3-hirelings.moles_corvids-OK.stl",
+            "International/Drawers/Snap_fit/Final/EnDc.1.4-hirelings.rats_badgers.stl",
+        ],
     },
     french: {
-        cats: "French/Drawers/Snap_fit/Final/FrD01.1-cats.main.stl",
+        cats: [
+            "French/Drawers/Snap_fit/Final/FrD01.1-cats.main.stl",
+            "French/Drawers/Snap_fit/Final/FrD01.2-cats.sub.stl",
+        ],
         eyries: "French/Drawers/Snap_fit/Final/FrD02-eyries.stl",
         alliance: "French/Drawers/Snap_fit/Final/FrD03-alliance.stl",
-        vagabond: "French/Drawers/Snap_fit/Final/FrD04.1-vagabond.9_meeples.stl",
-        lizards: "French/Drawers/Snap_fit/Final/FrD05.1-lizards.main.stl",
+        vagabond: [
+            "French/Drawers/Snap_fit/Final/FrD04.1-vagabond.9_meeples.stl",
+            "French/Drawers/Snap_fit/Final/FrD04.2-vagabond.cardboard.stl",
+        ],
+        lizards: [
+            "French/Drawers/Snap_fit/Final/FrD05.1-lizards.main.stl",
+            "French/Drawers/Snap_fit/Final/FrD05.2-lizards.sub.stl",
+        ],
         otters: "French/Drawers/Snap_fit/Final/FrD06-otters.stl",
         moles: "French/Drawers/Snap_fit/Final/FrD07-moles.stl",
         corvids: "French/Drawers/Snap_fit/Final/FrD08-corvids.stl",
@@ -62,19 +89,10 @@ const DRAWERS: Record<"international" | "french", Record<string, string>> = {
         landmarks: "French/Drawers/Snap_fit/Final/FrDb.1-landmarks.first.stl",
         "hirelings-setup": "French/Drawers/Snap_fit/Final/FrDc.a-hireling.setup.stl",
         "hirelings-unique": "French/Drawers/Snap_fit/Final/FrDc.0.1-hirelings.porcupines_stag_weasels.stl",
-        "hirelings-factions": "French/Drawers/Snap_fit/Final/FrDc.1.1-hirelings.cats_eyries.stl",
-    },
-};
-// Second tiroir (objet drawer2 : « Drawer 2 » ou « Sub-drawer » sur le site, voir drawer2 dans factions.ts)
-const DRAWERS_2: Record<"international" | "french", Record<string, string>> = {
-    international: {
-        vagabond: "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl",
-        lizards: "International/Drawers/Snap_fit/Final/EnD05.2-lizards.sub.stl",
-    },
-    french: {
-        vagabond: "French/Drawers/Snap_fit/Final/FrD04.2-vagabond.cardboard.stl",
-        cats: "French/Drawers/Snap_fit/Final/FrD01.2-cats.sub.stl",
-        lizards: "French/Drawers/Snap_fit/Final/FrD05.2-lizards.sub.stl",
+        "hirelings-factions": [
+            "French/Drawers/Snap_fit/Final/FrDc.1.1-hirelings.cats_eyries.stl",
+            "French/Drawers/Snap_fit/Final/FrDc.1.3-hirelings.moles_corvids.stl",
+        ],
     },
 };
 const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
@@ -95,6 +113,13 @@ const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
         setup: "International/Containers/With_window/Snap_fit/EnCa-setup/FrCa-setup-975.stl",
         setup2: "International/Containers/With_window/Snap_fit/EnCa.2-setup.2.stl",
         landmarks: "International/Containers/With_window/Snap_fit/EnCb-landmarks.stl",
+        // hirelings : versions Bis quand elles existent
+        "hirelings-setup": "International/Containers/With_window/Snap_fit/EnCc.a-hirelings.setup-900.stl",
+        "hirelings-unique":
+            "International/Containers/With_window/Snap_fit/EnCc.0Bis-hirelings.porcupines_stag_weasels-900.stl",
+        // pas encore de snap-fit
+        "hirelings-factions":
+            "International/Containers/With_window/No_joint/EnCc.1Bis-hirelings.cats_eyries_alliance_vagabond_lizards_otters_moles_corvids_rats_badgers.stl",
     },
     french: {
         cats: "French/Containers/With_window/Snap_fit/FrC01-cats/C-Fr-Cats-875.stl",
@@ -108,7 +133,13 @@ const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
         rats: "French/Containers/With_window/Snap_fit/FrC09-rats/FrC09-rats-825.stl",
         badgers: "French/Containers/With_window/Snap_fit/FrC10-badgers/FrC10-badgers-800.stl",
         setup: "French/Containers/With_window/Snap_fit/FrCa-setup/FrCa-setup-975.stl",
-        landmarks: "French/Containers/With_window/Snap_fit/FrCb-landmarks.stl",
+        // pour l'instant la version Bis à un seul tiroir
+        landmarks:
+            "French/Containers/With_window/Snap_fit/FrcbBis-landmarks_one_drawer/C-Fr-Landmarks-ONE_DRAWER-950.stl",
+        "hirelings-unique":
+            "French/Containers/With_window/Snap_fit/FrCc.0Bis-hirelings.porcupines_stag_weasels/EnCc.0Bis-hirelings.porcupines_stag_weasels-900.stl",
+        "hirelings-factions":
+            "French/Containers/With_window/Snap_fit/FrCc.1Bis-hirelings.cats_eyries_alliance_vagabond_lizards_otters_moles_corvids_rats_badgers/FrCc.1Bis-hirelings.cats_eyries_alliance_vagabond_lizards_otters_moles_corvids_rats_badgers-750.stl",
     },
 };
 
@@ -268,11 +299,11 @@ function photoEntries(): Record<string, string> {
 function modelEntries(): Record<string, string> {
     const entries: Record<string, string> = {};
     for (const version of ["international", "french"] as const) {
-        for (const [slug, file] of Object.entries(DRAWERS[version])) {
-            entries[`${slug}/${version}/drawer-mesh-glass`] = `${MODELS}/${file}`; // tiroir : pas de variante vitre
-        }
-        for (const [slug, file] of Object.entries(DRAWERS_2[version])) {
-            entries[`${slug}/${version}/drawer2-mesh-glass`] = `${MODELS}/${file}`;
+        for (const [slug, files] of Object.entries(DRAWERS[version])) {
+            // tiroir : pas de variante vitre
+            [files].flat().forEach((file, i) => {
+                entries[`${slug}/${version}/${i === 0 ? "drawer" : `drawer${i + 1}`}-mesh-glass`] = `${MODELS}/${file}`;
+            });
         }
         for (const [slug, file] of Object.entries(CONTAINERS[version])) {
             entries[`${slug}/${version}/container-mesh-glass`] = `${MODELS}/${file}`;
@@ -284,7 +315,7 @@ function modelEntries(): Record<string, string> {
 // 🎯 Fichiers des pages Boîtes pris ailleurs que dans le dossier par défaut.
 // Clé : "<slug>/<version>/<objet>-<vue>-<vitre>" (sans extension) ; "*" à la place de la version = les deux.
 // Valeur : chemin du fichier, relatif au dossier du projet. Une entrée ici l'emporte sur le placeholder.
-//   objets : container, box, drawer, drawer2 (second tiroir), holder — vues : full, empty, logos, mesh, video, in-box, stickers
+//   objets : container, box, drawer, drawer2…drawer4 (tiroirs suivants), holder — vues : full, empty, logos, mesh, video, in-box, stickers
 //   vitre : glass (Window / Avec vitre), no-glass (No Window / Sans vitre) ; toujours glass pour un tiroir
 //   (vue video : objet box, la vidéo montre l'ensemble)
 // Pour la vue mesh, un .stl ou un .glb convient.

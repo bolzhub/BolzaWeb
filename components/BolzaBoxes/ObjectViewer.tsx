@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import {
     OBJECT_TYPES,
-    VIEW_MODES,
+    VISIBLE_VIEW_MODES,
     getAssetPath,
     factionObjects,
     isDrawer,
@@ -56,7 +56,7 @@ export default function ObjectViewer({
     const [desktop, setDesktop] = useState(false);
 
     const { version } = useVersion();
-    const viewMode = VIEW_MODES.find((v) => v.id === viewModeId) ?? VIEW_MODES[0];
+    const viewMode = VISIBLE_VIEW_MODES.find((v) => v.id === viewModeId) ?? VISIBLE_VIEW_MODES[0];
 
     // Objets proposés : pas de boîte en vue 3D (conteneur et tiroir ne s'affichent pas ensemble).
     // L'objet choisi est gardé s'il existe pour cette faction, sinon on prend le plus proche.
@@ -69,8 +69,8 @@ export default function ObjectViewer({
     const objectType: ObjectType =
         !isVideo && choice.objectType && objectIds.includes(choice.objectType)
             ? choice.objectType
-            : !isVideo && choice.objectType === "drawer2" && objectIds.includes("drawer")
-              ? "drawer" // pas de second tiroir ici : le tiroir principal
+            : !isVideo && choice.objectType && isDrawer(choice.objectType) && objectIds.includes("drawer")
+              ? "drawer" // ce tiroir n'existe pas ici : le tiroir principal
               : objectIds.includes("box")
                 ? "box"
                 : objectIds.includes("container")
@@ -252,7 +252,7 @@ export default function ObjectViewer({
                     style={{ paddingLeft: desktop && size ? size.side : undefined }}
                 >
                     <div className="flex flex-1 gap-1 overflow-x-auto pb-1.5 min-w-0 lg:gap-2 lg:pb-2">
-                        {VIEW_MODES.map((v) => {
+                        {VISIBLE_VIEW_MODES.map((v) => {
                             const isActive = v.id === viewModeId;
                             return (
                                 <button
@@ -279,30 +279,35 @@ export default function ObjectViewer({
                     ref={gridRef}
                     className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-x-2 lg:grid-cols-[auto_minmax(0,1fr)]"
                 >
-                    {/* Invisible (mais gardé) en vidéo : le cadre ne bouge pas d'une vue à l'autre */}
+                    {/* Invisible (mais gardé) en vidéo : le cadre ne bouge pas d'une vue à l'autre.
+                        Sélecteur défilant quand il y a beaucoup d'objets (plusieurs tiroirs) : horizontal sur portable,
+                        vertical sur ordinateur, où sa hauteur reste celle du cadre (h-0 + min-h-full : il n'agrandit
+                        pas la ligne de la grille). */}
                     <div
                         ref={typesRef}
                         aria-hidden={isVideo || undefined}
-                        className={`${isVideo ? "invisible" : ""} col-start-1 row-start-2 flex justify-center gap-1 pt-1.5 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0`}
+                        className={`${isVideo ? "invisible" : ""} col-start-1 row-start-2 min-w-0 overflow-x-auto pt-1.5 [scrollbar-width:none] lg:row-start-1 lg:h-0 lg:min-h-full lg:overflow-x-hidden lg:overflow-y-auto lg:pt-0`}
                     >
-                        {objects.map((o) => {
-                            const isActive = o.id === objectType;
-                            return (
-                                <div key={o.id} className="flex justify-center lg:px-1">
-                                    <button
-                                        onClick={() => setObjectType(o.id)}
-                                        className="whitespace-nowrap text-xs tracking-wider px-2 py-1 rounded-md transition-opacity lg:text-sm lg:tracking-widest lg:rounded-lg lg:px-2 lg:py-2 lg:[writing-mode:sideways-lr]"
-                                        style={{
-                                            fontFamily: "var(--font-playfair)",
-                                            backgroundColor: isActive ? FRAME_BG : "transparent",
-                                            opacity: isActive ? 1 : 0.55,
-                                        }}
-                                    >
-                                        {objectLabel(faction, o.id, lang)}
-                                    </button>
-                                </div>
-                            );
-                        })}
+                        <div className="mx-auto flex w-max gap-1 lg:min-h-full lg:w-auto lg:flex-col lg:justify-evenly lg:gap-2 lg:py-1">
+                            {objects.map((o) => {
+                                const isActive = o.id === objectType;
+                                return (
+                                    <div key={o.id} className="flex justify-center lg:px-1">
+                                        <button
+                                            onClick={() => setObjectType(o.id)}
+                                            className="whitespace-nowrap text-xs tracking-wider px-2 py-1 rounded-md transition-opacity lg:text-sm lg:tracking-widest lg:rounded-lg lg:px-2 lg:py-2 lg:[writing-mode:sideways-lr]"
+                                            style={{
+                                                fontFamily: "var(--font-playfair)",
+                                                backgroundColor: isActive ? FRAME_BG : "transparent",
+                                                opacity: isActive ? 1 : 0.55,
+                                            }}
+                                        >
+                                            {objectLabel(faction, o.id, lang, version)}
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div
@@ -319,7 +324,7 @@ export default function ObjectViewer({
                         {viewMode.type === "image" && (
                             <img
                                 src={src}
-                                alt={`${name} — ${objectLabel(faction, objectType, lang)} — ${viewMode.label[lang]}`}
+                                alt={`${name} — ${objectLabel(faction, objectType, lang, version)} — ${viewMode.label[lang]}`}
                                 className="absolute inset-0 w-full h-full object-contain"
                             />
                         )}
