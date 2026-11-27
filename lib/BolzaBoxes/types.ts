@@ -84,6 +84,8 @@ export function effectiveGlass(objectType: ObjectType, glass: Glass): Glass {
     return isDrawer(objectType) ? "glass" : glass;
 }
 
+const IMAGE_WIDTH = 1600;
+
 // Chemin d'une vue relatif au dossier du projet : fichier désigné dans FACTION_FILES, sinon dossier par défaut
 export function assetRelativePath(
     factionSlug: string,
@@ -108,7 +110,10 @@ export function getAssetPath(
     const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
     const url = projectMediaUrl(relative);
     // Un modèle STL est converti en GLB par /api/media pour le visualiseur 3D
-    return relative.toLowerCase().endsWith(".stl") ? `${url}?as=glb&v=${GLB_VERSION}` : url;
+    if (relative.toLowerCase().endsWith(".stl")) return `${url}?as=glb&v=${GLB_VERSION}`;
+    // Photos : version WebP réduite (les originaux font 3024 px et plusieurs Mo)
+    if (viewMode.type === "image") return `${url}?w=${IMAGE_WIDTH}`;
+    return url;
 }
 
 // Lien de téléchargement d'une vue : fichier d'origine (STL ou GLB), sous un nom lisible

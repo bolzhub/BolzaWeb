@@ -137,6 +137,134 @@ function videoEntries(): Record<string, string> {
     return entries;
 }
 
+// 📷 Photos de la version française avec vitre (séance du 27/11/2026), dans Workshop/9-Photoshoot/Factions/French/.
+// Par faction : "<objet>-<vue>" → nom du fichier sans .jpg (tiroir = tiroir principal ou Drawer 1 du Vagabond).
+const FRENCH_PHOTOS_DIR = "Workshop/9-Photoshoot/Factions/French";
+const FRENCH_PHOTOS: Record<string, Record<string, string>> = {
+    cats: {
+        "box-full": "20261127_143628",
+        "box-empty": "20261127_141258",
+        "container-full": "20261127_142950",
+        "container-empty": "20261127_143331",
+        "drawer-full": "20261127_144231",
+        "drawer-empty": "20261127_142812",
+    },
+    eyries: {
+        "box-full": "20261127_145145",
+        "box-empty": "20261127_144658",
+        "container-full": "20261127_144737",
+        "container-empty": "20261127_145047",
+        "drawer-full": "20261127_145419",
+        "drawer-empty": "20261127_144912",
+    },
+    alliance: {
+        "box-full": "20261127_145751",
+        "box-empty": "20261127_145844",
+        "container-full": "20261127_145905",
+        "container-empty": "20261127_145913_001",
+        "drawer-full": "20261127_150323",
+        "drawer-empty": "20261127_150101",
+    },
+    vagabond: {
+        "box-full": "20261127_154735",
+        "box-empty": "20261127_155906(0)",
+        "container-full": "20261127_154748",
+        "container-empty": "20261127_154832",
+        "drawer-full": "20261127_154600",
+        "drawer-empty": "20261127_155054",
+    },
+    lizards: {
+        "box-full": "20261127_151240",
+        "box-empty": "20261127_150856",
+        "container-full": "20261127_150919",
+        "container-empty": "20261127_150946",
+        "drawer-full": "20261127_151523",
+        "drawer-empty": "20261127_151048",
+    },
+    otters: {
+        "box-full": "20261127_151742",
+        "box-empty": "20261127_152104",
+        "container-full": "20261127_152134",
+        "container-empty": "20261127_152229",
+        "drawer-full": "20261127_151949",
+    },
+    moles: {
+        "box-full": "20261127_152649",
+        "box-empty": "20261127_152343",
+        "container-full": "20261127_152716",
+        "container-empty": "20261127_152831",
+        "drawer-full": "20261127_152856",
+        "drawer-empty": "20261127_152450",
+    },
+    corvids: {
+        "box-full": "20261127_153514",
+        "box-empty": "20261127_153933",
+        "container-full": "20261127_153552",
+        "container-empty": "20261127_154119",
+        "drawer-full": "20261127_153841",
+        "drawer-empty": "20261127_154035",
+    },
+    rats: {
+        "box-full": "20261127_155601",
+        "box-empty": "20261127_160221",
+        "container-full": "20261127_155948",
+        "container-empty": "20261127_160548",
+        "drawer-full": "20261127_155648",
+        "drawer-empty": "20261127_160459",
+    },
+    badgers: {
+        "box-full": "20261127_161303",
+        "box-empty": "20261127_161640",
+        "container-full": "20261127_161726",
+        "container-empty": "20261127_161822",
+        "drawer-full": "20261127_161605",
+        "drawer-empty": "20261127_161903",
+    },
+    setup: {
+        "box-full": "20261127_162230",
+        "box-empty": "20261127_162826",
+        "container-full": "20261127_162856",
+        "container-empty": "20261127_163029",
+        "drawer-full": "20261127_162330",
+        "drawer-empty": "20261127_162940",
+    },
+    landmarks: {
+        "box-full": "20261127_163346",
+        "box-empty": "20261127_163122",
+        "container-full": "20261127_163256",
+        "container-empty": "20261127_163455",
+        "drawer-empty": "20261127_163213",
+    },
+    extra: { "holder-full": "20261127_163711", "holder-empty": "20261127_163626" },
+    cards: { "holder-full": "20261127_164038", "holder-empty": "20261127_164435" },
+    "hirelings-setup": {
+        "box-full": "20261127_164753",
+        "box-empty": "20261127_165349",
+        "container-full": "20261127_164825",
+        "container-empty": "20261127_164943",
+        "drawer-full": "20261127_164852",
+        "drawer-empty": "20261127_165018",
+    },
+    "hirelings-unique": {
+        "box-full": "20261127_165444",
+        "box-empty": "20261127_165718",
+        "container-full": "20261127_165508",
+        "container-empty": "20261127_165522",
+        "drawer-full": "20261127_165632",
+        "drawer-empty": "20261127_165803",
+    },
+};
+
+function photoEntries(): Record<string, string> {
+    const entries: Record<string, string> = {};
+    for (const [slug, photos] of Object.entries(FRENCH_PHOTOS)) {
+        for (const [view, file] of Object.entries(photos)) {
+            entries[`${slug}/french/${view}-glass`] = `${FRENCH_PHOTOS_DIR}/${file}.jpg`;
+        }
+    }
+    return entries;
+}
+
 function modelEntries(): Record<string, string> {
     const entries: Record<string, string> = {};
     for (const version of ["international", "french"] as const) {
@@ -163,6 +291,7 @@ function modelEntries(): Record<string, string> {
 export const FACTION_FILES: Record<string, string> = {
     ...modelEntries(),
     ...videoEntries(),
+    ...photoEntries(),
     // "cats/international/box-full-glass": "Workshop/9-Photoshoot/Scenes/photo2.jpg",
 };
 
