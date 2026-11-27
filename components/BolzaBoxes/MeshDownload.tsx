@@ -6,7 +6,7 @@ import type { Version } from "@/lib/BolzaBoxes/VersionContext";
 import {
     MESH_VIEW,
     OBJECT_TYPES,
-    getAssetPath,
+    getDownloadPath,
     type Faction,
     type Glass,
     type ObjectType,
@@ -83,8 +83,8 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
         if (!choice || !glass) return;
         for (const object of objectsFor(choice)) {
             const a = document.createElement("a");
-            a.href = getAssetPath(faction.slug, version, object, MESH_VIEW, glass);
-            a.download = `${faction.slug}-${version}-${object}-${glass}.glb`;
+            a.href = getDownloadPath(faction.slug, version, object, MESH_VIEW, glass);
+            a.download = "";
             document.body.appendChild(a);
             a.click();
             a.remove();

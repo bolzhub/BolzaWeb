@@ -77,7 +77,24 @@ export function getAssetPath(
     viewMode: ViewMode,
     glass: Glass,
 ): string {
-    return projectMediaUrl(assetRelativePath(factionSlug, version, objectType, viewMode, glass));
+    const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
+    const url = projectMediaUrl(relative);
+    // Un modèle STL est converti en GLB par /api/media pour le visualiseur 3D
+    return relative.toLowerCase().endsWith(".stl") ? `${url}?as=glb` : url;
+}
+
+// Lien de téléchargement d'une vue : fichier d'origine (STL ou GLB), sous un nom lisible
+export function getDownloadPath(
+    factionSlug: string,
+    version: Version,
+    objectType: ObjectType,
+    viewMode: ViewMode,
+    glass: Glass,
+): string {
+    const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
+    const ext = relative.slice(relative.lastIndexOf("."));
+    const name = `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
+    return `${projectMediaUrl(relative)}?download=${encodeURIComponent(name)}`;
 }
 
 export const MESH_VIEW = VIEW_MODES.find((v) => v.type === "mesh")!;

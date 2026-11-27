@@ -96,7 +96,7 @@ export default function ObjectViewer({
             return;
         }
 
-        // Ordinateur : on élargit le cadre tant que le titre tient sur deux lignes au plus
+        // Ordinateur : on élargit le cadre tant que le titre tient sur trois lignes au plus
         // et que la description ne descend pas plus bas que les boutons de vitre
         const cs = getComputedStyle(row);
         const content = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
@@ -114,7 +114,10 @@ export default function ObjectViewer({
         for (const it of items) it.box.style.width = "100000px";
         for (const it of items) it.oneLine = it.title?.offsetHeight ?? 0;
         const fits = (it: (typeof items)[number], h: number) =>
-            (!it.title || it.title.offsetHeight <= it.oneLine * 2.2) && it.box.offsetHeight <= above + h + glassH;
+            (!it.title || it.title.offsetHeight <= it.oneLine * 3.2) &&
+            // un mot plus large que la colonne ne passe pas à la ligne : il déborderait
+            it.box.scrollWidth <= it.box.clientWidth + 1 &&
+            it.box.offsetHeight <= above + h + glassH;
 
         // Recherche dichotomique, menée en parallèle pour toutes les mesures (une mise en page par tour) :
         // plus la description est large, plus elle est courte, donc la condition est monotone
@@ -148,7 +151,8 @@ export default function ObjectViewer({
                 const ok = (infoW: number) => {
                     current.box.style.width = `${infoW}px`;
                     return (
-                        (!current.title || current.title.offsetHeight <= current.oneLine * 2.2) &&
+                        (!current.title || current.title.offsetHeight <= current.oneLine * 3.2) &&
+                        current.box.scrollWidth <= current.box.clientWidth + 1 &&
                         current.box.offsetHeight <= above + h + glassH
                     );
                 };

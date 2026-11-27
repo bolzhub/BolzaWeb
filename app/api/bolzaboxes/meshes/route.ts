@@ -19,6 +19,12 @@ const DOWNLOADABLE: ObjectType[] = ["drawer", "container", "holder"];
 const HEADER_BYTES = 4096; // l'en-tête JSON d'un .glb est au début du fichier
 
 async function isRealMesh(file: string): Promise<boolean> {
+    // Un STL vient du dossier Models/ : c'est toujours un vrai modèle
+    if (file.toLowerCase().endsWith(".stl"))
+        return fs.stat(file).then(
+            (s) => s.isFile(),
+            () => false,
+        );
     let handle;
     try {
         handle = await fs.open(file, "r");

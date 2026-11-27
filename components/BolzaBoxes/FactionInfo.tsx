@@ -26,7 +26,7 @@ export default function FactionInfo({
                     {faction.name[lang]}
                 </h1>
             </div>
-            <p className="opacity-80 leading-relaxed" style={{ fontFamily: "var(--font-cinzel)" }}>
+            <p className="opacity-80 leading-relaxed lg:text-xl" style={{ fontFamily: "var(--font-cinzel)" }}>
                 {faction.description[lang]}
             </p>
         </div>

@@ -6,6 +6,7 @@ import path from "path";
 import os from "os";
 import { PUBLIC_FOLDERS, PUBLIC_FILES } from "@/lib/media/publicFolders";
 import { DISK_ROOT } from "@/lib/media/config";
+import { stlToGlb } from "@/lib/media/stlToGlb";
 
 // Versions réduites (?w=) des images, gardées sur disque pour n'être calculées qu'une fois
 const CACHE_DIR = process.env.MEDIA_CACHE_DIR ?? path.join(os.homedir(), "media-cache", "bolzaweb");
@@ -31,6 +32,22 @@ async function resizedFile(source: string, relativePath: string, mtimeMs: number
     return target;
 }
 
+// Version GLB (?as=glb) d'un modèle STL, pour le visualiseur 3D ; gardée sur disque comme les images réduites
+async function glbFile(source: string, relativePath: string, mtimeMs: number): Promise<string> {
+    const target = path.join(CACHE_DIR, `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}.glb`);
+    try {
+        await fs.access(target);
+        return target;
+    } catch {
+        // pas encore en cache
+    }
+    await fs.mkdir(CACHE_DIR, { recursive: true });
+    const tmp = `${target}.${process.pid}.tmp`;
+    await fs.writeFile(tmp, stlToGlb(await fs.readFile(source)));
+    await fs.rename(tmp, target);
+    return target;
+}
+
 const MIME: Record<string, string> = {
     ".png": "image/png",
     ".jpg": "image/jpeg",
@@ -44,6 +61,7 @@ const MIME: Record<string, string> = {
     ".mov": "video/quicktime",
     ".glb": "model/gltf-binary",
     ".gltf": "model/gltf+json",
+    ".stl": "model/stl",
 };
 
 const notFound = () => new NextResponse("Not found", { status: 404 });
@@ -87,6 +105,26 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
 
     const ext = path.extname(resolved).toLowerCase();
 
+    // Modèle STL converti en GLB pour <model-viewer>
+    if (ext === ".stl" && req.nextUrl.searchParams.get("as") === "glb") {
+        try {
+            const file = await glbFile(resolved, relativePath, stat.mtimeMs);
+            const fileStat = await fs.stat(file);
+            const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}-glb"`;
+            const headers = {
+                "Content-Type": "model/gltf-binary",
+                "Cache-Control": "public, max-age=3600, must-revalidate",
+                ETag: etag,
+            };
+            if (req.headers.get("if-none-match") === etag) return new NextResponse(null, { status: 304, headers });
+            const stream = Readable.toWeb(createReadStream(file)) as ReadableStream;
+            return new NextResponse(stream, { headers: { ...headers, "Content-Length": String(fileStat.size) } });
+        } catch (e) {
+            console.error("Conversion STL impossible :", resolved, e);
+            return new NextResponse("Conversion impossible", { status: 500 });
+        }
+    }
+
     // Image réduite et convertie en WebP : beaucoup plus légère que les PNG d'origine
     const requestedWidth = Number(req.nextUrl.searchParams.get("w"));
     const wantsDownload = req.nextUrl.searchParams.has("download");
@@ -126,8 +164,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
     const downloadName = req.nextUrl.searchParams.get("download");
     if (downloadName !== null) {
         const name = path.basename(downloadName || resolved).replace(/[\u0000-\u001f"\\]/g, "_");
-        const ascii = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\x20-\x7e]/g, "_");
-        headers["Content-Disposition"] = `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
+        const ascii = name
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^\x20-\x7e]/g, "_");
+        headers["Content-Disposition"] =
+            `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`;
     }
 
     const ifNoneMatch = req.headers.get("if-none-match");
