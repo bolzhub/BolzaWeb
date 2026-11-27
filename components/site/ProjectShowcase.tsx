@@ -147,6 +147,8 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                         style={
                             {
                                 "--w": width !== undefined ? `${width}px` : undefined,
+                                // conteneur de taille : le disque en coin se dimensionne en cqw/cqh
+                                containerType: "size",
                                 // placement dans la grille portable (sans effet sur ordi, en flex)
                                 gridRow: cell.row + 1,
                                 gridColumn: `${cell.start + 1} / span ${cell.span}`,

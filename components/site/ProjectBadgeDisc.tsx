@@ -12,7 +12,12 @@ const TEXT_MIN_DIAMETER = 88; // en dessous, on n'affiche que l'icône
 const LETTER_SPACING = 3.2; // à ajuster si le texte ne fait pas exactement le tour du disque
 
 // Le disque suit la largeur du rectangle, sans jamais dépasser sa hauteur
-// (rectangles larges mais bas, par exemple sur portable en paysage)
+// (rectangles larges mais bas, par exemple sur portable en paysage).
+// Taille en CSS, relative au rectangle (unités cqw/cqh, le rectangle est un conteneur) : le disque suit
+// ainsi chaque image de l'animation du rectangle, sans transition à lui qui prendrait du retard.
+const DIAMETER_CSS = `max(20px, min(max(${MIN_DIAMETER}px, min(${MAX_DIAMETER}px, 42cqw)), 100cqw - ${INSET * 2}px, 100cqh - ${INSET * 2}px))`;
+
+// Même calcul en JS, sur la taille finale du rectangle : sert à décider si le texte tient
 function diameterFor(rectWidth: number | undefined, rectHeight: number | undefined): number {
     if (rectWidth === undefined) return MIN_DIAMETER;
     const wanted = Math.max(MIN_DIAMETER, Math.min(MAX_DIAMETER, rectWidth * 0.42));
@@ -39,7 +44,7 @@ export default function ProjectBadgeDisc({
     projectId: string;
     badge: ProjectBadge;
     rectWidth: number | undefined;
-    rectHeight: number | undefined; // hauteur finale (cible) du rectangle, pas sa hauteur en cours d'animation
+    rectHeight: number | undefined; // tailles finales (cibles) du rectangle, pas celles en cours d'animation
     onClick: (e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
     const d = diameterFor(rectWidth, rectHeight);
@@ -51,10 +56,10 @@ export default function ProjectBadgeDisc({
             href={badge.href}
             aria-label={badge.title}
             onClick={onClick}
-            className="absolute z-10 block rounded-full text-parchment shadow-lg ring-1 ring-white/25 transition-[width,height,transform] duration-500 ease-out hover:scale-105"
+            className="absolute z-10 block rounded-full text-parchment shadow-lg ring-1 ring-white/25 transition-transform duration-500 ease-out hover:scale-105"
             style={{
-                width: d,
-                height: d,
+                width: DIAMETER_CSS,
+                height: DIAMETER_CSS,
                 background: BROWN_GRADIENT,
                 ...cornerStyle(badge.corner ?? "top-right"),
             }}
