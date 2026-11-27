@@ -51,6 +51,9 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
     const [activeId, setActiveId] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [widths, setWidths] = useState<number[] | null>(null);
+    // hauteur finale de chaque rectangle, calculée d'avance pour que le disque en coin
+    // s'anime en même temps que la grille au lieu de la suivre après coup
+    const [heights, setHeights] = useState<number[] | null>(null);
 
     const recompute = useCallback(() => {
         const el = containerRef.current;
@@ -68,10 +71,15 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
         // Portable : on ne calcule que la largeur de chaque rectangle (pour le disque
         // en coin) ; la grille CSS fait la mise en page
         if (!window.matchMedia(DESKTOP_QUERY).matches) {
-            const { trackCount, cells } = mobileLayout(count);
+            const { rows, trackCount, cells } = mobileLayout(count);
             const weights = columnWeights(trackCount, cells[projects.findIndex((p) => p.id === activeId)]);
             const totalWeight = weights.reduce((a, b) => a + b, 0);
             const trackSpace = Math.max(containerWidth - GAP * (trackCount - 1), 0);
+            const activeRow = cells[projects.findIndex((p) => p.id === activeId)]?.row;
+            const rowWeights = Array.from({ length: rows }, (_, r) => (r === activeRow ? MOBILE_ACTIVE_ROW : 1));
+            const rowWeightSum = rowWeights.reduce((a, b) => a + b, 0);
+            const rowSpace = Math.max(containerHeight - GAP * (rows - 1), 0);
+            setHeights(cells.map(({ row }) => (rowSpace * rowWeights[row]) / rowWeightSum));
             setWidths(
                 cells.map(({ start, span }) => {
                     const own = weights.slice(start, start + span).reduce((a, b) => a + b, 0);
@@ -96,6 +104,8 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
 
             raw = projects.map((p) => (p.id === activeId ? activeWidth : inactiveWidth));
         }
+
+        setHeights(projects.map(() => containerHeight));
 
         const sum = raw.reduce((a, b) => a + b, 0);
         const scale = sum > 0 ? available / sum : 1;
@@ -191,6 +201,7 @@ export default function ProjectShowcase({ projects }: { projects: Project[] }) {
                                 projectId={project.id}
                                 badge={project.badge}
                                 rectWidth={width}
+                                rectHeight={heights?.[i]}
                                 onClick={(e) => {
                                     // même règle que pour le rectangle : un premier toucher
                                     // sur mobile l'agrandit, le second ouvre le sous-site

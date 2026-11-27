@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import type { ProjectBadge } from "@/lib/site/projects";
 import { BROWN_GRADIENT } from "@/lib/site/theme";
 
@@ -33,31 +33,21 @@ export default function ProjectBadgeDisc({
     projectId,
     badge,
     rectWidth,
+    rectHeight,
     onClick,
 }: {
     projectId: string;
     badge: ProjectBadge;
     rectWidth: number | undefined;
+    rectHeight: number | undefined; // hauteur finale (cible) du rectangle, pas sa hauteur en cours d'animation
     onClick: (e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
-    // hauteur du rectangle parent, mesurée (sur portable, c'est la grille CSS qui la fixe)
-    const ref = useRef<HTMLAnchorElement>(null);
-    const [rectHeight, setRectHeight] = useState<number>();
-    useEffect(() => {
-        const parent = ref.current?.parentElement;
-        if (!parent) return;
-        const observer = new ResizeObserver(() => setRectHeight(parent.clientHeight));
-        observer.observe(parent);
-        return () => observer.disconnect();
-    }, []);
-
     const d = diameterFor(rectWidth, rectHeight);
     const showText = d >= TEXT_MIN_DIAMETER;
     const pathId = `badge-path-${projectId}`;
 
     return (
         <Link
-            ref={ref}
             href={badge.href}
             aria-label={badge.title}
             onClick={onClick}
