@@ -5,14 +5,15 @@ import { useLang } from "@/lib/i18n/LanguageContext";
 export const LICENSE_URL = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
 export const REPO_URL = "https://github.com/bolzhub/Root-BolzaBoxes";
 
-// Remerciements et licence, repris du README du dépôt GitHub du projet
+// Remerciements et licence, repris du README du dépôt GitHub du projet.
+// Couleurs inversées (fond encre, texte crème) pour se détacher des blocs crème de la page
 export default function BolzaBoxesCredits() {
     const fr = useLang() === "fr";
     const link = "underline underline-offset-2 hover:opacity-70";
 
     return (
         <footer
-            className="mx-6 mb-6 rounded-3xl bg-cream px-8 py-8 text-ink md:mx-10 md:px-16"
+            className="mx-6 mb-6 rounded-3xl bg-ink px-8 py-8 text-cream md:mx-10 md:px-16"
             style={{ marginBottom: "calc(var(--bolzaboxes-switch-zone) + 1rem)" }}
         >
             <div className="grid gap-8 md:grid-cols-2">
@@ -44,9 +45,17 @@ export default function BolzaBoxesCredits() {
                             ? " : partage et adaptation autorisés en citant l'auteur, sans usage commercial, et sous la même licence."
                             : ": sharing and adapting are allowed with attribution, for non-commercial use only, under the same license."}
                     </p>
-                    <p className="mt-2 leading-relaxed">
+                    <p className="mt-2 flex flex-wrap gap-x-5 gap-y-1 leading-relaxed">
                         <a href={REPO_URL} target="_blank" rel="noopener noreferrer" className={link}>
                             {fr ? "Fichiers et sources sur GitHub" : "Files and sources on GitHub"}
+                        </a>
+                        <a
+                            href={`${REPO_URL}/blob/main/LICENSE`}
+                            target="_blank"
+                            rel="noopener noreferrer license"
+                            className={link}
+                        >
+                            {fr ? "Texte complet de la licence" : "Full license text"}
                         </a>
                     </p>
                 </section>
