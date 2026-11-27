@@ -5,6 +5,7 @@ import BolzaBoxesNav from "@/components/BolzaBoxes/BolzaBoxesNav";
 import VersionSwitch from "@/components/BolzaBoxes/VersionSwitch";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
 import ScrollHint from "@/components/BolzaBoxes/ScrollHint";
+import BolzaBoxesCredits from "@/components/BolzaBoxes/BolzaBoxesCredits";
 
 export type HeroImages = {
     international: string;
@@ -44,6 +45,7 @@ export default function BolzaBoxesShell({
             </div>
 
             {children}
+            <BolzaBoxesCredits />
         </main>
     );
 }

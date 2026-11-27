@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLang } from "@/lib/i18n/LanguageContext";
+import { LICENSE_URL } from "./BolzaBoxesCredits";
 import type { Version } from "@/lib/BolzaBoxes/VersionContext";
 import {
     MESH_VIEW,
@@ -204,6 +205,22 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
                                 )}
                             </>
                         )}
+
+                        {/* Rappel de la licence des modèles */}
+                        <p className="mb-4 text-xs leading-relaxed opacity-60">
+                            {fr ? "Modèles sous licence " : "Models licensed under "}
+                            <a
+                                href={LICENSE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer license"
+                                className="underline"
+                            >
+                                CC BY-NC-SA 4.0
+                            </a>
+                            {fr
+                                ? " : usage non commercial uniquement, en citant l'auteur."
+                                : ": non-commercial use only, with attribution."}
+                        </p>
 
                         <div className="flex justify-end gap-3">
                             <button
