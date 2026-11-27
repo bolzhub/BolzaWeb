@@ -65,7 +65,10 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
         return () => window.removeEventListener("keydown", onKey);
     }, [open]);
 
-    const has = (object: ObjectType, g: Glass) => !!available?.some((m) => m.object === object && m.glass === g);
+    // un tiroir n'a pas de variante avec / sans vitre : il compte pour les deux
+    const has = (object: ObjectType, g: Glass) =>
+        !!available?.some((m) => m.object === object && (object === "drawer" || m.glass === g));
+    const needsGlass = (c: Choice) => objectsFor(c).some((o) => o !== "drawer");
     const objectsFor = (c: Choice): ObjectType[] => (c === "both" ? ["drawer", "container"] : [c]);
     const choiceAvailable = (c: Choice, g: Glass) => objectsFor(c).every((o) => has(o, g));
 
@@ -74,16 +77,19 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
     const choices: Choice[] =
         objects.includes("drawer") && objects.includes("container") ? ["drawer", "container", "both"] : objects;
     const visibleChoices = choices.filter((c) => choiceAvailable(c, "glass") || choiceAvailable(c, "no-glass"));
-    const glasses = (["glass", "no-glass"] as Glass[]).filter((g) => (choice ? choiceAvailable(choice, g) : false));
+    const glasses = (["glass", "no-glass"] as Glass[]).filter((g) =>
+        choice && needsGlass(choice) ? choiceAvailable(choice, g) : false,
+    );
+    const ready = !!choice && (!needsGlass(choice) || !!glass);
 
     const label = (c: Choice) =>
         c === "both" ? (fr ? "Les deux" : "Both") : OBJECT_TYPES.find((o) => o.id === c)!.label[lang];
 
     const download = () => {
-        if (!choice || !glass) return;
+        if (!choice || !ready) return;
         for (const object of objectsFor(choice)) {
             const a = document.createElement("a");
-            a.href = getDownloadPath(faction.slug, version, object, MESH_VIEW, glass);
+            a.href = getDownloadPath(faction.slug, version, object, MESH_VIEW, glass ?? "glass");
             a.download = "";
             document.body.appendChild(a);
             a.click();
@@ -170,7 +176,7 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
                                     ))}
                                 </div>
 
-                                {choice && (
+                                {choice && glasses.length > 0 && (
                                     <div className="mb-6 flex flex-wrap gap-2">
                                         {glasses.map((g) => (
                                             <button
@@ -195,7 +201,7 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
                             </button>
                             {visibleChoices.length > 0 && (
                                 <button
-                                    disabled={!choice || !glass}
+                                    disabled={!ready}
                                     onClick={download}
                                     className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-bold text-cream disabled:opacity-40"
                                 >

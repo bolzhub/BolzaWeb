@@ -28,7 +28,7 @@ export const MEDIA = {
 
 // 🧩 Modèles 3D (STL du dossier Models/) affichés en vue Mesh et proposés au téléchargement.
 // Le STL est converti à la volée en GLB pour le visualiseur ; le téléchargement donne le STL d'origine.
-// Tiroirs : Drawers/Snap_fit/Final (le même tiroir avec ou sans vitre).
+// Tiroirs : Drawers/Snap_fit/Final (un tiroir n'a pas de variante avec / sans vitre).
 // Conteneurs : Containers/With_window/Snap_fit (avec vitre seulement : pas encore de snap-fit sans vitre).
 const MODELS = "Models";
 const DRAWERS: Record<"international" | "french", Record<string, string>> = {
@@ -104,8 +104,7 @@ function modelEntries(): Record<string, string> {
     const entries: Record<string, string> = {};
     for (const version of ["international", "french"] as const) {
         for (const [slug, file] of Object.entries(DRAWERS[version])) {
-            entries[`${slug}/${version}/drawer-mesh-glass`] = `${MODELS}/${file}`;
-            entries[`${slug}/${version}/drawer-mesh-no-glass`] = `${MODELS}/${file}`;
+            entries[`${slug}/${version}/drawer-mesh-glass`] = `${MODELS}/${file}`; // tiroir : pas de variante vitre
         }
         for (const [slug, file] of Object.entries(CONTAINERS[version])) {
             entries[`${slug}/${version}/container-mesh-glass`] = `${MODELS}/${file}`;
@@ -118,7 +117,8 @@ function modelEntries(): Record<string, string> {
 // Clé : "<slug>/<version>/<objet>-<vue>-<vitre>" (sans extension) ; "*" à la place de la version = les deux.
 // Valeur : chemin du fichier, relatif au dossier du projet. Une entrée ici l'emporte sur le placeholder.
 //   objets : container, box, drawer, holder — vues : full, empty, logos, mesh, video, in-box, stickers
-//   vitre : glass (Window / Avec vitre), no-glass (No Window / Sans vitre)
+//   vitre : glass (Window / Avec vitre), no-glass (No Window / Sans vitre) ; toujours glass pour un tiroir
+//   (vue video : objet box, la vidéo montre l'ensemble)
 // Pour la vue mesh, un .stl ou un .glb convient.
 export const FACTION_FILES: Record<string, string> = {
     ...modelEntries(),

@@ -61,8 +61,10 @@ export default function ObjectViewer({
         (o) => faction.objects.includes(o.id) && !(viewMode.type === "mesh" && o.id === "box"),
     );
     const objectIds = objects.map((o) => o.id);
+    // La vidéo montre l'ensemble : toujours la boîte (ou l'objet unique de la faction), sans choix d'objet
+    const isVideo = viewMode.type === "video";
     const objectType: ObjectType =
-        choice.objectType && objectIds.includes(choice.objectType)
+        !isVideo && choice.objectType && objectIds.includes(choice.objectType)
             ? choice.objectType
             : objectIds.includes("box")
               ? "box"
@@ -272,9 +274,11 @@ export default function ObjectViewer({
                     ref={gridRef}
                     className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-x-2 lg:grid-cols-[auto_minmax(0,1fr)]"
                 >
+                    {/* Invisible (mais gardé) en vidéo : le cadre ne bouge pas d'une vue à l'autre */}
                     <div
                         ref={typesRef}
-                        className="col-start-1 row-start-2 flex justify-center gap-1 pt-1.5 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0"
+                        aria-hidden={isVideo || undefined}
+                        className={`${isVideo ? "invisible" : ""} col-start-1 row-start-2 flex justify-center gap-1 pt-1.5 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0`}
                     >
                         {objects.map((o) => {
                             const isActive = o.id === objectType;
@@ -342,9 +346,11 @@ export default function ObjectViewer({
                         )}
                     </div>
 
+                    {/* Un tiroir est le même avec ou sans vitre : boutons invisibles (place gardée, le cadre ne bouge pas) */}
                     <div
                         ref={glassRef}
-                        className="col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2"
+                        aria-hidden={objectType === "drawer" || undefined}
+                        className={`${objectType === "drawer" ? "invisible" : ""} col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2`}
                     >
                         {(["glass", "no-glass"] as Glass[]).map((g) => {
                             const isActive = g === glass;

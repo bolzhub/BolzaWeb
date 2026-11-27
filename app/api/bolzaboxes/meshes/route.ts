@@ -47,7 +47,10 @@ export async function GET(req: NextRequest) {
 
     const candidates = faction.objects
         .filter((o) => DOWNLOADABLE.includes(o))
-        .flatMap((object) => GLASSES.map((glass) => ({ object, glass })));
+        .flatMap((object) =>
+            // un tiroir n'a pas de variante avec / sans vitre
+            (object === "drawer" ? (["glass"] as Glass[]) : GLASSES).map((glass) => ({ object, glass })),
+        );
 
     const checks = await Promise.all(
         candidates.map(

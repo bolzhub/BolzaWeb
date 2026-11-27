@@ -58,6 +58,11 @@ export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass:
     return `${objectType}-${viewMode.id}-${glass}.${EXT_BY_TYPE[viewMode.type]}`;
 }
 
+// Un tiroir est le même avec ou sans vitre : ses fichiers sont toujours ceux « glass »
+export function effectiveGlass(objectType: ObjectType, glass: Glass): Glass {
+    return objectType === "drawer" ? "glass" : glass;
+}
+
 // Chemin d'une vue relatif au dossier du projet : fichier désigné dans FACTION_FILES, sinon dossier par défaut
 export function assetRelativePath(
     factionSlug: string,
@@ -66,6 +71,7 @@ export function assetRelativePath(
     viewMode: ViewMode,
     glass: Glass,
 ): string {
+    glass = effectiveGlass(objectType, glass);
     const name = `${objectType}-${viewMode.id}-${glass}`;
     const chosen = FACTION_FILES[`${factionSlug}/${version}/${name}`] ?? FACTION_FILES[`${factionSlug}/*/${name}`];
     return chosen ?? `${MEDIA.factions}/${factionSlug}/${version}/${assetFileName(objectType, viewMode, glass)}`;
@@ -94,7 +100,10 @@ export function getDownloadPath(
 ): string {
     const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
     const ext = relative.slice(relative.lastIndexOf("."));
-    const name = `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
+    const name =
+        objectType === "drawer"
+            ? `${factionSlug}-${version}-drawer${ext}`
+            : `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
     return `${projectMediaUrl(relative)}?download=${encodeURIComponent(name)}`;
 }
 
