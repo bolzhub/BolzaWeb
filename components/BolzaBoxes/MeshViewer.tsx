@@ -12,6 +12,8 @@ declare module "react" {
                     "camera-controls"?: boolean;
                     "auto-rotate"?: boolean;
                     exposure?: string;
+                    "shadow-intensity"?: string;
+                    "tone-mapping"?: string;
                 },
                 HTMLElement
             >;
@@ -28,5 +30,15 @@ export default function MeshViewer({ src }: { src: string }) {
         document.head.appendChild(script);
     }, []);
 
-    return <model-viewer src={src} alt="3D model" camera-controls style={{ width: "100%", height: "100%" }} />;
+    return (
+        <model-viewer
+            src={src}
+            alt="3D model"
+            camera-controls
+            exposure="0.9"
+            shadow-intensity="1"
+            tone-mapping="neutral"
+            style={{ width: "100%", height: "100%" }}
+        />
+    );
 }

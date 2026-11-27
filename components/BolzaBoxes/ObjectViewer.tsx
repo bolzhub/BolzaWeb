@@ -16,6 +16,7 @@ import FactionInfo from "./FactionInfo";
 import { FACTIONS } from "@/lib/BolzaBoxes/factions";
 import { LANGS } from "@/lib/i18n/lang";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
+import { useViewerChoice } from "@/lib/BolzaBoxes/ViewerChoiceContext";
 import { useLang } from "@/lib/i18n/LanguageContext";
 
 export const GLASS_LABEL: Record<Glass, { en: string; fr: string }> = {
@@ -41,17 +42,33 @@ export default function ObjectViewer({
 }) {
     const lang = useLang();
     const name = faction.name[lang];
-    const [objectType, setObjectType] = useState<ObjectType>(
-        faction.objects.includes("box") ? "box" : faction.objects[0],
-    );
-    const [viewModeId, setViewModeId] = useState("full");
-    const [glass, setGlass] = useState<Glass>("glass");
+    // Vue, objet et vitre choisis : partagés entre les factions (on retrouve la même vue en changeant de faction)
+    const choice = useViewerChoice();
+    const { viewModeId, glass } = choice;
+    const setViewModeId = (id: string) => choice.update({ viewModeId: id });
+    const setGlass = (g: Glass) => choice.update({ glass: g });
+    const setObjectType = (o: ObjectType) => choice.update({ objectType: o });
     const [videoAspect, setVideoAspect] = useState(16 / 9);
     const [size, setSize] = useState<Size | null>(null);
     const [desktop, setDesktop] = useState(false);
 
     const { version } = useVersion();
-    const viewMode = VIEW_MODES.find((v) => v.id === viewModeId)!;
+    const viewMode = VIEW_MODES.find((v) => v.id === viewModeId) ?? VIEW_MODES[0];
+
+    // Objets proposés : pas de boîte en vue 3D (conteneur et tiroir ne s'affichent pas ensemble).
+    // L'objet choisi est gardé s'il existe pour cette faction, sinon on prend le plus proche.
+    const objects = OBJECT_TYPES.filter(
+        (o) => faction.objects.includes(o.id) && !(viewMode.type === "mesh" && o.id === "box"),
+    );
+    const objectIds = objects.map((o) => o.id);
+    const objectType: ObjectType =
+        choice.objectType && objectIds.includes(choice.objectType)
+            ? choice.objectType
+            : objectIds.includes("box")
+              ? "box"
+              : objectIds.includes("container")
+                ? "container"
+                : objectIds[0];
     const src = getAssetPath(faction.slug, version, objectType, viewMode, glass);
 
     // Forme du cadre : carré pour les photos (et le lien d'achat), proportions de la vidéo,
@@ -259,7 +276,7 @@ export default function ObjectViewer({
                         ref={typesRef}
                         className="col-start-1 row-start-2 flex justify-center gap-1 pt-1.5 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0"
                     >
-                        {OBJECT_TYPES.filter((o) => faction.objects.includes(o.id)).map((o) => {
+                        {objects.map((o) => {
                             const isActive = o.id === objectType;
                             return (
                                 <div key={o.id} className="flex justify-center lg:px-1">

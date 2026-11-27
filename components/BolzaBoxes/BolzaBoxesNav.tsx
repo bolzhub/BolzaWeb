@@ -160,7 +160,8 @@ export default function BolzaBoxesNav({ background = { type: "transparent" } }: 
 
                     <div className="flex-1" aria-hidden="true" />
 
-                    <LanguageSwitch theme={SWITCH_THEME} />
+                    {/* « Langue » : distingue la langue du site du choix de version du jeu (sélecteur du bas) */}
+                    <LanguageSwitch theme={SWITCH_THEME} showLabel />
 
                     <button
                         className={`${PILL} md:hidden flex h-10 w-10 items-center justify-center text-ink`}

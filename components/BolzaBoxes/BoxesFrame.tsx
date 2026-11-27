@@ -8,6 +8,7 @@ import BolzaBoxesNav from "./BolzaBoxesNav";
 import FactionSidebar from "./FactionSidebar";
 import MobileTopBar from "./MobileTopBar";
 import VersionSwitch from "./VersionSwitch";
+import { ViewerChoiceProvider } from "@/lib/BolzaBoxes/ViewerChoiceContext";
 
 // Cadre commun des pages /BolzaBoxes/boxes/<faction>, rendu par le layout :
 // il reste monté quand on passe d'une faction à l'autre, si bien que la barre
@@ -34,7 +35,7 @@ export default function BoxesFrame({ children }: { children: ReactNode }) {
 
                 <div className="flex min-w-0">
                     <FactionSidebar active={faction} />
-                    {children}
+                    <ViewerChoiceProvider>{children}</ViewerChoiceProvider>
                 </div>
             </div>
 

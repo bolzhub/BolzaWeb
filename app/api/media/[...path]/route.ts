@@ -32,9 +32,15 @@ async function resizedFile(source: string, relativePath: string, mtimeMs: number
     return target;
 }
 
+// À changer quand la conversion change : les anciens GLB en cache sont alors ignorés
+const GLB_VERSION = "v3";
+
 // Version GLB (?as=glb) d'un modèle STL, pour le visualiseur 3D ; gardée sur disque comme les images réduites
 async function glbFile(source: string, relativePath: string, mtimeMs: number): Promise<string> {
-    const target = path.join(CACHE_DIR, `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}.glb`);
+    const target = path.join(
+        CACHE_DIR,
+        `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}__${GLB_VERSION}.glb`,
+    );
     try {
         await fs.access(target);
         return target;
@@ -110,7 +116,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
         try {
             const file = await glbFile(resolved, relativePath, stat.mtimeMs);
             const fileStat = await fs.stat(file);
-            const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}-glb"`;
+            const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}-glb${GLB_VERSION}"`;
             const headers = {
                 "Content-Type": "model/gltf-binary",
                 "Cache-Control": "public, max-age=3600, must-revalidate",

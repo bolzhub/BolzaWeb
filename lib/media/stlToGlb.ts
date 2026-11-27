@@ -24,10 +24,22 @@ function parseStl(buf: Buffer): Float32Array {
     return new Float32Array(values.slice(0, values.length - (values.length % 9)));
 }
 
+// Lumière de référence (repère du STL : Z vers le haut) : du dessus, un peu de face et de gauche.
+// Chaque face reçoit une teinte selon son orientation (dessus clair, côtés intermédiaires, dessous sombre),
+// qui s'ajoute à l'éclairage du visualiseur : les plans se distinguent nettement les uns des autres.
+const KEY_LIGHT = (() => {
+    const v = [-0.45, -0.6, 0.75];
+    const n = Math.hypot(...v);
+    return v.map((x) => x / n);
+})();
+const BASE_COLOR = [0.88, 0.76, 0.6]; // bois clair, en sRGB
+const toLinear = (c: number) => Math.pow(c, 2.2); // glTF attend des couleurs de sommet linéaires
+
 export function stlToGlb(stl: Buffer): Buffer {
     const positions = parseStl(stl);
     const vertexCount = positions.length / 3;
     const normals = new Float32Array(positions.length);
+    const colors = new Float32Array(positions.length);
     const min = [Infinity, Infinity, Infinity];
     const max = [-Infinity, -Infinity, -Infinity];
 
@@ -45,7 +57,10 @@ export function stlToGlb(stl: Buffer): Buffer {
         nx /= len;
         ny /= len;
         nz /= len;
+        const half = 0.5 + 0.5 * (nx * KEY_LIGHT[0] + ny * KEY_LIGHT[1] + nz * KEY_LIGHT[2]);
+        const shade = 0.3 + 0.7 * Math.pow(half, 1.6); // sRGB : dessus ≈ 1, côtés ≈ 0,5–0,8, dessous ≈ 0,3
         for (let v = 0; v < 3; v++) {
+            for (let k = 0; k < 3; k++) colors[t + v * 3 + k] = toLinear(BASE_COLOR[k] * shade);
             normals[t + v * 3] = nx;
             normals[t + v * 3 + 1] = ny;
             normals[t + v * 3 + 2] = nz;
@@ -64,6 +79,7 @@ export function stlToGlb(stl: Buffer): Buffer {
     const bin = Buffer.concat([
         Buffer.from(positions.buffer, positions.byteOffset, positions.byteLength),
         Buffer.from(normals.buffer, normals.byteOffset, normals.byteLength),
+        Buffer.from(colors.buffer, colors.byteOffset, colors.byteLength),
     ]);
 
     const gltf = {
@@ -72,10 +88,10 @@ export function stlToGlb(stl: Buffer): Buffer {
         scenes: [{ nodes: [0] }],
         // Z vers le haut → Y vers le haut (quart de tour autour de X), millimètres → mètres
         nodes: [{ mesh: 0, rotation: [-Math.SQRT1_2, 0, 0, Math.SQRT1_2], scale: [0.001, 0.001, 0.001] }],
-        meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1 }, material: 0, mode: 4 }] }],
+        meshes: [{ primitives: [{ attributes: { POSITION: 0, NORMAL: 1, COLOR_0: 2 }, material: 0, mode: 4 }] }],
         materials: [
             {
-                pbrMetallicRoughness: { baseColorFactor: [0.86, 0.8, 0.7, 1], metallicFactor: 0, roughnessFactor: 0.7 },
+                pbrMetallicRoughness: { baseColorFactor: [1, 1, 1, 1], metallicFactor: 0, roughnessFactor: 0.8 },
                 doubleSided: true,
             },
         ],
@@ -83,10 +99,17 @@ export function stlToGlb(stl: Buffer): Buffer {
         bufferViews: [
             { buffer: 0, byteOffset: 0, byteLength: positions.byteLength, target: 34962 },
             { buffer: 0, byteOffset: positions.byteLength, byteLength: normals.byteLength, target: 34962 },
+            {
+                buffer: 0,
+                byteOffset: positions.byteLength + normals.byteLength,
+                byteLength: colors.byteLength,
+                target: 34962,
+            },
         ],
         accessors: [
             { bufferView: 0, componentType: 5126, count: vertexCount, type: "VEC3", min, max },
             { bufferView: 1, componentType: 5126, count: vertexCount, type: "VEC3" },
+            { bufferView: 2, componentType: 5126, count: vertexCount, type: "VEC3" },
         ],
     };
 

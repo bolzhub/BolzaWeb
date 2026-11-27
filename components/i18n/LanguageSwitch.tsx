@@ -25,10 +25,12 @@ export default function LanguageSwitch({
     className = "",
     theme = DEFAULT_THEME,
     vertical,
+    showLabel,
 }: {
     className?: string;
     theme?: SwitchTheme;
     vertical?: "mobile";
+    showLabel?: boolean; // affiche « Langue » / « Language » dans la pastille, avant les deux langues
 }) {
     const lang = useLang();
     const setLang = useSetLang();
@@ -48,6 +50,15 @@ export default function LanguageSwitch({
                 ...(theme.ring && { boxShadow: `0 0 0 1px ${theme.ring}, 0 4px 6px -1px rgb(0 0 0 / 0.1)` }),
             }}
         >
+            {showLabel && (
+                <span
+                    aria-hidden
+                    className="trim-cap flex items-center pl-2.5 pr-1 text-xs"
+                    style={{ color: theme.text }}
+                >
+                    {lang === "fr" ? "Langue" : "Language"}
+                </span>
+            )}
             {LANGS.map((l) => {
                 const active = l === lang;
                 return (
