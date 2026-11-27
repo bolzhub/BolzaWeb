@@ -4,6 +4,7 @@ import { createReadStream } from "fs";
 import { Readable } from "stream";
 import path from "path";
 import os from "os";
+import { createHash } from "crypto";
 import { PUBLIC_FOLDERS, PUBLIC_FILES } from "@/lib/media/publicFolders";
 import { DISK_ROOT } from "@/lib/media/config";
 import { stlToGlb } from "@/lib/media/stlToGlb";
@@ -11,13 +12,21 @@ import { GLB_VERSION } from "@/lib/media/glbVersion";
 
 // Versions réduites (?w=) des images, gardées sur disque pour n'être calculées qu'une fois
 const CACHE_DIR = process.env.MEDIA_CACHE_DIR ?? path.join(os.homedir(), "media-cache", "bolzaweb");
+// Nom de base d'un fichier en cache : le chemin aplati, ou une empreinte s'il est trop long
+// (un nom de fichier ne peut pas dépasser 255 octets)
+function cacheBase(relativePath: string): string {
+    const flat = relativePath.replace(/[/\\]/g, "_");
+    if (Buffer.byteLength(flat) <= 160) return flat;
+    return `${createHash("sha1").update(relativePath).digest("hex")}_${path.basename(relativePath).slice(-60)}`;
+}
+
 const RESIZABLE = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 const MAX_WIDTH = 3200;
 
 // Renvoie le chemin d'une version WebP de l'image, à la largeur demandée (sans l'agrandir).
 // Le nom inclut la date de modification : une image remplacée sur le disque produit un nouveau fichier.
 async function resizedFile(source: string, relativePath: string, mtimeMs: number, width: number): Promise<string> {
-    const name = `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}__w${width}.webp`;
+    const name = `${cacheBase(relativePath)}__m${Math.floor(mtimeMs)}__w${width}.webp`;
     const target = path.join(CACHE_DIR, name);
     try {
         await fs.access(target);
@@ -35,10 +44,7 @@ async function resizedFile(source: string, relativePath: string, mtimeMs: number
 
 // Version GLB (?as=glb) d'un modèle STL, pour le visualiseur 3D ; gardée sur disque comme les images réduites
 async function glbFile(source: string, relativePath: string, mtimeMs: number): Promise<string> {
-    const target = path.join(
-        CACHE_DIR,
-        `${relativePath.replace(/[/\\]/g, "_")}__m${Math.floor(mtimeMs)}__${GLB_VERSION}.glb`,
-    );
+    const target = path.join(CACHE_DIR, `${cacheBase(relativePath)}__m${Math.floor(mtimeMs)}__${GLB_VERSION}.glb`);
     try {
         await fs.access(target);
         return target;
