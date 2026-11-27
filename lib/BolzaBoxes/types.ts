@@ -26,6 +26,8 @@ export type Faction = {
     // Tiroirs par version, avec leur nom (un seul « Drawer » si la version n'est pas listée) ;
     // sur le site ce sont les objets drawer, drawer2, drawer3, drawer4, dans cet ordre
     drawers?: Partial<Record<Version, Localized[]>>;
+    // Tous les tiroirs sont photographiés ensemble : en photo, un seul choix « tiroir » (avec ce nom s'il est donné)
+    drawerPhotosTogether?: { label?: Localized };
 };
 
 export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
@@ -75,7 +77,17 @@ export function factionObjects(faction: Faction, version: Version): ObjectType[]
 }
 
 // Nom affiché d'un objet (le nom propre d'un tiroir s'il en a un dans cette version)
-export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr", version: Version): string {
+export function objectLabel(
+    faction: Faction,
+    id: ObjectType,
+    lang: "en" | "fr",
+    version: Version,
+    photos = false, // vue photo : nom du tiroir unique quand tous les tiroirs sont photographiés ensemble
+): string {
+    if (photos && id === "drawer" && faction.drawerPhotosTogether) {
+        const label = faction.drawerPhotosTogether.label;
+        return label ? label[lang] : OBJECT_TYPES.find((o) => o.id === id)!.label[lang];
+    }
     const names = faction.drawers?.[version];
     const index = DRAWER_IDS.indexOf(id);
     if (names && index !== -1 && names[index]) return names[index][lang];

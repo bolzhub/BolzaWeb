@@ -64,8 +64,14 @@ export default function ObjectViewer({
 
     // Objets proposés : pas de boîte en vue 3D (conteneur et tiroir ne s'affichent pas ensemble).
     // L'objet choisi est gardé s'il existe pour cette faction, sinon on prend le plus proche.
+    // En photo, quand tous les tiroirs sont photographiés ensemble, un seul choix « tiroir ».
+    const isPhoto = viewMode.type === "image";
+    const photosTogether = isPhoto && !!faction.drawerPhotosTogether;
     const objects = OBJECT_TYPES.filter(
-        (o) => factionObjects(faction, version).includes(o.id) && !(viewMode.type === "mesh" && o.id === "box"),
+        (o) =>
+            factionObjects(faction, version).includes(o.id) &&
+            !(viewMode.type === "mesh" && o.id === "box") &&
+            !(photosTogether && isDrawer(o.id) && o.id !== "drawer"),
     );
     const objectIds = objects.map((o) => o.id);
     // La vidéo montre l'ensemble : toujours la boîte (ou l'objet unique de la faction), sans choix d'objet
@@ -307,7 +313,7 @@ export default function ObjectViewer({
                                                 opacity: isActive ? 1 : 0.55,
                                             }}
                                         >
-                                            {objectLabel(faction, o.id, lang, version)}
+                                            {objectLabel(faction, o.id, lang, version, isPhoto)}
                                         </button>
                                     </div>
                                 );
@@ -329,7 +335,7 @@ export default function ObjectViewer({
                         {viewMode.type === "image" && (
                             <img
                                 src={src}
-                                alt={`${name} — ${objectLabel(faction, objectType, lang, version)} — ${viewMode.label[lang]}`}
+                                alt={`${name} — ${objectLabel(faction, objectType, lang, version, isPhoto)} — ${viewMode.label[lang]}`}
                                 className="absolute inset-0 w-full h-full object-contain"
                             />
                         )}
