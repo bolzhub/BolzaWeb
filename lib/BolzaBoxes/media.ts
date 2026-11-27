@@ -91,7 +91,9 @@ const DRAWERS: Record<"international" | "french", Record<string, string | string
         "hirelings-unique": "French/Drawers/Snap_fit/Final/FrDc.0.1-hirelings.porcupines_stag_weasels.stl",
         "hirelings-factions": [
             "French/Drawers/Snap_fit/Final/FrDc.1.1-hirelings.cats_eyries.stl",
+            "French/Drawers/Snap_fit/Final/FrDc.1.2-hirelings.alliance_vagabond_lizards_otters.stl",
             "French/Drawers/Snap_fit/Final/FrDc.1.3-hirelings.moles_corvids.stl",
+            "French/Drawers/Snap_fit/Final/FrDc.1.4-hirelings.rats_badgers.stl",
         ],
     },
 };

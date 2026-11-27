@@ -89,8 +89,8 @@ const FACTION_DATA = {
     "hirelings-factions": {
         color: "lightpink",
         name: { en: "Hirelings Factions", fr: "Mercenaires de faction" },
-        // tiroirs Dc.1.1 à Dc.1.4 ; en français seuls 1.1 et 1.3 sont finalisés
-        drawers: { international: numbered(4), french: numbered(2, [1, 3]) },
+        // tiroirs Dc.1.1 à Dc.1.4
+        drawers: { international: numbered(4), french: numbered(4) },
     },
     extra: { name: { en: "Extra", fr: "Extra" }, color: "darkbrown", objects: ["holder"] },
 } satisfies Record<string, FactionData>;
