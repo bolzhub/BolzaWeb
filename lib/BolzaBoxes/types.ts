@@ -3,7 +3,7 @@ import type { Version } from "./VersionContext";
 import { GLB_VERSION } from "@/lib/media/glbVersion";
 import { FACTION_FILES, MEDIA, PROJECT_ROOT, projectMediaUrl } from "./media";
 
-export type ObjectType = "box" | "drawer" | "container" | "holder";
+export type ObjectType = "box" | "drawer" | "drawer2" | "container" | "holder";
 export type ViewModeType = "image" | "video" | "mesh" | "link";
 export type Glass = "glass" | "no-glass";
 
@@ -27,6 +27,7 @@ export const OBJECT_TYPES: { id: ObjectType; label: Localized }[] = [
     { id: "container", label: { en: "Container", fr: "Conteneur" } },
     { id: "box", label: { en: "Box", fr: "Boîte" } },
     { id: "drawer", label: { en: "Drawer", fr: "Tiroir" } },
+    { id: "drawer2", label: { en: "Drawer 2", fr: "Tiroir 2" } }, // second tiroir (Vagabond)
     { id: "holder", label: { en: "Holder", fr: "Support" } },
 ];
 
@@ -58,9 +59,17 @@ export function assetFileName(objectType: ObjectType, viewMode: ViewMode, glass:
     return `${objectType}-${viewMode.id}-${glass}.${EXT_BY_TYPE[viewMode.type]}`;
 }
 
+export const isDrawer = (o: ObjectType) => o === "drawer" || o === "drawer2";
+
+// Nom affiché d'un objet : « Drawer » devient « Drawer 1 » quand la faction a un second tiroir
+export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr"): string {
+    if (id === "drawer" && faction.objects.includes("drawer2")) return lang === "fr" ? "Tiroir 1" : "Drawer 1";
+    return OBJECT_TYPES.find((o) => o.id === id)!.label[lang];
+}
+
 // Un tiroir est le même avec ou sans vitre : ses fichiers sont toujours ceux « glass »
 export function effectiveGlass(objectType: ObjectType, glass: Glass): Glass {
-    return objectType === "drawer" ? "glass" : glass;
+    return isDrawer(objectType) ? "glass" : glass;
 }
 
 // Chemin d'une vue relatif au dossier du projet : fichier désigné dans FACTION_FILES, sinon dossier par défaut
@@ -100,10 +109,9 @@ export function getDownloadPath(
 ): string {
     const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
     const ext = relative.slice(relative.lastIndexOf("."));
-    const name =
-        objectType === "drawer"
-            ? `${factionSlug}-${version}-drawer${ext}`
-            : `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
+    const name = isDrawer(objectType)
+        ? `${factionSlug}-${version}-${objectType}${ext}`
+        : `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
     return `${projectMediaUrl(relative)}?download=${encodeURIComponent(name)}`;
 }
 

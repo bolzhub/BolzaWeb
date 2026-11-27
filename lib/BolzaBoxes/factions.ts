@@ -36,7 +36,11 @@ const FACTION_DATA = {
     cats: { name: { en: "Marquise de Cat", fr: "Marquise de Chat" }, color: "orange" },
     eyries: { name: { en: "Eyrie Dynasties", fr: "Dynasties de la Canopée" }, color: "blue" },
     alliance: { name: { en: "Woodland Alliance", fr: "Alliance de la Forêt" }, color: "green" },
-    vagabond: { name: { en: "Vagabond", fr: "Vagabond" }, color: "greywhite" },
+    vagabond: {
+        name: { en: "Vagabond", fr: "Vagabond" },
+        color: "greywhite",
+        objects: ["container", "box", "drawer", "drawer2"], // deux tiroirs : 9 meeples et cartonnage
+    },
     lizards: {
         color: "yellow",
         name: { en: "The Lizard Cult", fr: "Culte des Lézards" },

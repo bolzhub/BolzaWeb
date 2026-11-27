@@ -5,6 +5,8 @@ import {
     OBJECT_TYPES,
     VIEW_MODES,
     getAssetPath,
+    isDrawer,
+    objectLabel,
     type Faction,
     type ObjectType,
     type Glass,
@@ -293,7 +295,7 @@ export default function ObjectViewer({
                                             opacity: isActive ? 1 : 0.55,
                                         }}
                                     >
-                                        {o.label[lang]}
+                                        {objectLabel(faction, o.id, lang)}
                                     </button>
                                 </div>
                             );
@@ -314,7 +316,7 @@ export default function ObjectViewer({
                         {viewMode.type === "image" && (
                             <img
                                 src={src}
-                                alt={`${name} — ${OBJECT_TYPES.find((o) => o.id === objectType)!.label[lang]} — ${viewMode.label[lang]}`}
+                                alt={`${name} — ${objectLabel(faction, objectType, lang)} — ${viewMode.label[lang]}`}
                                 className="absolute inset-0 w-full h-full object-contain"
                             />
                         )}
@@ -349,8 +351,8 @@ export default function ObjectViewer({
                     {/* Un tiroir est le même avec ou sans vitre : boutons invisibles (place gardée, le cadre ne bouge pas) */}
                     <div
                         ref={glassRef}
-                        aria-hidden={objectType === "drawer" || undefined}
-                        className={`${objectType === "drawer" ? "invisible" : ""} col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2`}
+                        aria-hidden={isDrawer(objectType) || undefined}
+                        className={`${isDrawer(objectType) ? "invisible" : ""} col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2`}
                     >
                         {(["glass", "no-glass"] as Glass[]).map((g) => {
                             const isActive = g === glass;

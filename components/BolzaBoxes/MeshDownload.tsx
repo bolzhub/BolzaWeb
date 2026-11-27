@@ -7,6 +7,8 @@ import {
     MESH_VIEW,
     OBJECT_TYPES,
     getDownloadPath,
+    isDrawer,
+    objectLabel,
     type Faction,
     type Glass,
     type ObjectType,
@@ -65,17 +67,19 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
         return () => window.removeEventListener("keydown", onKey);
     }, [open]);
 
+    // choix proposés : chaque objet téléchargeable de la boîte, plus « les deux » (ou « tout ») s'il y a tiroir et conteneur
+    const objects = faction.objects.filter((o) => o !== "box");
+
     // un tiroir n'a pas de variante avec / sans vitre : il compte pour les deux
     const has = (object: ObjectType, g: Glass) =>
-        !!available?.some((m) => m.object === object && (object === "drawer" || m.glass === g));
-    const needsGlass = (c: Choice) => objectsFor(c).some((o) => o !== "drawer");
-    const objectsFor = (c: Choice): ObjectType[] => (c === "both" ? ["drawer", "container"] : [c]);
+        !!available?.some((m) => m.object === object && (isDrawer(object) || m.glass === g));
+    const needsGlass = (c: Choice) => objectsFor(c).some((o) => !isDrawer(o));
+    const objectsFor = (c: Choice): ObjectType[] =>
+        c === "both" ? objects.filter((o) => isDrawer(o) || o === "container") : [c];
     const choiceAvailable = (c: Choice, g: Glass) => objectsFor(c).every((o) => has(o, g));
 
-    // choix proposés : chaque objet téléchargeable de la boîte, plus « les deux » s'il y a tiroir et conteneur
-    const objects = faction.objects.filter((o) => o !== "box");
     const choices: Choice[] =
-        objects.includes("drawer") && objects.includes("container") ? ["drawer", "container", "both"] : objects;
+        objects.includes("drawer") && objects.includes("container") ? [...objects, "both"] : objects;
     const visibleChoices = choices.filter((c) => choiceAvailable(c, "glass") || choiceAvailable(c, "no-glass"));
     const glasses = (["glass", "no-glass"] as Glass[]).filter((g) =>
         choice && needsGlass(choice) ? choiceAvailable(choice, g) : false,
@@ -83,7 +87,15 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
     const ready = !!choice && (!needsGlass(choice) || !!glass);
 
     const label = (c: Choice) =>
-        c === "both" ? (fr ? "Les deux" : "Both") : OBJECT_TYPES.find((o) => o.id === c)!.label[lang];
+        c === "both"
+            ? objectsFor("both").length > 2
+                ? fr
+                    ? "Tout"
+                    : "All"
+                : fr
+                  ? "Les deux"
+                  : "Both"
+            : objectLabel(faction, c, lang);
 
     const download = () => {
         if (!choice || !ready) return;

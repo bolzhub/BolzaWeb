@@ -36,7 +36,7 @@ const DRAWERS: Record<"international" | "french", Record<string, string>> = {
         cats: "International/Drawers/Snap_fit/Final/EnD01-cats.stl",
         eyries: "International/Drawers/Snap_fit/Final/EnD02-eyries.stl",
         alliance: "International/Drawers/Snap_fit/Final/EnD03-alliance.stl",
-        vagabond: "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl",
+        vagabond: "International/Drawers/Snap_fit/Final/EnD04.1Bis-vagabond.9_meeples.stl", // seul .1 de Final
         lizards: "International/Drawers/Snap_fit/Final/EnD05.1-lizards.main.stl",
         otters: "International/Drawers/Snap_fit/Final/EnD06-otters.stl",
         moles: "International/Drawers/Snap_fit/Final/EnD07-moles.stl",
@@ -64,6 +64,11 @@ const DRAWERS: Record<"international" | "french", Record<string, string>> = {
         "hirelings-unique": "French/Drawers/Snap_fit/Final/FrDc.0.1-hirelings.porcupines_stag_weasels.stl",
         "hirelings-factions": "French/Drawers/Snap_fit/Final/FrDc.1.1-hirelings.cats_eyries.stl",
     },
+};
+// Second tiroir (objet drawer2, « Drawer 2 » sur le site)
+const DRAWERS_2: Record<"international" | "french", Record<string, string>> = {
+    international: { vagabond: "International/Drawers/Snap_fit/Final/EnD04.2-vagabond.cardboard.stl" },
+    french: { vagabond: "French/Drawers/Snap_fit/Final/FrD04.2-vagabond.cardboard.stl" },
 };
 const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
     international: {
@@ -100,11 +105,39 @@ const CONTAINERS: Record<"international" | "french", Record<string, string>> = {
     },
 };
 
+// 🎬 Vidéos de présentation (version française), réencodées pour le web depuis Workshop/11-Videos/Result/
+// (les .mov d'origine, à 11 Mbit/s, sont trop lourds pour être servis depuis la Pi)
+const VIDEOS = "Workshop/11-Videos/Web";
+const FRENCH_VIDEOS: Record<string, string> = {
+    cats: "Marquise_de_Cat.mp4",
+    eyries: "Eyrie_Dynasties.mp4",
+    alliance: "Woodland_Alliance.mp4",
+    lizards: "Lizard_Cult.mp4",
+    otters: "Riverfolk_Company.mp4",
+    moles: "Underground_Duchy.mp4",
+    corvids: "Corvid_Conspiracy.mp4",
+    rats: "Lord_of_the_Hundreds.mp4",
+    badgers: "Keepers_in_Iron.mp4",
+    setup: "Setup.mp4",
+};
+
+function videoEntries(): Record<string, string> {
+    const entries: Record<string, string> = {};
+    for (const [slug, file] of Object.entries(FRENCH_VIDEOS)) {
+        entries[`${slug}/french/box-video-glass`] = `${VIDEOS}/${file}`;
+        entries[`${slug}/french/box-video-no-glass`] = `${VIDEOS}/${file}`;
+    }
+    return entries;
+}
+
 function modelEntries(): Record<string, string> {
     const entries: Record<string, string> = {};
     for (const version of ["international", "french"] as const) {
         for (const [slug, file] of Object.entries(DRAWERS[version])) {
             entries[`${slug}/${version}/drawer-mesh-glass`] = `${MODELS}/${file}`; // tiroir : pas de variante vitre
+        }
+        for (const [slug, file] of Object.entries(DRAWERS_2[version])) {
+            entries[`${slug}/${version}/drawer2-mesh-glass`] = `${MODELS}/${file}`;
         }
         for (const [slug, file] of Object.entries(CONTAINERS[version])) {
             entries[`${slug}/${version}/container-mesh-glass`] = `${MODELS}/${file}`;
@@ -116,12 +149,13 @@ function modelEntries(): Record<string, string> {
 // 🎯 Fichiers des pages Boîtes pris ailleurs que dans le dossier par défaut.
 // Clé : "<slug>/<version>/<objet>-<vue>-<vitre>" (sans extension) ; "*" à la place de la version = les deux.
 // Valeur : chemin du fichier, relatif au dossier du projet. Une entrée ici l'emporte sur le placeholder.
-//   objets : container, box, drawer, holder — vues : full, empty, logos, mesh, video, in-box, stickers
+//   objets : container, box, drawer, drawer2 (second tiroir), holder — vues : full, empty, logos, mesh, video, in-box, stickers
 //   vitre : glass (Window / Avec vitre), no-glass (No Window / Sans vitre) ; toujours glass pour un tiroir
 //   (vue video : objet box, la vidéo montre l'ensemble)
 // Pour la vue mesh, un .stl ou un .glb convient.
 export const FACTION_FILES: Record<string, string> = {
     ...modelEntries(),
+    ...videoEntries(),
     // "cats/international/box-full-glass": "Workshop/9-Photoshoot/Scenes/photo2.jpg",
 };
 
