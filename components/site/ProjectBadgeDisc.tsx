@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import type { ProjectBadge } from "@/lib/site/projects";
 import { BROWN_GRADIENT } from "@/lib/site/theme";
 
@@ -11,10 +11,13 @@ const MAX_DIAMETER = 128;
 const TEXT_MIN_DIAMETER = 88; // en dessous, on n'affiche que l'icône
 const LETTER_SPACING = 3.2; // à ajuster si le texte ne fait pas exactement le tour du disque
 
-function diameterFor(rectWidth: number | undefined): number {
+// Le disque suit la largeur du rectangle, sans jamais dépasser sa hauteur
+// (rectangles larges mais bas, par exemple sur portable en paysage)
+function diameterFor(rectWidth: number | undefined, rectHeight: number | undefined): number {
     if (rectWidth === undefined) return MIN_DIAMETER;
     const wanted = Math.max(MIN_DIAMETER, Math.min(MAX_DIAMETER, rectWidth * 0.42));
-    return Math.max(20, Math.min(wanted, rectWidth - INSET * 2));
+    const room = Math.min(rectWidth, rectHeight ?? Infinity) - INSET * 2;
+    return Math.max(20, Math.min(wanted, room));
 }
 
 function cornerStyle(corner: NonNullable<ProjectBadge["corner"]>): React.CSSProperties {
@@ -37,12 +40,24 @@ export default function ProjectBadgeDisc({
     rectWidth: number | undefined;
     onClick: (e: MouseEvent<HTMLAnchorElement>) => void;
 }) {
-    const d = diameterFor(rectWidth);
+    // hauteur du rectangle parent, mesurée (sur portable, c'est la grille CSS qui la fixe)
+    const ref = useRef<HTMLAnchorElement>(null);
+    const [rectHeight, setRectHeight] = useState<number>();
+    useEffect(() => {
+        const parent = ref.current?.parentElement;
+        if (!parent) return;
+        const observer = new ResizeObserver(() => setRectHeight(parent.clientHeight));
+        observer.observe(parent);
+        return () => observer.disconnect();
+    }, []);
+
+    const d = diameterFor(rectWidth, rectHeight);
     const showText = d >= TEXT_MIN_DIAMETER;
     const pathId = `badge-path-${projectId}`;
 
     return (
         <Link
+            ref={ref}
             href={badge.href}
             aria-label={badge.title}
             onClick={onClick}
