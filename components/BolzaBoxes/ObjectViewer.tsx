@@ -12,6 +12,9 @@ import {
 import { FRAME_BG, TAB_RADIUS } from "@/lib/BolzaBoxes/style";
 import MeshViewer from "./MeshViewer";
 import MeshDownload from "./MeshDownload";
+import FactionInfo from "./FactionInfo";
+import { FACTIONS } from "@/lib/BolzaBoxes/factions";
+import { LANGS } from "@/lib/i18n/lang";
 import { useVersion } from "@/lib/BolzaBoxes/VersionContext";
 import { useLang } from "@/lib/i18n/LanguageContext";
 
@@ -94,53 +97,68 @@ export default function ObjectViewer({
             return;
         }
 
-        // Ordinateur : on élargit le cadre tant que le titre tient sur une ligne
+        // Ordinateur : on élargit le cadre tant que le titre tient sur deux lignes au plus
         // et que la description ne descend pas plus bas que les boutons de vitre
         const cs = getComputedStyle(row);
         const content = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         const side = types.offsetWidth + parseFloat(getComputedStyle(grid).columnGap || "0");
+        const glassH = glassRow.offsetHeight;
         const above = modes.offsetHeight;
-        const infoWidthFor = (w: number) => content - ROW_GAP - side - w;
+        const infoMax = content - ROW_GAP - side - MIN_FRAME;
 
-        const title = measure.querySelector("h1");
-        measure.style.width = "100000px";
-        const oneLine = title?.offsetHeight ?? 0;
-        const cache = new Map<number, { height: number; titleFits: boolean }>();
-        const measureAt = (infoW: number) => {
-            const key = Math.round(infoW);
-            let m = cache.get(key);
-            if (!m) {
-                measure.style.width = `${key}px`;
-                m = { height: measure.offsetHeight, titleFits: !title || title.offsetHeight <= oneLine * 1.2 };
-                cache.set(key, m);
-            }
-            return m;
-        };
+        // Mesures de toutes les factions, dans les deux langues : la largeur maximale du cadre
+        // est la même partout, fixée par la faction la plus exigeante (titre le plus long, etc.)
+        const items = [...measure.children].map((el) => {
+            const box = el as HTMLElement;
+            return { box, title: box.querySelector("h1"), oneLine: 0 };
+        });
+        for (const it of items) it.box.style.width = "100000px";
+        for (const it of items) it.oneLine = it.title?.offsetHeight ?? 0;
+        const fits = (it: (typeof items)[number], h: number) =>
+            (!it.title || it.title.offsetHeight <= it.oneLine * 2.2) && it.box.offsetHeight <= above + h + glassH;
 
-        let wUpper = content - ROW_GAP - side - MIN_INFO;
-        if (aspect !== null) wUpper = Math.min(wUpper, hMax * aspect);
-        const wLower = Math.min(wUpper, aspect === null ? MIN_FRAME : MIN_FRAME * Math.max(1, aspect));
-
-        let best: Size | null = null;
-        let bestOvershoot = Infinity;
-        for (let w = Math.floor(wUpper); w >= wLower; w -= STEP) {
-            const h = aspect === null ? hMax : w / aspect;
-            const m = measureAt(infoWidthFor(w));
-            if (!m.titleFits) continue;
-            const overshoot = m.height - (above + h + glassRow.offsetHeight);
-            if (overshoot <= 0) {
-                best = { w, h };
-                break;
-            }
-            // Aucune taille ne convient (description très longue) : on garde la moins débordante
-            if (overshoot < bestOvershoot) {
-                bestOvershoot = overshoot;
-                best = { w, h };
-            }
+        // Recherche dichotomique, menée en parallèle pour toutes les mesures (une mise en page par tour) :
+        // plus la description est large, plus elle est courte, donc la condition est monotone
+        const lo = items.map(() => MIN_INFO);
+        const hi = items.map(() => Math.max(MIN_INFO, infoMax));
+        while (lo.some((l, i) => hi[i] - l > 2)) {
+            const mid = lo.map((l, i) => Math.floor((l + hi[i]) / 2));
+            items.forEach((it, i) => (it.box.style.width = `${mid[i]}px`));
+            items.forEach((it, i) => {
+                if (hi[i] - lo[i] <= 2) return;
+                if (fits(it, hMax)) hi[i] = mid[i];
+                else lo[i] = mid[i];
+            });
         }
-        if (!best) {
-            const w = Math.max(wLower, 0);
-            best = { w, h: aspect === null ? hMax : w / aspect };
+        const infoMin = Math.max(MIN_INFO, ...hi);
+        const wUniform = Math.max(MIN_FRAME, content - ROW_GAP - side - infoMin);
+
+        let best: Size = { w: wUniform, h: hMax };
+        if (aspect !== null) {
+            // Photo ou vidéo : cadre aux proportions du média, borné par la largeur commune et la hauteur ;
+            // on le réduit encore si la description de cette faction dépasse les boutons de vitre, plus hauts
+            const current = items.find((it) => it.box.dataset.current === "1");
+            const wUpper = Math.min(wUniform, hMax * aspect);
+            const wLower = Math.min(wUpper, MIN_FRAME * Math.max(1, aspect));
+            best = { w: wUpper, h: wUpper / aspect };
+            if (current) {
+                let bestOvershoot = Infinity;
+                for (let w = Math.floor(wUpper); w >= wLower; w -= STEP) {
+                    const h = w / aspect;
+                    current.box.style.width = `${content - ROW_GAP - side - w}px`;
+                    const overshoot = current.box.offsetHeight - (above + h + glassH);
+                    if (current.title && current.title.offsetHeight > current.oneLine * 2.2) continue;
+                    if (overshoot <= 0) {
+                        best = { w, h };
+                        break;
+                    }
+                    // Aucune taille ne convient (description très longue) : on garde la moins débordante
+                    if (overshoot < bestOvershoot) {
+                        bestOvershoot = overshoot;
+                        best = { w, h };
+                    }
+                }
+            }
         }
         setSize({ ...best, side });
     }, [aspect]);
@@ -192,14 +210,14 @@ export default function ObjectViewer({
             >
                 {/* Rangée du haut : modes de vue (défilables) et téléchargement d'un mesh */}
                 <div ref={modesRef} className="flex items-start gap-2 min-w-0">
-                    <div className="flex flex-1 gap-2 overflow-x-auto pb-2 min-w-0">
+                    <div className="flex flex-1 gap-1 overflow-x-auto pb-1.5 min-w-0 lg:gap-2 lg:pb-2">
                         {VIEW_MODES.map((v) => {
                             const isActive = v.id === viewModeId;
                             return (
                                 <button
                                     key={v.id}
                                     onClick={() => setViewModeId(v.id)}
-                                    className="whitespace-nowrap text-sm tracking-wide px-3 py-1.5 rounded-lg shrink-0 transition-opacity"
+                                    className="whitespace-nowrap text-xs tracking-wide px-2 py-1 rounded-md shrink-0 transition-opacity lg:text-sm lg:px-3 lg:py-1.5 lg:rounded-lg"
                                     style={{
                                         fontFamily: "var(--font-playfair)",
                                         backgroundColor: isActive ? FRAME_BG : "transparent",
@@ -222,7 +240,7 @@ export default function ObjectViewer({
                 >
                     <div
                         ref={typesRef}
-                        className="col-start-1 row-start-2 flex justify-center gap-2 pt-3 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0"
+                        className="col-start-1 row-start-2 flex justify-center gap-1 pt-1.5 lg:row-start-1 lg:flex-col lg:justify-evenly lg:gap-0 lg:pt-0"
                     >
                         {OBJECT_TYPES.filter((o) => faction.objects.includes(o.id)).map((o) => {
                             const isActive = o.id === objectType;
@@ -230,7 +248,7 @@ export default function ObjectViewer({
                                 <div key={o.id} className="flex justify-center lg:px-1">
                                     <button
                                         onClick={() => setObjectType(o.id)}
-                                        className="whitespace-nowrap text-sm tracking-widest px-3 py-1.5 rounded-lg transition-opacity lg:px-2 lg:py-2 lg:[writing-mode:sideways-lr]"
+                                        className="whitespace-nowrap text-xs tracking-wider px-2 py-1 rounded-md transition-opacity lg:text-sm lg:tracking-widest lg:rounded-lg lg:px-2 lg:py-2 lg:[writing-mode:sideways-lr]"
                                         style={{
                                             fontFamily: "var(--font-playfair)",
                                             backgroundColor: isActive ? FRAME_BG : "transparent",
@@ -292,7 +310,7 @@ export default function ObjectViewer({
 
                     <div
                         ref={glassRef}
-                        className="col-start-1 row-start-3 flex justify-center gap-4 pt-3 lg:col-start-2 lg:row-start-2"
+                        className="col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2"
                     >
                         {(["glass", "no-glass"] as Glass[]).map((g) => {
                             const isActive = g === glass;
@@ -300,7 +318,7 @@ export default function ObjectViewer({
                                 <button
                                     key={g}
                                     onClick={() => setGlass(g)}
-                                    className="text-sm tracking-wide px-4 py-2 rounded-lg transition-opacity"
+                                    className="text-xs tracking-wide px-3 py-1 rounded-md transition-opacity lg:text-sm lg:px-4 lg:py-2 lg:rounded-lg"
                                     style={{
                                         fontFamily: "var(--font-playfair)",
                                         backgroundColor: isActive ? FRAME_BG : "transparent",
@@ -317,14 +335,25 @@ export default function ObjectViewer({
 
             <div className="lg:flex-1 min-w-0 lg:pt-4">{info}</div>
 
-            {/* Copie invisible de la description, pour mesurer sa hauteur à différentes largeurs */}
+            {/* Copies invisibles des descriptions de toutes les factions, dans les deux langues,
+                pour mesurer leur hauteur à différentes largeurs */}
             <div
                 ref={measureRef}
                 aria-hidden
                 inert
-                className="pointer-events-none invisible absolute left-0 top-0 lg:pt-4"
+                className="pointer-events-none invisible absolute left-0 top-0 hidden h-0 w-0 overflow-hidden lg:block"
             >
-                {info}
+                {FACTIONS.flatMap((f) =>
+                    LANGS.map((l) => (
+                        <div
+                            key={`${f.slug}-${l}`}
+                            data-current={f.slug === faction.slug && l === lang ? "1" : undefined}
+                            className="pt-4"
+                        >
+                            <FactionInfo faction={f} textColor={textColor} lang={l} />
+                        </div>
+                    )),
+                )}
             </div>
         </div>
     );

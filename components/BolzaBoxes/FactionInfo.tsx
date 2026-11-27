@@ -2,9 +2,19 @@
 
 import type { Faction } from "@/lib/BolzaBoxes/types";
 import { useLang } from "@/lib/i18n/LanguageContext";
+import type { Lang } from "@/lib/i18n/lang";
 
-export default function FactionInfo({ faction, textColor }: { faction: Faction; textColor: string }) {
-    const lang = useLang();
+export default function FactionInfo({
+    faction,
+    textColor,
+    lang: forcedLang,
+}: {
+    faction: Faction;
+    textColor: string;
+    lang?: Lang; // langue imposée (mesures), sinon celle du site
+}) {
+    const siteLang = useLang();
+    const lang = forcedLang ?? siteLang;
     return (
         <div className="flex flex-col gap-3" style={{ color: textColor }}>
             <div className="hidden lg:flex items-center gap-3">
