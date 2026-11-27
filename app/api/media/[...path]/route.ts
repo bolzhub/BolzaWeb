@@ -7,6 +7,7 @@ import os from "os";
 import { PUBLIC_FOLDERS, PUBLIC_FILES } from "@/lib/media/publicFolders";
 import { DISK_ROOT } from "@/lib/media/config";
 import { stlToGlb } from "@/lib/media/stlToGlb";
+import { GLB_VERSION } from "@/lib/media/glbVersion";
 
 // Versions réduites (?w=) des images, gardées sur disque pour n'être calculées qu'une fois
 const CACHE_DIR = process.env.MEDIA_CACHE_DIR ?? path.join(os.homedir(), "media-cache", "bolzaweb");
@@ -31,9 +32,6 @@ async function resizedFile(source: string, relativePath: string, mtimeMs: number
     await fs.rename(tmp, target);
     return target;
 }
-
-// À changer quand la conversion change : les anciens GLB en cache sont alors ignorés
-const GLB_VERSION = "v3";
 
 // Version GLB (?as=glb) d'un modèle STL, pour le visualiseur 3D ; gardée sur disque comme les images réduites
 async function glbFile(source: string, relativePath: string, mtimeMs: number): Promise<string> {

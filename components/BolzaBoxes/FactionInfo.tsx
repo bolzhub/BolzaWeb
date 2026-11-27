@@ -4,6 +4,12 @@ import type { Faction } from "@/lib/BolzaBoxes/types";
 import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Lang } from "@/lib/i18n/lang";
 
+// Note commune à toutes les boîtes, sous la description
+const MESH_NOTE = {
+    fr: "Des artefacts sont parfois visibles sur les maillages, mais qui disparaissent à l'impression. Ils partent déjà dans les slicers des logiciels d'impressions 3D.",
+    en: "Artifacts are sometimes visible on the meshes, but they disappear when printed. They are already gone in the slicers of 3D printing software.",
+};
+
 export default function FactionInfo({
     faction,
     textColor,
@@ -28,6 +34,9 @@ export default function FactionInfo({
             </div>
             <p className="opacity-80 leading-relaxed lg:text-xl" style={{ fontFamily: "var(--font-cinzel)" }}>
                 {faction.description[lang]}
+            </p>
+            <p className="opacity-70 leading-relaxed lg:text-lg" style={{ fontFamily: "var(--font-cinzel)" }}>
+                {MESH_NOTE[lang]}
             </p>
         </div>
     );

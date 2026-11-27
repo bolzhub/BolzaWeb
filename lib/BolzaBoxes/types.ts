@@ -1,5 +1,6 @@
 import type { Localized } from "@/lib/i18n/lang";
 import type { Version } from "./VersionContext";
+import { GLB_VERSION } from "@/lib/media/glbVersion";
 import { FACTION_FILES, MEDIA, PROJECT_ROOT, projectMediaUrl } from "./media";
 
 export type ObjectType = "box" | "drawer" | "container" | "holder";
@@ -80,7 +81,7 @@ export function getAssetPath(
     const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
     const url = projectMediaUrl(relative);
     // Un modèle STL est converti en GLB par /api/media pour le visualiseur 3D
-    return relative.toLowerCase().endsWith(".stl") ? `${url}?as=glb` : url;
+    return relative.toLowerCase().endsWith(".stl") ? `${url}?as=glb&v=${GLB_VERSION}` : url;
 }
 
 // Lien de téléchargement d'une vue : fichier d'origine (STL ou GLB), sous un nom lisible

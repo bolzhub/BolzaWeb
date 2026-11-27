@@ -32,7 +32,9 @@ const KEY_LIGHT = (() => {
     const n = Math.hypot(...v);
     return v.map((x) => x / n);
 })();
-const BASE_COLOR = [0.88, 0.76, 0.6]; // bois clair, en sRGB
+const BASE_COLOR = [1, 1, 1]; // blanc, en sRGB
+// Hauteur de la lumière vue par une face horizontale tournée vers le haut : elle sert de référence (blanc pur)
+const TOP_HALF = 0.5 + 0.5 * KEY_LIGHT[2];
 const toLinear = (c: number) => Math.pow(c, 2.2); // glTF attend des couleurs de sommet linéaires
 
 export function stlToGlb(stl: Buffer): Buffer {
@@ -58,7 +60,8 @@ export function stlToGlb(stl: Buffer): Buffer {
         ny /= len;
         nz /= len;
         const half = 0.5 + 0.5 * (nx * KEY_LIGHT[0] + ny * KEY_LIGHT[1] + nz * KEY_LIGHT[2]);
-        const shade = 0.3 + 0.7 * Math.pow(half, 1.6); // sRGB : dessus ≈ 1, côtés ≈ 0,5–0,8, dessous ≈ 0,3
+        // Fort contraste : dessus blanc, face ≈ 0,85, côté gauche ≈ 0,7, côté droit ≈ 0,2, dessous ≈ 0,15 (sRGB)
+        const shade = Math.min(1, 0.12 + 0.88 * Math.pow(half / TOP_HALF, 2));
         for (let v = 0; v < 3; v++) {
             for (let k = 0; k < 3; k++) colors[t + v * 3 + k] = toLinear(BASE_COLOR[k] * shade);
             normals[t + v * 3] = nx;
