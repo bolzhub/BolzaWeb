@@ -82,9 +82,12 @@ export function objectLabel(faction: Faction, id: ObjectType, lang: "en" | "fr",
     return OBJECT_TYPES.find((o) => o.id === id)!.label[lang];
 }
 
-// Un tiroir est le même avec ou sans vitre : ses fichiers sont toujours ceux « glass »
+// Seuls la boîte et le conteneur existent avec ou sans vitre ; tiroirs et supports n'ont qu'une variante,
+// dont les fichiers sont toujours ceux « glass »
+export const hasWindowVariants = (o: ObjectType) => o === "box" || o === "container";
+
 export function effectiveGlass(objectType: ObjectType, glass: Glass): Glass {
-    return isDrawer(objectType) ? "glass" : glass;
+    return hasWindowVariants(objectType) ? glass : "glass";
 }
 
 const IMAGE_WIDTH = 1600;
@@ -129,9 +132,9 @@ export function getDownloadPath(
 ): string {
     const relative = assetRelativePath(factionSlug, version, objectType, viewMode, glass);
     const ext = relative.slice(relative.lastIndexOf("."));
-    const name = isDrawer(objectType)
-        ? `${factionSlug}-${version}-${objectType}${ext}`
-        : `${factionSlug}-${version}-${objectType}-${glass}${ext}`;
+    const name = hasWindowVariants(objectType)
+        ? `${factionSlug}-${version}-${objectType}-${glass}${ext}`
+        : `${factionSlug}-${version}-${objectType}${ext}`;
     return `${projectMediaUrl(relative)}?download=${encodeURIComponent(name)}`;
 }
 

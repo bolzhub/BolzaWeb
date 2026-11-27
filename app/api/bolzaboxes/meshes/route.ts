@@ -9,6 +9,7 @@ import {
     PLACEHOLDER_MESH_SIGNATURE,
     assetRelativePath,
     factionObjects,
+    hasWindowVariants,
     isDrawer,
     type Glass,
     type ObjectType,
@@ -50,8 +51,8 @@ export async function GET(req: NextRequest) {
     const candidates = factionObjects(faction, version)
         .filter(DOWNLOADABLE)
         .flatMap((object) =>
-            // un tiroir n'a pas de variante avec / sans vitre
-            (isDrawer(object) ? (["glass"] as Glass[]) : GLASSES).map((glass) => ({ object, glass })),
+            // tiroirs et supports n'ont pas de variante avec / sans vitre
+            (hasWindowVariants(object) ? GLASSES : (["glass"] as Glass[])).map((glass) => ({ object, glass })),
         );
 
     const checks = await Promise.all(

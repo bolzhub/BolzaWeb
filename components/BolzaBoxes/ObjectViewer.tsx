@@ -6,6 +6,7 @@ import {
     VISIBLE_VIEW_MODES,
     getAssetPath,
     factionObjects,
+    hasWindowVariants,
     isDrawer,
     objectLabel,
     type Faction,
@@ -360,11 +361,11 @@ export default function ObjectViewer({
                         )}
                     </div>
 
-                    {/* Un tiroir est le même avec ou sans vitre : boutons invisibles (place gardée, le cadre ne bouge pas) */}
+                    {/* Tiroirs et supports n'ont pas de variante avec / sans vitre : boutons invisibles (place gardée, le cadre ne bouge pas) */}
                     <div
                         ref={glassRef}
-                        aria-hidden={isDrawer(objectType) || undefined}
-                        className={`${isDrawer(objectType) ? "invisible" : ""} col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2`}
+                        aria-hidden={!hasWindowVariants(objectType) || undefined}
+                        className={`${hasWindowVariants(objectType) ? "" : "invisible"} col-start-1 row-start-3 flex justify-center gap-2 pt-1 lg:gap-4 lg:pt-3 lg:col-start-2 lg:row-start-2`}
                     >
                         {(["glass", "no-glass"] as Glass[]).map((g) => {
                             const isActive = g === glass;

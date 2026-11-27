@@ -5,9 +5,9 @@ import { useLang } from "@/lib/i18n/LanguageContext";
 import type { Version } from "@/lib/BolzaBoxes/VersionContext";
 import {
     MESH_VIEW,
-    OBJECT_TYPES,
     getDownloadPath,
     factionObjects,
+    hasWindowVariants,
     isDrawer,
     objectLabel,
     type Faction,
@@ -71,10 +71,10 @@ export default function MeshDownload({ faction, version }: { faction: Faction; v
     // choix proposés : chaque objet téléchargeable de la boîte, plus « les deux » (ou « tout ») s'il y a tiroir et conteneur
     const objects = factionObjects(faction, version).filter((o) => o !== "box");
 
-    // un tiroir n'a pas de variante avec / sans vitre : il compte pour les deux
+    // tiroirs et supports n'ont pas de variante avec / sans vitre : ils comptent pour les deux
     const has = (object: ObjectType, g: Glass) =>
-        !!available?.some((m) => m.object === object && (isDrawer(object) || m.glass === g));
-    const needsGlass = (c: Choice) => objectsFor(c).some((o) => !isDrawer(o));
+        !!available?.some((m) => m.object === object && (!hasWindowVariants(object) || m.glass === g));
+    const needsGlass = (c: Choice) => objectsFor(c).some(hasWindowVariants);
     const objectsFor = (c: Choice): ObjectType[] =>
         c === "both" ? objects.filter((o) => isDrawer(o) || o === "container") : [c];
     const choiceAvailable = (c: Choice, g: Glass) => objectsFor(c).every((o) => has(o, g));
