@@ -25,7 +25,7 @@ const PAGE_COLORS = {
 type FactionData = {
     color: keyof typeof PAGE_COLORS;
     name: Localized;
-    description?: Localized; // par défaut : « Description coming soon. »
+    description?: Localized; // facultative : rien ne s'affiche sans description
     buyUrl?: string;
     objects?: ObjectType[]; // par défaut : container, box, drawer
 };
@@ -123,7 +123,7 @@ export const FACTIONS: Faction[] = (Object.keys(FACTION_DATA) as FactionSlug[]).
         name: data.name,
         color: PAGE_COLORS[data.color],
         icon: `${FACTION_ASSETS_URL}/${slug}/icon.svg`,
-        description: data.description ?? { en: "Description coming soon.", fr: "Description à venir." },
+        description: data.description,
         buyUrl: data.buyUrl,
         objects: data.objects ?? ["container", "box", "drawer"],
     };

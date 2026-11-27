@@ -36,6 +36,14 @@ const cinzel = localFont({
     display: "swap",
 });
 
+// Police du jeu Root, pour les descriptions des boîtes BolzaBoxes
+const luminari = localFont({
+    src: "./fonts/Luminari-Regular.ttf",
+    weight: "400",
+    variable: "--font-luminari",
+    display: "swap",
+});
+
 export async function generateMetadata(): Promise<Metadata> {
     const lang = await getLang();
     const description = lang === "fr" ? "Le site personnel de Bolzano." : "Bolzano's personal website.";
@@ -72,7 +80,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     return (
         <html
             lang={lang}
-            className={`${playfair.variable} ${manrope.variable} ${cinzelDecorative.variable} ${cinzel.variable} h-full antialiased`}
+            className={`${playfair.variable} ${manrope.variable} ${cinzelDecorative.variable} ${cinzel.variable} ${luminari.variable} h-full antialiased`}
         >
             <body className="min-h-full flex flex-col">
                 <LanguageProvider initialLang={lang}>{children}</LanguageProvider>

@@ -14,6 +14,7 @@ declare module "react" {
                     exposure?: string;
                     "shadow-intensity"?: string;
                     "tone-mapping"?: string;
+                    "camera-orbit"?: string;
                 },
                 HTMLElement
             >;
@@ -35,6 +36,8 @@ export default function MeshViewer({ src }: { src: string }) {
             src={src}
             alt="3D model"
             camera-controls
+            // Vue de trois quarts, du côté éclairé (avant gauche), en léger plongé
+            camera-orbit="-40deg 68deg auto"
             exposure="0.9"
             shadow-intensity="1"
             tone-mapping="neutral"

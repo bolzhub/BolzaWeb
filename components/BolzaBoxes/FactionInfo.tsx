@@ -32,10 +32,12 @@ export default function FactionInfo({
                     {faction.name[lang]}
                 </h1>
             </div>
-            <p className="opacity-80 leading-relaxed lg:text-xl" style={{ fontFamily: "var(--font-cinzel)" }}>
-                {faction.description[lang]}
-            </p>
-            <p className="opacity-70 leading-relaxed lg:text-lg" style={{ fontFamily: "var(--font-cinzel)" }}>
+            {faction.description && (
+                <p className="opacity-80 leading-relaxed lg:text-xl" style={{ fontFamily: "var(--font-luminari)" }}>
+                    {faction.description[lang]}
+                </p>
+            )}
+            <p className="opacity-70 leading-relaxed lg:text-lg" style={{ fontFamily: "var(--font-luminari)" }}>
                 {MESH_NOTE[lang]}
             </p>
         </div>

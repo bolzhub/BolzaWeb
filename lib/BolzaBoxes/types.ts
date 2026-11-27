@@ -18,7 +18,7 @@ export type Faction = {
     name: Localized;
     color: string;
     icon: string;
-    description: Localized;
+    description?: Localized;
     buyUrl?: string;
     objects: ObjectType[];
 };
