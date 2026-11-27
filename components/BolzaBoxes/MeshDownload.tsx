@@ -15,7 +15,7 @@ import {
 type Mesh = { object: ObjectType; glass: Glass };
 type Choice = ObjectType | "both";
 
-const GLASS_LABEL = { glass: { en: "Glass", fr: "Avec vitre" }, "no-glass": { en: "No Glass", fr: "Sans vitre" } };
+const GLASS_LABEL = { glass: { en: "Window", fr: "Avec vitre" }, "no-glass": { en: "No Window", fr: "Sans vitre" } };
 
 function DownloadIcon() {
     return (

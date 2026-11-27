@@ -15,16 +15,14 @@ export default async function FactionPage({ params }: { params: Promise<{ factio
 
     const textColor = readableTextOn(faction.color);
 
+    // Le visualiseur porte toute la rangée (cadre + description) : la taille du cadre dépend de la place
+    // laissée à la description (ordinateur) et de celle qui reste au-dessus du sélecteur de version
     return (
-        <div className="flex-1 min-w-0 flex flex-col lg:flex-row gap-6 p-4 md:p-8">
-            {/* Portable : pas de hauteur imposée, le cadre fixe la sienne et la description suit en dessous */}
-            <div className="lg:flex-[2] min-w-0 lg:h-[65vh]">
-                <ObjectViewer key={faction.slug} faction={faction} textColor={textColor} />
-            </div>
-
-            <div className="lg:flex-1 min-w-0 lg:pt-4">
-                <FactionInfo faction={faction} textColor={textColor} />
-            </div>
-        </div>
+        <ObjectViewer
+            key={faction.slug}
+            faction={faction}
+            textColor={textColor}
+            info={<FactionInfo faction={faction} textColor={textColor} />}
+        />
     );
 }
